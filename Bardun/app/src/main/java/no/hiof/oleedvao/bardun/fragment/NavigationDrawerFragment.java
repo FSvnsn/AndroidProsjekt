@@ -33,7 +33,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationView
 
         View view = inflater.inflate(R.layout.fragment_navigation_drawer, container);
 
-        navigationView = navigationView.findViewById(R.id.navigationView);
+        navigationView = view.findViewById(R.id.navigationView);
 
         navigationView.setNavigationItemSelectedListener(this);
 
