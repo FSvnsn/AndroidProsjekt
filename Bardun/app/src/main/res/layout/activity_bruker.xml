@@ -16,8 +16,14 @@
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbarBruker"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="?attr/actionBarSize" />
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Toolbar Title"
+                    android:layout_gravity="center"
+                    android:id="@+id/toolbar_title" />
+            </android.support.v7.widget.Toolbar>
 
         </android.support.design.widget.AppBarLayout>
 
