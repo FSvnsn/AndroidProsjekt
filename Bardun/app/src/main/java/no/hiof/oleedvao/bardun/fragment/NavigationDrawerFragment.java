@@ -1,6 +1,8 @@
 package no.hiof.oleedvao.bardun.fragment;
 
+import android.app.ListActivity;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,7 +15,9 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import no.hiof.oleedvao.bardun.BrukerActivity;
 import no.hiof.oleedvao.bardun.R;
 
 
@@ -56,6 +60,8 @@ public class NavigationDrawerFragment extends Fragment implements NavigationView
             case R.id.nav_main:
                 break;
             case R.id.nav_bruker:
+                Toast.makeText(getActivity(), "Bruker clicked", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getActivity(), BrukerActivity.class));
                 break;
             case R.id.nav_mine_teltplasser:
                 break;
