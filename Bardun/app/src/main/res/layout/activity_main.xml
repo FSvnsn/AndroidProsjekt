@@ -36,6 +36,7 @@
 
     </android.support.design.widget.CoordinatorLayout>
 
+
     <fragment
         android:id="@+id/fragmentNavDrawerBruker"
         android:name ="no.hiof.oleedvao.bardun.fragment.NavigationDrawerFragment"
