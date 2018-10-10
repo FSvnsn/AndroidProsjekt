@@ -16,6 +16,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".BrukerActivity" />
+        <activity android:name=".TeltplassActivity" />
+        <activity android:name=".RedigerBrukerActivity" />
+        <activity android:name=".RedigerTeltplassActivity" />
+        <activity android:name=".InstillingerActivity" />
+        <activity android:name=".OpprettKommentarActivity" />
+        <activity android:name=".OpprettTeltplassActivity" />
     </application>
 
 </manifest>

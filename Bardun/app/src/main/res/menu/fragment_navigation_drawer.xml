@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_main"
+            android:icon="@android:drawable/ic_menu_mapmode"
+            android:title="@string/nav_main" />
+        <item
+            android:id="@+id/nav_bruker"
+            android:title="@string/nav_bruker" />
+        <item
+            android:id="@+id/nav_mine_teltplasser"
+            android:title="@string/nav_mine_teltplasser" />
+        <item
+            android:id="@+id/nav_favoritter"
+            android:title="@string/nav_favoritter" />
+        <item
+            android:id="@+id/nav_innstillinger"
+            android:icon="@android:drawable/ic_menu_manage"
+            android:title="@string/nav_innstillinger" />
+    </group>
+</menu>
