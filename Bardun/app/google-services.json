@@ -1,0 +1,107 @@
+{
+  "project_info": {
+    "project_number": "688570768297",
+    "firebase_url": "https://bardun-313e7.firebaseio.com",
+    "project_id": "bardun-313e7",
+    "storage_bucket": "bardun-313e7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:688570768297:android:08450326e29fae17",
+        "android_client_info": {
+          "package_name": "com.example.oleed.bardun"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "688570768297-hd0crpf1apc6111m48e0b7mrkvtiq8bb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.oleed.bardun",
+            "certificate_hash": "2b76c0c882e33a9252b057fec901d2cf964f7ae1"
+          }
+        },
+        {
+          "client_id": "688570768297-au31jboqs429gjve9nrp5ivsmssjk1bb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.oleed.bardun",
+            "certificate_hash": "36b6d2235cdb4e5daca0e7434adc5ee3ad5cdd65"
+          }
+        },
+        {
+          "client_id": "688570768297-6cj4f6u7ni0kua9di0hh60lu4kkgi8pc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCaRfOYVzjzIkwqwo9ucFcWIxhkF-uT1uI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "688570768297-6cj4f6u7ni0kua9di0hh60lu4kkgi8pc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:688570768297:android:c125e336efcdf7da",
+        "android_client_info": {
+          "package_name": "no.hiof.oleedvao.bardun"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "688570768297-m3pbpc2lalvjjet29gg08ik9kf0ci57a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "no.hiof.oleedvao.bardun",
+            "certificate_hash": "5a35e6683ab06996df39ede845af3e60cd92469d"
+          }
+        },
+        {
+          "client_id": "688570768297-6cj4f6u7ni0kua9di0hh60lu4kkgi8pc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCaRfOYVzjzIkwqwo9ucFcWIxhkF-uT1uI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "688570768297-6cj4f6u7ni0kua9di0hh60lu4kkgi8pc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
