@@ -29,9 +29,12 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import no.hiof.oleedvao.bardun.fragment.NavigationDrawerFragment;
+
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback{
 
@@ -71,9 +74,28 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(59.1291473, 11.3506091);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker Remmen"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        LatLng remmen = new LatLng(59.1291473, 11.3506091);
+        LatLng fredrikstad = new LatLng(59.21047628, 10.93994737);
+        mMap.addMarker(new MarkerOptions().position(remmen).title("Marker Remmen"));
+        mMap.addMarker(new MarkerOptions().position(fredrikstad).title("Marker Fredrikstad"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(remmen));
+        mMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(remmen, 15, 0, 0)));
+        mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
+
+        //mMap.setOnMapLongClickListener(this);
+
+        setUpUISettings();
+
+    }
+
+    private void setUpUISettings() {
+        UiSettings uiSettings = mMap.getUiSettings();
+
+        uiSettings.setCompassEnabled(true);
+        uiSettings.setMapToolbarEnabled(false);
+        uiSettings.setZoomControlsEnabled(true);
+        uiSettings.setZoomGesturesEnabled(false);
+        uiSettings.setCompassEnabled(true);
     }
 
     private void setUpNavigationDrawer(){
