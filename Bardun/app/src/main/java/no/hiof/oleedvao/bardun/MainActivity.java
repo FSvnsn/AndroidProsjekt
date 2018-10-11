@@ -15,13 +15,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        toolbar = findViewById(R.id.toolbarBruker);
+        toolbar = findViewById(R.id.toolbarMain);
         setUpNavigationDrawer();
     }
 
     private void setUpNavigationDrawer(){
-        NavigationDrawerFragment navigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentNavDrawerBruker);
-        DrawerLayout drawerLayout = findViewById(R.id.drawerLayoutBruker);
+        NavigationDrawerFragment navigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentNavDrawerMain);
+        DrawerLayout drawerLayout = findViewById(R.id.drawerLayoutMain);
 
         navigationDrawerFragment.setUpDrawer(drawerLayout, toolbar);
     }

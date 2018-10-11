@@ -1,5 +1,6 @@
 package no.hiof.oleedvao.bardun.fragment;
 
+import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
@@ -18,7 +19,10 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import no.hiof.oleedvao.bardun.BrukerActivity;
+import no.hiof.oleedvao.bardun.InstillingerActivity;
+import no.hiof.oleedvao.bardun.MainActivity;
 import no.hiof.oleedvao.bardun.R;
+import no.hiof.oleedvao.bardun.TeltplassActivity;
 
 
 public class NavigationDrawerFragment extends Fragment implements NavigationView.OnNavigationItemSelectedListener{
@@ -58,9 +62,10 @@ public class NavigationDrawerFragment extends Fragment implements NavigationView
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.nav_main:
+                startActivity(new Intent(getActivity(), MainActivity.class));
                 break;
             case R.id.nav_bruker:
-                Toast.makeText(getActivity(), "Bruker clicked", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), "Bruker clicked", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(getActivity(), BrukerActivity.class));
                 break;
             case R.id.nav_mine_teltplasser:
@@ -68,6 +73,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationView
             case R.id.nav_favoritter:
                 break;
             case R.id.nav_innstillinger:
+                startActivity(new Intent(getActivity(), InstillingerActivity.class));
                 break;
         }
         return false;
