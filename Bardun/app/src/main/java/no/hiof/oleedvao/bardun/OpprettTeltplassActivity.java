@@ -24,7 +24,7 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
     private static final int REQUEST_TAKE_PHOTO = 2000;
 
     private ImageView imageView;
-    private String CurrentPhotoPath;
+    private String currentPhotoPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,14 +81,14 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
         }
         else if(requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK){
             try{
-                //get the image uri
-                Uri photoUri = data.getData();
-                //get the image bitmap from the uri
-                Bitmap picture = MediaStore.Images.Media.getBitmap(getContentResolver(), photoUri);
-                //set the image view bitmap to the retrieved image bitmap
+                //Retrieves file from saved photo path
+                File file = new File(currentPhotoPath);
+                //gets bitmap from file uri
+                Bitmap picture = MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.fromFile(file));
+                //sets the image view bitmap to the retrieved image bitmap
                 imageView.setImageBitmap(picture);
-            }catch(IOException e){
-                Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
+            }catch(Exception e){
+                Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -106,7 +106,7 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
         );
 
         // Save a file: path for use with ACTION_VIEW intents
-        CurrentPhotoPath = image.getAbsolutePath();
+        currentPhotoPath = image.getAbsolutePath();
         return image;
     }
 }
