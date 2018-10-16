@@ -13,4 +13,5 @@
     <string name="toolbar_title_main">Bardun</string>
     <string name="toolbar_title_teltplass">Teltplass</string>
     <string name="toolbar_title_bruker">Bruker</string>
+    <string name="log_out">Log Out</string>
 </resources>
