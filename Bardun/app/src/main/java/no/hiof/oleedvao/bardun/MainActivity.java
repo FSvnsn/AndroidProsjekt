@@ -32,11 +32,12 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import no.hiof.oleedvao.bardun.fragment.NavigationDrawerFragment;
 
 
-public class MainActivity extends AppCompatActivity implements OnMapReadyCallback{
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private static final String TAG = "Batman";
     private GoogleMap mMap;
@@ -73,16 +74,17 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
+        // Add static markers for testing
         LatLng remmen = new LatLng(59.1291473, 11.3506091);
         LatLng fredrikstad = new LatLng(59.21047628, 10.93994737);
-        mMap.addMarker(new MarkerOptions().position(remmen).title("Marker Remmen"));
+        mMap.addMarker(new MarkerOptions().position(remmen).title("Marker Remmen").draggable(true));
         mMap.addMarker(new MarkerOptions().position(fredrikstad).title("Marker Fredrikstad"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(remmen));
         mMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(remmen, 15, 0, 0)));
         mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
 
-        //mMap.setOnMapLongClickListener(this);
+
+        //mMap.setOnMarkerClickListener(this);
 
         setUpUISettings();
 
@@ -94,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         uiSettings.setCompassEnabled(true);
         uiSettings.setMapToolbarEnabled(false);
         uiSettings.setZoomControlsEnabled(true);
-        uiSettings.setZoomGesturesEnabled(false);
+        uiSettings.setZoomGesturesEnabled(true);
         uiSettings.setCompassEnabled(true);
     }
 
@@ -102,5 +104,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         NavigationDrawerFragment navigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentNavDrawerBruker);
         DrawerLayout drawerLayout = findViewById(R.id.drawerLayoutBruker);
         navigationDrawerFragment.setUpDrawer(drawerLayout, toolbar);
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        return false;
     }
 }
