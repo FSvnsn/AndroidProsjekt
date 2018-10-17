@@ -13,10 +13,14 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.Toolbar;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.zip.Inflater;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -30,6 +34,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -42,11 +47,15 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private static final String TAG = "Batman";
     private GoogleMap mMap;
     private android.support.v7.widget.Toolbar toolbar;
+    private TextView tk;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        tk = findViewById(R.id.teltplass_quickview);
+        tk.setVisibility(View.GONE);
+
         toolbar = findViewById(R.id.toolbarBruker);
         setUpNavigationDrawer();
 
@@ -58,7 +67,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+        //FJERNE?
+        /*SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         try {
             if (mapFragment != null) {
@@ -71,20 +81,30 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(TAG, "Google maps not loaded");
-        }
+        }*/
         mMap = googleMap;
 
         // Add static markers for testing
         LatLng remmen = new LatLng(59.1291473, 11.3506091);
         LatLng fredrikstad = new LatLng(59.21047628, 10.93994737);
-        mMap.addMarker(new MarkerOptions().position(remmen).title("Marker Remmen").draggable(true));
-        mMap.addMarker(new MarkerOptions().position(fredrikstad).title("Marker Fredrikstad"));
+
+        mMap.addMarker(new MarkerOptions()
+                .position(remmen)
+                .title("Teltplass Remmen")
+                .draggable(true)
+                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_teltplass_marker_green))
+        );
+        mMap.addMarker(new MarkerOptions()
+                .position(fredrikstad)
+                .title("Teltplass Fredrikstad")
+                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_teltplass_marker_green))
+        );
         mMap.moveCamera(CameraUpdateFactory.newLatLng(remmen));
         mMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(remmen, 15, 0, 0)));
         mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
 
 
-        //mMap.setOnMarkerClickListener(this);
+        mMap.setOnMarkerClickListener(this);
 
         setUpUISettings();
 
@@ -108,6 +128,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public boolean onMarkerClick(Marker marker) {
+        tk.setVisibility(View.VISIBLE);
+        Log.d(TAG, "onMarkerClick runs");
         return false;
     }
 }
