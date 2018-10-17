@@ -38,14 +38,6 @@
 
     </android.support.design.widget.CoordinatorLayout>
 
-    <fragment
-        android:id="@+id/fragmentNavDrawerBruker"
-        android:name="no.hiof.oleedvao.bardun.fragment.NavigationDrawerFragment"
-        android:layout_width="270dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        tools:layout="@layout/fragment_navigation_drawer" />
-
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -97,5 +89,15 @@
             app:layout_constraintGuide_begin="50dp" />
 
     </android.support.constraint.ConstraintLayout>
+
+    <fragment
+        android:id="@+id/fragmentNavDrawerBruker"
+        android:name="no.hiof.oleedvao.bardun.fragment.NavigationDrawerFragment"
+        android:layout_width="270dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        tools:layout="@layout/fragment_navigation_drawer" />
+
+
 
 </android.support.v4.widget.DrawerLayout>
