@@ -1,5 +1,6 @@
 package no.hiof.oleedvao.bardun;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -29,6 +30,7 @@ public class BrukerActivity extends AppCompatActivity {
     private String UID;
     TextView txtName;
     TextView txtEmail;
+    TextView txtAge;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +41,7 @@ public class BrukerActivity extends AppCompatActivity {
 
         txtName = findViewById(R.id.txtName);
         txtEmail = findViewById(R.id.txtEmail);
+        txtAge = findViewById(R.id.txtAge);
 
         mDatabase = FirebaseDatabase.getInstance();
         mDatabaseRef = mDatabase.getReference();
@@ -63,27 +66,33 @@ public class BrukerActivity extends AppCompatActivity {
             }
 
         });
-
-
-
-        //Test Data Hardcode
-        //User test1 = new User("Fredrik N Svendsen", "b@c.no");
-        //mDatabaseRef.child("users").child(UID).setValue(test1);
-        //Toast.makeText(this, "IM HERE", Toast.LENGTH_LONG).show();
     }
 
     private void showData(DataSnapshot dataSnapshot) {
         for(DataSnapshot ds : dataSnapshot.getChildren()){
             User test1 = new User();
-            test1.setName(ds.child(UID).getValue(User.class).getName());
-            test1.setEmail(ds.child(UID).getValue(User.class).getEmail());
+
+            try{
+                test1.setName(ds.child(UID).getValue(User.class).getName());
+                test1.setEmail(ds.child(UID).getValue(User.class).getEmail());
+                test1.setAge(ds.child(UID).getValue(User.class).getAge());
+            }
+            catch(NullPointerException e){
+                createUser();
+            }
 
             Log.d("TAG","showData: name: " + test1.getName());
             Log.d("TAG","showData: email: " + test1.getEmail());
+            Log.d("TAG","showData: age: " + test1.getAge());
 
             txtName.setText(test1.getName());
             txtEmail.setText(test1.getEmail());
+            txtAge.setText(Integer.toString(test1.getAge()));
         }
+    }
+
+    private void createUser() {
+        startActivity(new Intent(this, RedigerBrukerActivity.class));
     }
 
     private void setUpNavigationDrawer(){
