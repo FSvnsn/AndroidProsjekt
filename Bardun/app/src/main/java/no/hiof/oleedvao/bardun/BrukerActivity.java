@@ -60,6 +60,10 @@ public class BrukerActivity extends AppCompatActivity {
             }
         });
 
+        if(UID == null){
+            Toast.makeText(BrukerActivity.this, "Du må logge inn for å oprette en brukerprofil!", Toast.LENGTH_LONG).show();
+        }
+
         mDatabaseRef.addValueEventListener(new ValueEventListener(){
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
