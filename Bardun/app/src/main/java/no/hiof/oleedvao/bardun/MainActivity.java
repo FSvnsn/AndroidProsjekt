@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     LocationManager locationManager;
     LocationListener locationListener;
     private Marker marker;
+    private Marker geomarker;
 
 
 
@@ -85,7 +86,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -93,55 +93,84 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                             {Manifest.permission.ACCESS_FINE_LOCATION},
                     REQUEST_LOCATION_PERMISSION);
         }
-        /*
-        locationListener = new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-                double latitude = location.getLatitude();
-                double longitude = location.getLongitude();
-                //get the location name from latitude and longitude
-                Geocoder geocoder = new Geocoder(getApplicationContext());
-                try {
-                    List<Address> addresses =
-                            geocoder.getFromLocation(latitude, longitude, 1);
-                    String result = addresses.get(0).getLocality() + ":";
-                    result += addresses.get(0).getCountryName();
-                    LatLng latLng = new LatLng(latitude, longitude);
-                    if (marker != null) {
-                        marker.remove();
-                        marker = mMap.addMarker(new MarkerOptions().position(latLng).title(result));
-                        mMap.setMaxZoomPreference(20);
-                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12.0f));
-                    } else {
-                        marker = mMap.addMarker(new MarkerOptions().position(latLng).title(result));
-                        mMap.setMaxZoomPreference(20);
-                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 21.0f));
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
+        if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+
+            locationManager.requestLocationUpdates
+                    (LocationManager.NETWORK_PROVIDER, 0, 0, new LocationListener() {
+                        @Override
+                        public void onLocationChanged(Location location) {
+                            double latitude = location.getLatitude();
+                            double longitude = location.getLongitude();
+                            LatLng geolatLng = new LatLng(latitude,longitude);
+                            Geocoder geocoder = new Geocoder(getApplicationContext());
+                            try {
+                                List<Address> list = geocoder.getFromLocation(latitude,longitude,1);
+                                String geoStedsnavn = list.get(0).getLocality();
+                                mMap.addMarker(new MarkerOptions().position(geolatLng).title(geoStedsnavn));
+                                mMap.moveCamera(CameraUpdateFactory.newLatLng(geolatLng));
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        @Override
+                        public void onStatusChanged(String provider, int status, Bundle extras) {
+
+                        }
+
+                        @Override
+                        public void onProviderEnabled(String provider) {
+
+                        }
+
+                        @Override
+                        public void onProviderDisabled(String provider) {
+
+                        }
+                    });
+        } else if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, new LocationListener() {
+                @Override
+                public void onLocationChanged(Location location) {
+                    double latitude = location.getLatitude();
+                    double longitude = location.getLongitude();
+                    LatLng geolatLng = new LatLng(latitude,longitude);
+                    Geocoder geocoder = new Geocoder(getApplicationContext());
+                    try {
+                        List<Address> list = geocoder.getFromLocation(latitude,longitude,1);
+                        String geoStedsnavn = list.get(0).getLocality();
+                        geomarker = mMap.addMarker(new MarkerOptions()
+                                .position(geolatLng)
+                                .title(geoStedsnavn)
+                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_geo_location))
+                        );
+
+                        mMap.moveCamera(CameraUpdateFactory.newLatLng(geolatLng));
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-
-
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
-            }
 
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
+                @Override
+                public void onStatusChanged(String provider, int status, Bundle extras) {
 
-            }
+                }
 
-            @Override
-            public void onProviderEnabled(String provider) {
+                @Override
+                public void onProviderEnabled(String provider) {
 
-            }
+                }
 
-            @Override
-            public void onProviderDisabled(String provider) {
+                @Override
+                public void onProviderDisabled(String provider) {
 
-            }
-        };
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-*/
+                }
+            });
+
+        }
+
     }
 
     // region mapSetup
@@ -211,13 +240,26 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     // region markerEvents
     @Override
     public boolean onMarkerClick(Marker marker) {
-        //Åpner Bottom Sheet med Teltplass Quickview
-        //TODO: Håndtere Teltplass-info om hver marker her
+        LatLng mPos = marker.getPosition();
+        LatLng geoPos = geomarker.getPosition();
+
+        if (mPos.equals(geoPos)) {
+            Toast.makeText(this, "Du har trykket på din egen posisjon", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else {
+
+            //Åpner Bottom Sheet med Teltplass Quickview
+            //TODO: Håndtere Teltplass-info om hver marker her
             Log.d(TAG, "onMarkerClick runs + " + marker.getTag());
 
-        TeltplassQuickviewBottomSheetDialog bottomSheet = new TeltplassQuickviewBottomSheetDialog();
-        bottomSheet.show(getSupportFragmentManager(), "teltplassBottomSheet");
-        return false;
+            TeltplassQuickviewBottomSheetDialog bottomSheet = new TeltplassQuickviewBottomSheetDialog();
+            bottomSheet.show(getSupportFragmentManager(), "teltplassBottomSheet");
+            return false;
+
+        }
+
+
     }
     @Override
     public void onButtonClicked(String text) {
