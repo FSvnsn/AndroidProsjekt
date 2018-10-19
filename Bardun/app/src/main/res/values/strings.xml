@@ -14,4 +14,12 @@
     <string name="toolbar_title_teltplass">Teltplass</string>
     <string name="toolbar_title_bruker">Bruker</string>
     <string name="log_out">Log Out</string>
+    <string name="name_placeholder">Navn</string>
+    <string name="email_placeholder">Email@domain.com</string>
+    <string name="rediger_bruker">Rediger Bruker:</string>
+    <string name="navn">Navn</string>
+    <string name="alder">Alder</string>
+    <string name="lagre">LAGRE</string>
+    <string name="age_placeholder">Alder</string>
+    <string name="rediger_profil">Rediger Profil</string>
 </resources>
