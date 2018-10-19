@@ -7,11 +7,13 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -42,17 +44,29 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
 import no.hiof.oleedvao.bardun.fragment.NavigationDrawerFragment;
 
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback,
-        GoogleMap.OnMarkerClickListener, TeltplassQuickviewBottomSheetDialog.BottomSheetListener, GoogleMap.OnMapLongClickListener {
+        GoogleMap.OnMarkerClickListener,
+        TeltplassQuickviewBottomSheetDialog.BottomSheetListener,
+        GoogleMap.OnMapLongClickListener,
+        GoogleMap.OnMyLocationButtonClickListener,
+        GoogleMap.OnMyLocationClickListener,
+        ActivityCompat.OnRequestPermissionsResultCallback {
 
     private static final String TAG = "Batman";
     private GoogleMap mMap;
     private android.support.v7.widget.Toolbar toolbar;
     private TextView mTextView;
     private ConstraintLayout nyTeltplassHer;
+
+    private static final int REQUEST_LOCATION_PERMISSION = 1;
+    LocationManager locationManager;
+    LocationListener locationListener;
+    private Marker marker;
+
 
 
     @Override
@@ -65,14 +79,75 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         toolbar = findViewById(R.id.toolbarMain);
         setUpNavigationDrawer();
 
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]
+                            {Manifest.permission.ACCESS_FINE_LOCATION},
+                    REQUEST_LOCATION_PERMISSION);
+        }
+        /*
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                double latitude = location.getLatitude();
+                double longitude = location.getLongitude();
+                //get the location name from latitude and longitude
+                Geocoder geocoder = new Geocoder(getApplicationContext());
+                try {
+                    List<Address> addresses =
+                            geocoder.getFromLocation(latitude, longitude, 1);
+                    String result = addresses.get(0).getLocality() + ":";
+                    result += addresses.get(0).getCountryName();
+                    LatLng latLng = new LatLng(latitude, longitude);
+                    if (marker != null) {
+                        marker.remove();
+                        marker = mMap.addMarker(new MarkerOptions().position(latLng).title(result));
+                        mMap.setMaxZoomPreference(20);
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12.0f));
+                    } else {
+                        marker = mMap.addMarker(new MarkerOptions().position(latLng).title(result));
+                        mMap.setMaxZoomPreference(20);
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 21.0f));
+                    }
+
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        };
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+*/
     }
+
     // region mapSetup
     @Override
     public void onMapReady(GoogleMap googleMap) {
+
         mMap = googleMap;
 
         // Add static markers for testing
@@ -93,14 +168,18 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         fredT.setTag("fred");
         mMap.moveCamera(CameraUpdateFactory.newLatLng(remmen));
         mMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(remmen, 15, 0, 0)));
-        mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
 
+        mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
 
         mMap.setOnMarkerClickListener(this);
         mMap.setOnMapLongClickListener(this);
+        mMap.setOnMyLocationButtonClickListener(this);
+        mMap.setOnMyLocationClickListener(this);
 
         setUpUISettings();
+
     }
+
 
     private void setUpUISettings() {
         UiSettings uiSettings = mMap.getUiSettings();
@@ -156,5 +235,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
+    @Override
+    public boolean onMyLocationButtonClick() {
+        return false;
+    }
 
+    @Override
+    public void onMyLocationClick(@NonNull Location location) {
+
+    }
 }
