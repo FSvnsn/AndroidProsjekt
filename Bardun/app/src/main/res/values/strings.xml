@@ -1,3 +1,27 @@
 <resources>
     <string name="app_name">Bardun</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="nav_main">Kart</string>
+    <string name="nav_bruker">Min Profil</string>
+    <string name="nav_mine_teltplasser">Mine Teltplasser</string>
+    <string name="nav_favoritter">Favoritter</string>
+    <string name="nav_innstillinger">Innstillinger</string>
+    <string name="drawer_open">Drawer open</string>
+    <string name="drawer_close">Drawer close</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="toolbar_title_main">Bardun</string>
+    <string name="toolbar_title_teltplass">Teltplass</string>
+    <string name="toolbar_title_bruker">Bruker</string>
+    <string name="log_out">Log Out</string>
+    <string name="name_placeholder">Navn</string>
+    <string name="email_placeholder">Email@domain.com</string>
+    <string name="rediger_bruker">Rediger Bruker:</string>
+    <string name="navn">Navn</string>
+    <string name="alder">Alder</string>
+    <string name="lagre">LAGRE</string>
+    <string name="age_placeholder">Alder</string>
+    <string name="rediger_profil">Rediger Profil</string>
+    <string name="skip">Skip</string>
 </resources>
