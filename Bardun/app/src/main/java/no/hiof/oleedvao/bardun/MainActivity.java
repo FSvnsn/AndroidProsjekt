@@ -7,6 +7,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
@@ -45,18 +46,21 @@ import no.hiof.oleedvao.bardun.fragment.NavigationDrawerFragment;
 
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback,
-        GoogleMap.OnMarkerClickListener, TeltplassQuickviewBottomSheetDialog.BottomSheetListener {
+        GoogleMap.OnMarkerClickListener, TeltplassQuickviewBottomSheetDialog.BottomSheetListener, GoogleMap.OnMapLongClickListener {
 
     private static final String TAG = "Batman";
     private GoogleMap mMap;
     private android.support.v7.widget.Toolbar toolbar;
     private TextView mTextView;
+    private ConstraintLayout nyTeltplassHer;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        nyTeltplassHer = findViewById(R.id.nyTeltplassHer);
+        nyTeltplassHer.setVisibility(View.GONE);
 
         toolbar = findViewById(R.id.toolbarBruker);
         setUpNavigationDrawer();
@@ -93,6 +97,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
         mMap.setOnMarkerClickListener(this);
+        mMap.setOnMapLongClickListener(this);
 
         setUpUISettings();
     }
@@ -106,6 +111,22 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         uiSettings.setZoomGesturesEnabled(true);
         uiSettings.setCompassEnabled(true);
     }
+    @Override
+    public void onMapLongClick(LatLng latLng) {
+        // TODO: Lage bottomsheet(?) for registrering av teltplass steg 1. "Vil du lage ny teltplass her?"
+        // TODO: Vis koordinater, hent stedsnavn
+        // TODO: Legg til registrer-teltplass-ikon
+
+        mMap.addMarker(new MarkerOptions()
+                .position(latLng)
+                .title("Ny teltplass")
+                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_teltplass_marker_green))
+        );
+        nyTeltplassHer.setVisibility(View.VISIBLE);
+        TextView nyTeltplassLatLong = findViewById(R.id.latlongTextview);
+        nyTeltplassLatLong.setText(latLng.toString());
+
+    }
     // endregion
 
     // region markerEvents
@@ -113,7 +134,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public boolean onMarkerClick(Marker marker) {
         //Åpner Bottom Sheet med Teltplass Quickview
         //TODO: Håndtere Teltplass-info om hver marker her
-        Log.d(TAG, "onMarkerClick runs + " + marker.getTag());
+            Log.d(TAG, "onMarkerClick runs + " + marker.getTag());
 
         TeltplassQuickviewBottomSheetDialog bottomSheet = new TeltplassQuickviewBottomSheetDialog();
         bottomSheet.show(getSupportFragmentManager(), "teltplassBottomSheet");
@@ -133,6 +154,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         DrawerLayout drawerLayout = findViewById(R.id.drawerLayoutBruker);
         navigationDrawerFragment.setUpDrawer(drawerLayout, toolbar);
     }
+
 
 
 }

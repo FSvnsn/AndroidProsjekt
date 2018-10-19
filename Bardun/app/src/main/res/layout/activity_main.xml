@@ -67,6 +67,68 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.131" />
 
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/nyTeltplassHer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/registrerTeltplassHerSPM"
+                    android:layout_width="385dp"
+                    android:layout_height="78dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@android:color/holo_orange_dark"
+                    android:text="Registrer teltplass her?"
+                    android:textAlignment="center"
+                    android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/visTeltplassKlikk"
+                    app:layout_constraintVertical_bias="0.971" />
+
+                <TextView
+                    android:id="@+id/latlongTextview"
+                    android:layout_width="221dp"
+                    android:layout_height="35dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:text="TextView"
+                    android:textAlignment="center"
+                    app:layout_constraintBottom_toBottomOf="@+id/registrerTeltplassHerSPM"
+                    app:layout_constraintEnd_toEndOf="@+id/registrerTeltplassHerSPM"
+                    app:layout_constraintHorizontal_bias="0.054"
+                    app:layout_constraintStart_toStartOf="@+id/registrerTeltplassHerSPM"
+                    app:layout_constraintTop_toTopOf="@+id/registrerTeltplassHerSPM"
+                    app:layout_constraintVertical_bias="0.813" />
+
+                <Button
+                    android:id="@+id/btn_registrerTeltplass"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@android:color/holo_green_dark"
+                    android:text="Registrer"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/latlongTextview"
+                    app:layout_constraintEnd_toEndOf="@+id/registrerTeltplassHerSPM"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toEndOf="@+id/latlongTextview"
+                    app:layout_constraintTop_toTopOf="@+id/registrerTeltplassHerSPM"
+                    app:layout_constraintVertical_bias="1.0" />
+
+            </android.support.constraint.ConstraintLayout>
+
+
         </android.support.constraint.ConstraintLayout>
 
     </android.support.design.widget.CoordinatorLayout>
