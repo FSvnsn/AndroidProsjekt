@@ -36,11 +36,8 @@ public class NavigationDrawerFragment extends Fragment implements NavigationView
     private NavigationView navigationView;
     private ActionBarDrawerToggle drawerToggle;
 
-    private FirebaseDatabase mDatabase;
-    private DatabaseReference mDatabaseRef;
     private FirebaseAuth mAuth;
     private FirebaseUser CUser;
-    private String UID;
 
 
 
@@ -57,17 +54,8 @@ public class NavigationDrawerFragment extends Fragment implements NavigationView
 
         navigationView.setNavigationItemSelectedListener(this);
 
-        mDatabase = FirebaseDatabase.getInstance();
-        mDatabaseRef = mDatabase.getReference();
         mAuth = FirebaseAuth.getInstance();
         CUser = mAuth.getCurrentUser();
-
-        try{
-            UID = CUser.getUid();
-        }
-        catch(NullPointerException e){
-            Log.d("TAG","Bruker er ikke logget inn");
-        }
 
         // Inflate the layout for this fragment
         return view;
@@ -105,7 +93,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationView
     }
 
     private void brukerClicked() {
-        if(UID == null){
+        if(CUser == null){
             Toast.makeText(getActivity(), "Du må logge inn for å oprette en brukerprofil!", Toast.LENGTH_LONG).show();
         }
         else{
