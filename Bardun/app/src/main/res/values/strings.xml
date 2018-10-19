@@ -22,4 +22,5 @@
     <string name="lagre">LAGRE</string>
     <string name="age_placeholder">Alder</string>
     <string name="rediger_profil">Rediger Profil</string>
+    <string name="skip">Skip</string>
 </resources>
