@@ -12,11 +12,17 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import no.hiof.oleedvao.bardun.BrukerActivity;
 import no.hiof.oleedvao.bardun.InstillingerActivity;
@@ -29,6 +35,9 @@ public class NavigationDrawerFragment extends Fragment implements NavigationView
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private ActionBarDrawerToggle drawerToggle;
+
+    private FirebaseAuth mAuth;
+    private FirebaseUser CUser;
 
 
 
@@ -44,6 +53,9 @@ public class NavigationDrawerFragment extends Fragment implements NavigationView
         navigationView = view.findViewById(R.id.navigationView);
 
         navigationView.setNavigationItemSelectedListener(this);
+
+        mAuth = FirebaseAuth.getInstance();
+        CUser = mAuth.getCurrentUser();
 
         // Inflate the layout for this fragment
         return view;
@@ -65,8 +77,9 @@ public class NavigationDrawerFragment extends Fragment implements NavigationView
                 startActivity(new Intent(getActivity(), MainActivity.class));
                 break;
             case R.id.nav_bruker:
+                brukerClicked();
                 //Toast.makeText(getActivity(), "Bruker clicked", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(getActivity(), BrukerActivity.class));
+                //startActivity(new Intent(getActivity(), BrukerActivity.class));
                 break;
             case R.id.nav_mine_teltplasser:
                 break;
@@ -77,6 +90,15 @@ public class NavigationDrawerFragment extends Fragment implements NavigationView
                 break;
         }
         return false;
+    }
+
+    private void brukerClicked() {
+        if(CUser == null){
+            Toast.makeText(getActivity(), "Du må logge inn for å oprette en brukerprofil!", Toast.LENGTH_LONG).show();
+        }
+        else{
+            startActivity(new Intent(getActivity(), BrukerActivity.class));
+        }
     }
 
 }

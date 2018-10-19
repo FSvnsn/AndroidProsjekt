@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         nyTeltplassHer = findViewById(R.id.nyTeltplassHer);
         nyTeltplassHer.setVisibility(View.GONE);
 
-        toolbar = findViewById(R.id.toolbarBruker);
+        toolbar = findViewById(R.id.toolbarMain);
         setUpNavigationDrawer();
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -150,8 +150,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     // endregion
 
     private void setUpNavigationDrawer(){
-        NavigationDrawerFragment navigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentNavDrawerBruker);
-        DrawerLayout drawerLayout = findViewById(R.id.drawerLayoutBruker);
+        NavigationDrawerFragment navigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentNavDrawerMain);
+        DrawerLayout drawerLayout = findViewById(R.id.drawerLayoutMain);
         navigationDrawerFragment.setUpDrawer(drawerLayout, toolbar);
     }
 
