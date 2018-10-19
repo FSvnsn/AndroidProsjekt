@@ -6,6 +6,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
@@ -31,6 +33,7 @@ public class BrukerActivity extends AppCompatActivity {
     TextView txtName;
     TextView txtEmail;
     TextView txtAge;
+    Button btnBrukerRediger;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,12 +45,20 @@ public class BrukerActivity extends AppCompatActivity {
         txtName = findViewById(R.id.txtName);
         txtEmail = findViewById(R.id.txtEmail);
         txtAge = findViewById(R.id.txtAge);
+        btnBrukerRediger = findViewById(R.id.btnBrukerRediger);
 
         mDatabase = FirebaseDatabase.getInstance();
         mDatabaseRef = mDatabase.getReference();
         mAuth = FirebaseAuth.getInstance();
         CUser = mAuth.getCurrentUser();
         UID = CUser.getUid();
+
+        btnBrukerRediger.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createUser();
+            }
+        });
 
         mDatabaseRef.addValueEventListener(new ValueEventListener(){
             @Override
