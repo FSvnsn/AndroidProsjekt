@@ -7,11 +7,13 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -42,17 +44,30 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
 import no.hiof.oleedvao.bardun.fragment.NavigationDrawerFragment;
 
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback,
-        GoogleMap.OnMarkerClickListener, TeltplassQuickviewBottomSheetDialog.BottomSheetListener, GoogleMap.OnMapLongClickListener {
+        GoogleMap.OnMarkerClickListener,
+        TeltplassQuickviewBottomSheetDialog.BottomSheetListener,
+        GoogleMap.OnMapLongClickListener,
+        GoogleMap.OnMyLocationButtonClickListener,
+        GoogleMap.OnMyLocationClickListener,
+        ActivityCompat.OnRequestPermissionsResultCallback {
 
     private static final String TAG = "Batman";
     private GoogleMap mMap;
     private android.support.v7.widget.Toolbar toolbar;
     private TextView mTextView;
     private ConstraintLayout nyTeltplassHer;
+
+    private static final int REQUEST_LOCATION_PERMISSION = 1;
+    LocationManager locationManager;
+    LocationListener locationListener;
+    private Marker marker;
+    private Marker geomarker;
+
 
 
     @Override
@@ -65,14 +80,103 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         toolbar = findViewById(R.id.toolbarMain);
         setUpNavigationDrawer();
 
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        if (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]
+                            {Manifest.permission.ACCESS_FINE_LOCATION},
+                    REQUEST_LOCATION_PERMISSION);
+        }
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
+        if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+
+            locationManager.requestLocationUpdates
+                    (LocationManager.NETWORK_PROVIDER, 0, 0, new LocationListener() {
+                        @Override
+                        public void onLocationChanged(Location location) {
+                            double latitude = location.getLatitude();
+                            double longitude = location.getLongitude();
+                            LatLng geolatLng = new LatLng(latitude,longitude);
+                            Geocoder geocoder = new Geocoder(getApplicationContext());
+                            try {
+                                List<Address> list = geocoder.getFromLocation(latitude,longitude,1);
+                                String geoStedsnavn = list.get(0).getLocality();
+                                mMap.addMarker(new MarkerOptions().position(geolatLng).title(geoStedsnavn));
+                                mMap.moveCamera(CameraUpdateFactory.newLatLng(geolatLng));
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        @Override
+                        public void onStatusChanged(String provider, int status, Bundle extras) {
+
+                        }
+
+                        @Override
+                        public void onProviderEnabled(String provider) {
+
+                        }
+
+                        @Override
+                        public void onProviderDisabled(String provider) {
+
+                        }
+                    });
+        } else if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, new LocationListener() {
+                @Override
+                public void onLocationChanged(Location location) {
+                    double latitude = location.getLatitude();
+                    double longitude = location.getLongitude();
+                    LatLng geolatLng = new LatLng(latitude,longitude);
+                    Geocoder geocoder = new Geocoder(getApplicationContext());
+                    try {
+                        List<Address> list = geocoder.getFromLocation(latitude,longitude,1);
+                        String geoStedsnavn = list.get(0).getLocality();
+                        geomarker = mMap.addMarker(new MarkerOptions()
+                                .position(geolatLng)
+                                .title(geoStedsnavn)
+                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_geo_location))
+                        );
+
+                        mMap.moveCamera(CameraUpdateFactory.newLatLng(geolatLng));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onStatusChanged(String provider, int status, Bundle extras) {
+
+                }
+
+                @Override
+                public void onProviderEnabled(String provider) {
+
+                }
+
+                @Override
+                public void onProviderDisabled(String provider) {
+
+                }
+            });
+
+        }
+
     }
+
     // region mapSetup
     @Override
     public void onMapReady(GoogleMap googleMap) {
+
         mMap = googleMap;
 
         // Add static markers for testing
@@ -93,14 +197,18 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         fredT.setTag("fred");
         mMap.moveCamera(CameraUpdateFactory.newLatLng(remmen));
         mMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(remmen, 15, 0, 0)));
-        mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
 
+        mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
 
         mMap.setOnMarkerClickListener(this);
         mMap.setOnMapLongClickListener(this);
+        mMap.setOnMyLocationButtonClickListener(this);
+        mMap.setOnMyLocationClickListener(this);
 
         setUpUISettings();
+
     }
+
 
     private void setUpUISettings() {
         UiSettings uiSettings = mMap.getUiSettings();
@@ -132,13 +240,26 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     // region markerEvents
     @Override
     public boolean onMarkerClick(Marker marker) {
-        //Åpner Bottom Sheet med Teltplass Quickview
-        //TODO: Håndtere Teltplass-info om hver marker her
+        LatLng mPos = marker.getPosition();
+        LatLng geoPos = geomarker.getPosition();
+
+        if (mPos.equals(geoPos)) {
+            Toast.makeText(this, "Du har trykket på din egen posisjon", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else {
+
+            //Åpner Bottom Sheet med Teltplass Quickview
+            //TODO: Håndtere Teltplass-info om hver marker her
             Log.d(TAG, "onMarkerClick runs + " + marker.getTag());
 
-        TeltplassQuickviewBottomSheetDialog bottomSheet = new TeltplassQuickviewBottomSheetDialog();
-        bottomSheet.show(getSupportFragmentManager(), "teltplassBottomSheet");
-        return false;
+            TeltplassQuickviewBottomSheetDialog bottomSheet = new TeltplassQuickviewBottomSheetDialog();
+            bottomSheet.show(getSupportFragmentManager(), "teltplassBottomSheet");
+            return false;
+
+        }
+
+
     }
     @Override
     public void onButtonClicked(String text) {
@@ -156,5 +277,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
+    @Override
+    public boolean onMyLocationButtonClick() {
+        return false;
+    }
 
+    @Override
+    public void onMyLocationClick(@NonNull Location location) {
+
+    }
 }
