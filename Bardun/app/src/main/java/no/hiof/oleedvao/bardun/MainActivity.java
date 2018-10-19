@@ -150,8 +150,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     // endregion
 
     private void setUpNavigationDrawer(){
-        NavigationDrawerFragment navigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentNavDrawerBruker);
-        DrawerLayout drawerLayout = findViewById(R.id.drawerLayoutBruker);
+        NavigationDrawerFragment navigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentNavDrawerMain);
+        DrawerLayout drawerLayout = findViewById(R.id.drawerLayoutMain);
         navigationDrawerFragment.setUpDrawer(drawerLayout, toolbar);
     }
 
