@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         nyTeltplassHer = findViewById(R.id.nyTeltplassHer);
         nyTeltplassHer.setVisibility(View.GONE);
 
-        toolbar = findViewById(R.id.toolbarBruker);
+        toolbar = findViewById(R.id.toolbarMain);
         setUpNavigationDrawer();
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
