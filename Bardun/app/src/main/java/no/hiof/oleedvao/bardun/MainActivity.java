@@ -7,6 +7,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
@@ -14,6 +15,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
@@ -42,19 +44,19 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import no.hiof.oleedvao.bardun.fragment.NavigationDrawerFragment;
 
 
-public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback,
+        GoogleMap.OnMarkerClickListener, TeltplassQuickviewBottomSheetDialog.BottomSheetListener {
 
     private static final String TAG = "Batman";
     private GoogleMap mMap;
     private android.support.v7.widget.Toolbar toolbar;
-    private TextView tk;
+    private TextView mTextView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        tk = findViewById(R.id.teltplass_quickview);
-        tk.setVisibility(View.GONE);
 
         toolbar = findViewById(R.id.toolbarBruker);
         setUpNavigationDrawer();
@@ -64,41 +66,27 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
-
+    // region mapSetup
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        //FJERNE?
-        /*SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        try {
-            if (mapFragment != null) {
-
-                Log.e(TAG, "Google maps not null");
-            }
-            else{
-                Log.d(TAG, "Google Maps Is Null!");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(TAG, "Google maps not loaded");
-        }*/
         mMap = googleMap;
 
         // Add static markers for testing
         LatLng remmen = new LatLng(59.1291473, 11.3506091);
         LatLng fredrikstad = new LatLng(59.21047628, 10.93994737);
 
-        mMap.addMarker(new MarkerOptions()
+        Marker remmenT = mMap.addMarker(new MarkerOptions()
                 .position(remmen)
-                .title("Teltplass Remmen")
-                .draggable(true)
                 .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_teltplass_marker_green))
         );
-        mMap.addMarker(new MarkerOptions()
+        //Tag kan inneholde et objekt, f.eks et teltplassobjekt?
+        remmenT.setTag("remmen");
+
+        Marker fredT = mMap.addMarker(new MarkerOptions()
                 .position(fredrikstad)
-                .title("Teltplass Fredrikstad")
                 .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_teltplass_marker_green))
         );
+        fredT.setTag("fred");
         mMap.moveCamera(CameraUpdateFactory.newLatLng(remmen));
         mMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(remmen, 15, 0, 0)));
         mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
@@ -107,7 +95,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.setOnMarkerClickListener(this);
 
         setUpUISettings();
-
     }
 
     private void setUpUISettings() {
@@ -119,6 +106,27 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         uiSettings.setZoomGesturesEnabled(true);
         uiSettings.setCompassEnabled(true);
     }
+    // endregion
+
+    // region markerEvents
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        //Åpner Bottom Sheet med Teltplass Quickview
+        //TODO: Håndtere Teltplass-info om hver marker her
+        Log.d(TAG, "onMarkerClick runs + " + marker.getTag());
+
+        TeltplassQuickviewBottomSheetDialog bottomSheet = new TeltplassQuickviewBottomSheetDialog();
+        bottomSheet.show(getSupportFragmentManager(), "teltplassBottomSheet");
+        return false;
+    }
+    @Override
+    public void onButtonClicked(String text) {
+        // Når visTeltplass-knapp inni bottom sheet er trykket skjer dette:
+        //TODO: Åpne teltplass-activity her og send med teltplass-ID
+        mTextView = findViewById(R.id.visTeltplassKlikk);
+        mTextView.setText(text);
+    }
+    // endregion
 
     private void setUpNavigationDrawer(){
         NavigationDrawerFragment navigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentNavDrawerBruker);
@@ -126,10 +134,5 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         navigationDrawerFragment.setUpDrawer(drawerLayout, toolbar);
     }
 
-    @Override
-    public boolean onMarkerClick(Marker marker) {
-        tk.setVisibility(View.VISIBLE);
-        Log.d(TAG, "onMarkerClick runs");
-        return false;
-    }
+
 }
