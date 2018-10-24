@@ -156,7 +156,7 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
                     switchOpprettTeltplassFjell.isChecked(),
                     switchOpprettTeltplassFiske.isChecked());
 
-            mDatabaseRef.child("teltplass").child(teltplass.getLatLng()).setValue(teltplass);
+            mDatabaseRef.child("teltplasser").child(teltplass.getLatLng()).setValue(teltplass);
 
         }
         else{

@@ -24,6 +24,7 @@ import android.widget.Toast;
 import android.widget.Toolbar;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.zip.Inflater;
 
@@ -44,6 +45,11 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import no.hiof.oleedvao.bardun.fragment.NavigationDrawerFragment;
 
@@ -68,7 +74,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Marker marker;
     private Marker geomarker;
 
-
+    private FirebaseDatabase mDatabase;
+    private DatabaseReference mDatabaseRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -179,6 +186,23 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         mMap = googleMap;
 
+        //Skaffer data fra Firebase og plasserer markører
+        mDatabase = FirebaseDatabase.getInstance();
+        mDatabaseRef = mDatabase.getReference();
+
+        mDatabaseRef.addValueEventListener(new ValueEventListener(){
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                showMarkers(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getCode());
+            }
+
+        });
+
         // Add static markers for testing
         LatLng remmen = new LatLng(59.1291473, 11.3506091);
         LatLng fredrikstad = new LatLng(59.21047628, 10.93994737);
@@ -207,6 +231,27 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         setUpUISettings();
 
+    }
+
+    private void showMarkers(DataSnapshot dataSnapshot) {
+        for (DataSnapshot ds : dataSnapshot.child("teltplasser").getChildren()){
+            String name = ds.child("navn").getValue(String.class);
+            String location = ds.child("latLng").getValue(String.class);
+
+            location = location.replace("p", ".");
+            location = location.replace("k", ",");
+
+            Toast.makeText(this, location, Toast.LENGTH_LONG).show();
+
+            String fullLoc [] = location.split(",");
+            double latitude = Double.parseDouble(fullLoc[0]);
+            double longitude = Double.parseDouble(fullLoc[1]);
+
+            LatLng currLoc = new LatLng(latitude, longitude);
+
+            mMap.addMarker(new MarkerOptions()
+                            .position(currLoc).title(name).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_teltplass_marker_green)));
+        }
     }
 
 
