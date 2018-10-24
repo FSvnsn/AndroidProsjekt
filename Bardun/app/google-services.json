@@ -37,7 +37,7 @@
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCaRfOYVzjzIkwqwo9ucFcWIxhkF-uT1uI"
+          "current_key": "AIzaSyAIeuO_qRyTfB3jgZgy5w_efCXIBlvckZ8"
         }
       ],
       "services": {
@@ -75,13 +75,37 @@
           }
         },
         {
+          "client_id": "688570768297-5s1h292bsbvnmv6380pupeuingoe379f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "no.hiof.oleedvao.bardun",
+            "certificate_hash": "c625c0d7fdb907f32e142b49533aa691fdd7f3a4"
+          }
+        },
+        {
+          "client_id": "688570768297-pbpipen533i3t1fqs4rn5a8ingh6nlqo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "no.hiof.oleedvao.bardun",
+            "certificate_hash": "36b6d2235cdb4e5daca0e7434adc5ee3ad5cdd65"
+          }
+        },
+        {
+          "client_id": "688570768297-obdjh90m77i2teb7op86s8kij8j9f8kb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "no.hiof.oleedvao.bardun",
+            "certificate_hash": "2b76c0c882e33a9252b057fec901d2cf964f7ae1"
+          }
+        },
+        {
           "client_id": "688570768297-6cj4f6u7ni0kua9di0hh60lu4kkgi8pc.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCaRfOYVzjzIkwqwo9ucFcWIxhkF-uT1uI"
+          "current_key": "AIzaSyAIeuO_qRyTfB3jgZgy5w_efCXIBlvckZ8"
         }
       ],
       "services": {
