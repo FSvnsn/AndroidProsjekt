@@ -144,8 +144,8 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
     }
 
     public void opprettTeltplass(View view){
-        if(editTextOpprettTeltplassNavn.getText().toString() != "" &&
-                editTextOpprettTeltplassBeskrivelse.getText().toString() != ""){
+        if(editTextOpprettTeltplassNavn.getText().toString() != null ||
+                editTextOpprettTeltplassBeskrivelse.getText().toString() != null){
             Teltplass teltplass = new Teltplass("30p000k30p000",
                     editTextOpprettTeltplassNavn.getText().toString(),
                     editTextOpprettTeltplassBeskrivelse.getText().toString(),
