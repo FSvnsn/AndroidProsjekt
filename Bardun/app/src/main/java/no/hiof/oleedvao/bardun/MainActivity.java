@@ -241,7 +241,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             location = location.replace("p", ".");
             location = location.replace("k", ",");
 
-            Toast.makeText(this, location, Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, location, Toast.LENGTH_LONG).show();
 
             String fullLoc [] = location.split(",");
             double latitude = Double.parseDouble(fullLoc[0]);
