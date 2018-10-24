@@ -24,4 +24,8 @@
     <string name="age_placeholder">Alder</string>
     <string name="rediger_profil">Rediger Profil</string>
     <string name="skip">Skip</string>
+    <string name="button_opprett_teltplass">Opprett Teltplass</string>
+    <string name="textview_underlag">Kupert underlag:</string>
+    <string name="textview_utsikt" >Grad av utsikt:</string>
+    <string name="textview_avstand">Avstand fra turstart:</string>
 </resources>
