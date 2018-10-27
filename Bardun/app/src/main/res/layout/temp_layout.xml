@@ -97,49 +97,90 @@
                 android:id="@+id/textView9"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TextView"
-                tools:layout_editor_absoluteX="44dp"
-                tools:layout_editor_absoluteY="286dp" />
+                android:layout_marginStart="8dp"
+                android:text="@string/textview_underlag"
+                app:layout_constraintBottom_toTopOf="@+id/textView11"
+                app:layout_constraintEnd_toStartOf="@+id/textViewTeltplassUnderlag"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/guideline6" />
 
             <TextView
-                android:id="@+id/textView10"
+                android:id="@+id/textViewTeltplassUnderlag"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="21dp"
+                android:layout_marginEnd="8dp"
                 android:text="TextView"
-                tools:layout_editor_absoluteX="147dp"
-                tools:layout_editor_absoluteY="286dp" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textView9"
+                app:layout_constraintTop_toTopOf="@+id/textView9" />
 
             <TextView
                 android:id="@+id/textView11"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TextView"
-                tools:layout_editor_absoluteX="44dp"
-                tools:layout_editor_absoluteY="325dp" />
+                android:text="@string/textview_utsikt"
+                app:layout_constraintBottom_toTopOf="@+id/textView13"
+                app:layout_constraintEnd_toEndOf="@+id/textView9"
+                app:layout_constraintStart_toStartOf="@+id/textView9"
+                app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
             <TextView
-                android:id="@+id/textView12"
+                android:id="@+id/textViewTeltplassUtsikt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TextView"
-                tools:layout_editor_absoluteX="147dp"
-                tools:layout_editor_absoluteY="325dp" />
+                app:layout_constraintEnd_toEndOf="@+id/textViewTeltplassUnderlag"
+                app:layout_constraintStart_toStartOf="@+id/textViewTeltplassUnderlag"
+                app:layout_constraintTop_toTopOf="@+id/textView11" />
 
             <TextView
                 android:id="@+id/textView13"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TextView"
-                tools:layout_editor_absoluteX="44dp"
-                tools:layout_editor_absoluteY="360dp" />
+                android:text="@string/textview_avstand"
+                app:layout_constraintBottom_toTopOf="@+id/guideline8"
+                app:layout_constraintEnd_toEndOf="@+id/textView9"
+                app:layout_constraintStart_toStartOf="@+id/textView9"
+                app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
             <TextView
-                android:id="@+id/textView14"
+                android:id="@+id/textViewTeltplassTurstart"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TextView"
-                tools:layout_editor_absoluteX="147dp"
-                tools:layout_editor_absoluteY="360dp" />
+                app:layout_constraintEnd_toEndOf="@+id/textViewTeltplassUtsikt"
+                app:layout_constraintStart_toStartOf="@+id/textViewTeltplassUnderlag"
+                app:layout_constraintTop_toTopOf="@+id/textView13" />
+
+            <android.support.constraint.Guideline
+                android:id="@+id/guideline6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="274dp" />
+
+            <android.support.constraint.Guideline
+                android:id="@+id/guideline7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="429dp" />
+
+            <android.support.constraint.Guideline
+                android:id="@+id/guideline8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="374dp" />
+
+            <Switch
+                android:id="@+id/switch2"
+                android:layout_width="89dp"
+                android:layout_height="23dp"
+                android:text="Switch"
+                tools:layout_editor_absoluteX="16dp"
+                tools:layout_editor_absoluteY="395dp" />
 
 
         </android.support.constraint.ConstraintLayout>
