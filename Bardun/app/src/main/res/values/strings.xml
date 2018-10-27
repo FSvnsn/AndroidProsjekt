@@ -23,4 +23,6 @@
     <string name="age_placeholder">Alder</string>
     <string name="rediger_profil">Rediger Profil</string>
     <string name="skip">Skip</string>
+    <string name="mine_teltplasser_title">Mine Teltplasser</string>
+    <string name="mine_favoritter_title">Mine Favoritter</string>
 </resources>
