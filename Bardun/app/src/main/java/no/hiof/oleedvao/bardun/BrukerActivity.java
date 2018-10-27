@@ -81,19 +81,10 @@ public class BrukerActivity extends AppCompatActivity {
             }
         });
 
-        if(UID == null){
-            Toast.makeText(BrukerActivity.this, "Du må logge inn for å oprette en brukerprofil!", Toast.LENGTH_LONG).show();
-        }
-
         mDatabaseRef.addValueEventListener(new ValueEventListener(){
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 showData(dataSnapshot);
-                //String name = dataSnapshot.child("Users").child("Name").getValue().toString();
-                //User u1 = dataSnapshot.getValue(User.class);
-                //Toast.makeText(getApplicationContext(), u1.Name, Toast.LENGTH_LONG).show();
-                //txtName.setText(name);
-                //txtEmail.setText(u1.Email);
             }
 
             @Override
@@ -105,13 +96,12 @@ public class BrukerActivity extends AppCompatActivity {
     }
 
     private void showData(DataSnapshot dataSnapshot) {
-        for(DataSnapshot ds : dataSnapshot.getChildren()){
             User test1 = new User();
 
             try{
-                test1.setName(ds.child(UID).getValue(User.class).getName());
-                test1.setEmail(ds.child(UID).getValue(User.class).getEmail());
-                test1.setAge(ds.child(UID).getValue(User.class).getAge());
+                test1.setName(dataSnapshot.child("users").child(UID).getValue(User.class).getName());
+                test1.setEmail(dataSnapshot.child("users").child(UID).getValue(User.class).getEmail());
+                test1.setAge(dataSnapshot.child("users").child(UID).getValue(User.class).getAge());
             }
             catch(NullPointerException e){
                 Toast.makeText(BrukerActivity.this, "Du må logge inn for å oprette en brukerprofil!", Toast.LENGTH_LONG).show();
@@ -126,7 +116,6 @@ public class BrukerActivity extends AppCompatActivity {
             txtName.setText(test1.getName());
             txtEmail.setText(test1.getEmail());
             txtAge.setText(Integer.toString(test1.getAge()));
-        }
     }
 
     private void createUser() {
