@@ -126,6 +126,6 @@ public class BrukerActivity extends AppCompatActivity {
         NavigationDrawerFragment navigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentNavDrawerBruker);
         DrawerLayout drawerLayout = findViewById(R.id.drawerLayoutBruker);
 
-        //navigationDrawerFragment.setUpDrawer(drawerLayout, toolbar);
+        navigationDrawerFragment.setUpDrawer(drawerLayout, toolbar);
     }
 }
