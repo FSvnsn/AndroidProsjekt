@@ -12,6 +12,8 @@ public class Teltplass {
     private Boolean fiske;
     private String imageId;
 
+    public Teltplass(){}
+
     public Teltplass(String latLng, String navn, String beskrivelse, int underlag, int utsikt, int avstand, Boolean skog, Boolean fjell, Boolean fiske, String imageId){
         this.latLng = latLng;
         this.navn = navn;
