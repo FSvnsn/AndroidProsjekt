@@ -11,6 +11,10 @@ public class Teltplass {
     private Boolean fjell;
     private Boolean fiske;
 
+    public Teltplass(){
+
+    }
+
     public Teltplass(String latLng, String navn, String beskrivelse, int underlag, int utsikt, int avstand, Boolean skog, Boolean fjell, Boolean fiske){
         this.latLng = latLng;
         this.navn = navn;

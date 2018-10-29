@@ -24,18 +24,18 @@
         <activity android:name=".BrukerActivity" >
 
         </activity>
-        <activity android:name=".TeltplassActivity" />
-        <activity android:name=".RedigerBrukerActivity" />
-        <activity android:name=".RedigerTeltplassActivity" />
-        <activity android:name=".InstillingerActivity" />
-        <activity android:name=".OpprettKommentarActivity" />
-        <activity android:name=".OpprettTeltplassActivity" >
+        <activity android:name=".TeltplassActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".RedigerBrukerActivity" />
+        <activity android:name=".RedigerTeltplassActivity" />
+        <activity android:name=".InstillingerActivity" />
+        <activity android:name=".OpprettKommentarActivity" />
+        <activity android:name=".OpprettTeltplassActivity" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
