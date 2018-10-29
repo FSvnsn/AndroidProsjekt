@@ -178,9 +178,34 @@
                 android:id="@+id/switch2"
                 android:layout_width="89dp"
                 android:layout_height="23dp"
-                android:text="Switch"
-                tools:layout_editor_absoluteX="16dp"
-                tools:layout_editor_absoluteY="395dp" />
+                android:layout_marginBottom="8dp"
+                android:text="@string/switch_skog"
+                app:layout_constraintBottom_toTopOf="@+id/guideline7"
+                app:layout_constraintEnd_toStartOf="@+id/switch3"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/guideline8" />
+
+            <Switch
+                android:id="@+id/switch3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/switch_fjell"
+                app:layout_constraintEnd_toStartOf="@+id/switch4"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/switch2"
+                app:layout_constraintTop_toTopOf="@+id/switch2" />
+
+            <Switch
+                android:id="@+id/switch4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="@string/switch_fiske"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/switch3"
+                app:layout_constraintTop_toTopOf="@+id/switch2" />
 
 
         </android.support.constraint.ConstraintLayout>
