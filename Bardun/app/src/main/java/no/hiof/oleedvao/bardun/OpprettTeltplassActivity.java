@@ -1,10 +1,12 @@
 package no.hiof.oleedvao.bardun;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
@@ -17,22 +19,33 @@ import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 
 public class OpprettTeltplassActivity extends AppCompatActivity {
     private static final int REQUEST_IMAGE_GET = 1000;
     private static final int REQUEST_TAKE_PHOTO = 2000;
 
     private String currentPhotoPath;
+    private Uri currentPhotoUri;
+    private String currentImageId;
 
     private FirebaseDatabase mDatabase;
     private DatabaseReference mDatabaseRef;
+    private FirebaseStorage mStorage;
+    private StorageReference mStorageReference;
 
     //views
     private ImageView imageView;
@@ -63,6 +76,8 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
 
         mDatabase = FirebaseDatabase.getInstance();
         mDatabaseRef = mDatabase.getReference();
+        mStorage = FirebaseStorage.getInstance();
+        mStorageReference = mStorage.getReference();
     }
 
     //Metode for å hente bilde fra galleri
@@ -104,6 +119,7 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
             try{
                 //get the image uri
                 Uri photoUri = data.getData();
+                currentPhotoUri = photoUri;
                 //get the image bitmap from the uri
                 Bitmap picture = MediaStore.Images.Media.getBitmap(getContentResolver(), photoUri);
                 //set the image view bitmap to the retrieved image bitmap
@@ -133,19 +149,31 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
+                imageFileName,
+                ".jpg",
+                storageDir
         );
 
         // Save a file: path for use with ACTION_VIEW intents
         currentPhotoPath = image.getAbsolutePath();
+        currentPhotoUri = Uri.parse(currentPhotoPath);
+        //galleryAddPic();
         return image;
     }
 
+    private void galleryAddPic() {
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        File f = new File(currentPhotoPath);
+        Uri contentUri = Uri.fromFile(f);
+        mediaScanIntent.setData(contentUri);
+        this.sendBroadcast(mediaScanIntent);
+    }
+
     public void opprettTeltplass(View view){
-        if(editTextOpprettTeltplassNavn.getText().toString() != "" &&
-                editTextOpprettTeltplassBeskrivelse.getText().toString() != ""){
+        if(editTextOpprettTeltplassNavn.getText().toString() != null ||
+                editTextOpprettTeltplassBeskrivelse.getText().toString() != null){
+            uploadImage(currentPhotoUri);
+
             Teltplass teltplass = new Teltplass("30p000k30p000",
                     editTextOpprettTeltplassNavn.getText().toString(),
                     editTextOpprettTeltplassBeskrivelse.getText().toString(),
@@ -154,13 +182,52 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
                     seekBarOpprettTeltplassAvstand.getProgress(),
                     switchOpprettTeltplassSkog.isChecked(),
                     switchOpprettTeltplassFjell.isChecked(),
-                    switchOpprettTeltplassFiske.isChecked());
+                    switchOpprettTeltplassFiske.isChecked(),
+                    currentImageId);
 
             mDatabaseRef.child("teltplasser").child(teltplass.getLatLng()).setValue(teltplass);
 
         }
         else{
             Toast.makeText(this, "Du må fylle inn alle feltene", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void uploadImage(Uri filePath) {
+
+        if(filePath != null)
+        {
+            final ProgressDialog progressDialog = new ProgressDialog(this);
+            progressDialog.setTitle("Uploading...");
+            progressDialog.show();
+
+            currentImageId = UUID.randomUUID().toString();
+
+            StorageReference ref = mStorageReference.child("images/"+ currentImageId);
+            ref.putFile(filePath)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            progressDialog.dismiss();
+                            Toast.makeText(OpprettTeltplassActivity.this, "Uploaded", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            progressDialog.dismiss();
+                            Toast.makeText(OpprettTeltplassActivity.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                            double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
+                                    .getTotalByteCount());
+                            progressDialog.setMessage("Uploaded "+(int)progress+"%");
+                        }
+                    });
+
         }
     }
 
