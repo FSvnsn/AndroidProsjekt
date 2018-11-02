@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
+        //Sjekker tilgang til location
         if (ActivityCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -148,6 +148,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         );
 
                         mMap.moveCamera(CameraUpdateFactory.newLatLng(geolatLng));
+                        mMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(geolatLng, 15, 0, 0)));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -178,7 +179,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
 
         mMap = googleMap;
-
+/*
         // Add static markers for testing
         LatLng remmen = new LatLng(59.1291473, 11.3506091);
         LatLng fredrikstad = new LatLng(59.21047628, 10.93994737);
@@ -197,7 +198,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         fredT.setTag("fred");
         mMap.moveCamera(CameraUpdateFactory.newLatLng(remmen));
         mMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(remmen, 15, 0, 0)));
-
+*/
         mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
 
         mMap.setOnMarkerClickListener(this);
@@ -225,14 +226,19 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         // TODO: Vis koordinater, hent stedsnavn
         // TODO: Legg til registrer-teltplass-ikon
 
-        mMap.addMarker(new MarkerOptions()
+        Marker mNew = mMap.addMarker(new MarkerOptions()
                 .position(latLng)
                 .title("Ny teltplass")
                 .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_teltplass_marker_green))
+                .draggable(true)
         );
+        mNew.setDraggable(true);
+
         nyTeltplassHer.setVisibility(View.VISIBLE);
         TextView nyTeltplassLatLong = findViewById(R.id.latlongTextview);
         nyTeltplassLatLong.setText(latLng.toString());
+
+
 
     }
     // endregion
