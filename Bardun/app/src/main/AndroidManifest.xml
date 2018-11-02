@@ -31,7 +31,8 @@
         <activity android:name=".RedigerTeltplassActivity" />
         <activity android:name=".InstillingerActivity" />
         <activity android:name=".OpprettKommentarActivity" />
-        <activity android:name=".OpprettTeltplassActivity" />
+        <activity android:name=".OpprettTeltplassActivity" >
+        </activity>
 
         <provider
             android:name="android.support.v4.content.FileProvider"
