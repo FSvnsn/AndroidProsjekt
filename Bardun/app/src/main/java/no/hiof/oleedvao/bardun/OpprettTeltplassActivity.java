@@ -19,6 +19,7 @@ import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
@@ -174,7 +175,17 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
                 editTextOpprettTeltplassBeskrivelse.getText().toString() != null){
             uploadImage(currentPhotoUri);
 
-            Teltplass teltplass = new Teltplass("30p000k30p000",
+            //Skaffer og converter latLng
+            LatLng latLng = getIntent().getExtras().getParcelable("latLng");
+            double latitude = latLng.latitude;
+            double longitude = latLng.longitude;
+            String lat = String.valueOf(latitude);
+            String lng = String.valueOf(longitude);
+            String location = lat + "," + lng;
+            location = location.replace(".", "p");
+            location = location.replace(",", "k");
+
+            Teltplass teltplass = new Teltplass(location,
                     editTextOpprettTeltplassNavn.getText().toString(),
                     editTextOpprettTeltplassBeskrivelse.getText().toString(),
                     seekBarOpprettTeltplassUnderlag.getProgress(),
