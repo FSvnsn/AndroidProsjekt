@@ -15,11 +15,7 @@
         android:theme="@style/AppTheme">
         <uses-library android:name="org.apache.http.legacy" android:required="false"/>
         <activity android:name=".LoginActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -29,12 +25,19 @@
 
         </activity>
         <activity android:name=".TeltplassActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".RedigerBrukerActivity" />
         <activity android:name=".RedigerTeltplassActivity" />
         <activity android:name=".InstillingerActivity" />
         <activity android:name=".OpprettKommentarActivity" />
-        <activity android:name=".OpprettTeltplassActivity" />
+        <activity android:name=".OpprettTeltplassActivity" >
+
+        </activity>
 
         <provider
             android:name="android.support.v4.content.FileProvider"

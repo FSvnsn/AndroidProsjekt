@@ -107,6 +107,7 @@
                     android:layout_width="36dp"
                     android:layout_height="31dp"
                     android:layout_marginStart="8dp"
+                    android:onClick="navigerTilOpprettKommentar"
                     app:layout_constraintEnd_toStartOf="@+id/imageButtonFavoritt"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/imageButtonThumbsDown"
