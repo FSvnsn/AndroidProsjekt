@@ -29,6 +29,7 @@ import android.widget.Toast;
 import android.widget.Toolbar;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.zip.Inflater;
@@ -221,6 +222,30 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         //Hent geolovcation for results
         String mSearchString = mSearchInput.getText().toString();
         Toast.makeText(this, "Du søkte: " + mSearchString.toString(), Toast.LENGTH_SHORT).show();
+
+        Geocoder geocoder = new Geocoder(MainActivity.this);
+        List<Address> list = new ArrayList<>();
+        try{
+            list = geocoder.getFromLocationName(mSearchString, 1);
+        }catch (IOException e){
+            Log.e(TAG, "geoLocate: IOException: " + e.getMessage() );
+        }
+
+        if(list.size() > 0){
+            Address address = list.get(0);
+            double inputAddressLat= address.getLatitude();
+            double inputAddressLon= address.getLongitude();
+            LatLng inputLatLong = new LatLng(inputAddressLat,inputAddressLon);
+
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(inputLatLong));
+            mMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(inputLatLong, 15, 0, 0)));
+
+
+
+            Log.d(TAG, "Location funnet!: " + address.toString());
+            Toast.makeText(this, address.getLocality().toString(), Toast.LENGTH_SHORT).show();
+
+        }
 
     }
 
