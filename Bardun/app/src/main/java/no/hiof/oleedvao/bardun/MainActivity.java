@@ -220,6 +220,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private void getSearchResults(){
         //Hent geolovcation for results
         String mSearchString = mSearchInput.getText().toString();
+        Toast.makeText(this, "Du søkte: " + mSearchString.toString(), Toast.LENGTH_SHORT).show();
 
     }
 
@@ -254,6 +255,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.setOnMyLocationClickListener(this);
 
         setUpUISettings();
+        initSearch();
 
     }
 
