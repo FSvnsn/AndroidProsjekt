@@ -3,6 +3,7 @@ package no.hiof.oleedvao.bardun;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -18,8 +19,11 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
@@ -68,12 +72,15 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private android.support.v7.widget.Toolbar toolbar;
     private TextView mTextView;
     private ConstraintLayout nyTeltplassHer;
+    private EditText mSearchInput;
 
     private static final int REQUEST_LOCATION_PERMISSION = 1;
     LocationManager locationManager;
     LocationListener locationListener;
     private Marker marker;
     private Marker geomarker;
+    private FusedLocationProviderClient mFusedLocationProviderClient;
+
 
     private Button registrerTeltplass;
 
@@ -87,20 +94,25 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         nyTeltplassHer = findViewById(R.id.nyTeltplassHer);
         nyTeltplassHer.setVisibility(View.GONE);
 
+        mSearchInput = findViewById(R.id.searchInput);
+
         toolbar = findViewById(R.id.toolbarMain);
         setUpNavigationDrawer();
 
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        //Innhenter maps og sier fra når det er klart
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        //Sjekker tilgang til location
+
+        //Sjekker og håndterer tilgang til location
         if (ActivityCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]
                             {Manifest.permission.ACCESS_FINE_LOCATION},
                     REQUEST_LOCATION_PERMISSION);
+            mMap.setMyLocationEnabled(true);
+            mMap.getUiSettings().setMyLocationButtonEnabled(true);
         }
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
@@ -112,13 +124,20 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         public void onLocationChanged(Location location) {
                             double latitude = location.getLatitude();
                             double longitude = location.getLongitude();
-                            LatLng geolatLng = new LatLng(latitude,longitude);
+                            LatLng geolatLng = new LatLng(latitude, longitude);
                             Geocoder geocoder = new Geocoder(getApplicationContext());
                             try {
-                                List<Address> list = geocoder.getFromLocation(latitude,longitude,1);
+                                List<Address> list = geocoder.getFromLocation(latitude, longitude, 1);
                                 String geoStedsnavn = list.get(0).getLocality();
-                                mMap.addMarker(new MarkerOptions().position(geolatLng).title(geoStedsnavn));
+                                mMap.addMarker(new MarkerOptions()
+                                        .position(geolatLng)
+                                        .title(geoStedsnavn)
+                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_geo_location))
+                                        //.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                                );
+
                                 mMap.moveCamera(CameraUpdateFactory.newLatLng(geolatLng));
+                                mMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(geolatLng, 15, 0, 0)));
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -145,15 +164,17 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 public void onLocationChanged(Location location) {
                     double latitude = location.getLatitude();
                     double longitude = location.getLongitude();
-                    LatLng geolatLng = new LatLng(latitude,longitude);
+                    LatLng geolatLng = new LatLng(latitude, longitude);
                     Geocoder geocoder = new Geocoder(getApplicationContext());
                     try {
-                        List<Address> list = geocoder.getFromLocation(latitude,longitude,1);
+                        List<Address> list = geocoder.getFromLocation(latitude, longitude, 1);
                         String geoStedsnavn = list.get(0).getLocality();
                         geomarker = mMap.addMarker(new MarkerOptions()
                                 .position(geolatLng)
                                 .title(geoStedsnavn)
                                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_geo_location))
+                                //.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+
                         );
 
                         mMap.moveCamera(CameraUpdateFactory.newLatLng(geolatLng));
@@ -182,8 +203,27 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
     }
+    private void initSearch() {
+        mSearchInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH
+                        || actionId == EditorInfo.IME_ACTION_DONE
+                        || event.getAction() == KeyEvent.ACTION_DOWN
+                        || event.getAction() == KeyEvent.KEYCODE_ENTER) {
+                    getSearchResults();
+                }
+                return false;
+            }
+        });
+    }
+    private void getSearchResults(){
+        //Hent geolovcation for results
+        String mSearchString = mSearchInput.getText().toString();
 
-    // region mapSetup
+    }
+
+    // region mapSetup og henting fra database
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
@@ -193,7 +233,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mDatabase = FirebaseDatabase.getInstance();
         mDatabaseRef = mDatabase.getReference();
 
-        mDatabaseRef.addValueEventListener(new ValueEventListener(){
+        mDatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 showMarkers(dataSnapshot);
@@ -205,25 +245,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
 
         });
-
-        // Add static markers for testing
-        LatLng remmen = new LatLng(59.1291473, 11.3506091);
-        LatLng fredrikstad = new LatLng(59.21047628, 10.93994737);
-
-        Marker remmenT = mMap.addMarker(new MarkerOptions()
-                .position(remmen)
-                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_teltplass_marker_green))
-        );
-        //Tag kan inneholde et objekt, f.eks et teltplassobjekt?
-        remmenT.setTag("remmen");
-
-        Marker fredT = mMap.addMarker(new MarkerOptions()
-                .position(fredrikstad)
-                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_teltplass_marker_green))
-        );
-        fredT.setTag("fred");
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(remmen));
-        mMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(remmen, 15, 0, 0)));
 
         mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
 
@@ -253,7 +274,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             LatLng currLoc = new LatLng(latitude, longitude);
 
             mMap.addMarker(new MarkerOptions()
-                            .position(currLoc).title(name).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_teltplass_marker_green)));
+                            .position(currLoc)
+                            .title(name)
+                            .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_teltplass_marker_green))
+            );
         }
     }
 
@@ -262,10 +286,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         UiSettings uiSettings = mMap.getUiSettings();
 
         uiSettings.setCompassEnabled(true);
-        uiSettings.setMapToolbarEnabled(false);
+        uiSettings.setMapToolbarEnabled(true);
         uiSettings.setZoomControlsEnabled(true);
         uiSettings.setZoomGesturesEnabled(true);
         uiSettings.setCompassEnabled(true);
+        uiSettings.setMyLocationButtonEnabled(true);
+
+
     }
     @Override
     public void onMapLongClick(final LatLng latLng) {
@@ -348,6 +375,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public boolean onMyLocationButtonClick() {
+
+        // TODO: Knappen vises ikke, finn ut hvorfor
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(geomarker.getPosition()));
+        mMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(geomarker.getPosition(), 15, 0, 0)));
+
         return false;
     }
 
