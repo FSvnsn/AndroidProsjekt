@@ -32,6 +32,7 @@ public class MineTeltplasserFragment extends Fragment {
     View view;
     private RecyclerView myRecyclerView;
     private List<Teltplass> listTeltplass;
+    private RecycleViewAdapter recycleAdapter;
 
     private FirebaseDatabase mDatabase;
     private DatabaseReference mDatabaseRef;
@@ -50,7 +51,7 @@ public class MineTeltplasserFragment extends Fragment {
 
         view = inflater.inflate(R.layout.fragment_mine_teltplasser, container, false);
         myRecyclerView = view.findViewById(R.id.mine_teltplasser_recyclerview);
-        RecycleViewAdapter recycleAdapter = new RecycleViewAdapter(getContext(), listTeltplass);
+        recycleAdapter = new RecycleViewAdapter(getContext(), listTeltplass);
         myRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         myRecyclerView.setAdapter(recycleAdapter);
         return view;
@@ -78,19 +79,16 @@ public class MineTeltplasserFragment extends Fragment {
 
             }
         });
-
-        //listTeltplass = new ArrayList<>();
-        //listTeltplass.add(new Teltplass("Hallo", "Hei"));
     }
 
-    private void getMineTeltplasser(DataSnapshot dataSnapshot) {
+    public void getMineTeltplasser(DataSnapshot dataSnapshot) {
         for (DataSnapshot ds : dataSnapshot.child("mineTeltplasser").child(UID).getChildren()){
             Teltplass teltplass1 = new Teltplass();
-            teltplass1.setNavn(ds.getValue(Teltplass.class).getNavn());
-            teltplass1.setBeskrivelse(ds.getValue(Teltplass.class).getBeskrivelse());
+            String navn = ds.child("navn").getValue(String.class);
+            String beskrivelse = ds.child("beskrivelse").getValue(String.class);
 
-            listTeltplass.add(teltplass1);
+            listTeltplass.add(new Teltplass(navn, beskrivelse));
+            recycleAdapter.notifyDataSetChanged();
         }
-        Toast.makeText(getActivity(), String.valueOf(dataSnapshot.child("mineTeltplasser").child(UID).getChildrenCount()), Toast.LENGTH_SHORT).show();
     }
 }
