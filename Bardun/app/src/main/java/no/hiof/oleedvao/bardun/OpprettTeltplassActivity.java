@@ -22,6 +22,8 @@ import android.widget.Toast;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -47,6 +49,9 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
     private DatabaseReference mDatabaseRef;
     private FirebaseStorage mStorage;
     private StorageReference mStorageReference;
+    private FirebaseAuth mAuth;
+    private FirebaseUser CUser;
+    private String UID;
 
     //views
     private ImageView imageView;
@@ -79,6 +84,9 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
         mDatabaseRef = mDatabase.getReference();
         mStorage = FirebaseStorage.getInstance();
         mStorageReference = mStorage.getReference();
+        mAuth = FirebaseAuth.getInstance();
+        CUser = mAuth.getCurrentUser();
+        UID = CUser.getUid();
     }
 
     //Metode for å hente bilde fra galleri
@@ -197,6 +205,7 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
                     currentImageId);
 
             mDatabaseRef.child("teltplasser").child(teltplass.getLatLng()).setValue(teltplass);
+            mDatabaseRef.child("mineTeltplasser").child(UID).child(teltplass.getLatLng()).setValue(teltplass);
 
         }
         else{

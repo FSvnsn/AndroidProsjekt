@@ -10,6 +10,15 @@ import android.support.v7.widget.RecyclerViewAccessibilityDelegate;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,13 +31,22 @@ public class MineTeltplasserFragment extends Fragment {
 
     View view;
     private RecyclerView myRecyclerView;
-    List<Teltplass> listTeltplass;
+    private List<Teltplass> listTeltplass;
+
+    private FirebaseDatabase mDatabase;
+    private DatabaseReference mDatabaseRef;
+    private FirebaseAuth mAuth;
+    private FirebaseUser CUser;
+    private String UID;
 
     public MineTeltplasserFragment(){ }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+
+        //Source: https://www.youtube.com/watch?v=T_QfRU-A3s4
 
         view = inflater.inflate(R.layout.fragment_mine_teltplasser, container, false);
         myRecyclerView = view.findViewById(R.id.mine_teltplasser_recyclerview);
@@ -42,13 +60,37 @@ public class MineTeltplasserFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        listTeltplass = new ArrayList<>();
-        listTeltplass.add(new Teltplass("Et Sted", "Ett sted hvor ting skjer"));
-        listTeltplass.add(new Teltplass("Et annet sted", "Ett sted hvor ingenting skjer"));
-        listTeltplass.add(new Teltplass("Der borte", "Noe skjer der"));
-        listTeltplass.add(new Teltplass("Her borte", "Kom hit for å få ting til å skje"));
-        listTeltplass.add(new Teltplass("Hvorhen", "Vi vet ikke om ting skjer"));
-        listTeltplass.add(new Teltplass("Alle steder", "Masse skjer samtidig"));
+        mDatabase = FirebaseDatabase.getInstance();
+        mDatabaseRef = mDatabase.getReference();
+        mAuth = FirebaseAuth.getInstance();
+        CUser = mAuth.getCurrentUser();
+        UID = CUser.getUid();
+        listTeltplass = new ArrayList<Teltplass>();
 
+        mDatabaseRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                getMineTeltplasser(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        //listTeltplass = new ArrayList<>();
+        //listTeltplass.add(new Teltplass("Hallo", "Hei"));
+    }
+
+    private void getMineTeltplasser(DataSnapshot dataSnapshot) {
+        for (DataSnapshot ds : dataSnapshot.child("mineTeltplasser").child(UID).getChildren()){
+            Teltplass teltplass1 = new Teltplass();
+            teltplass1.setNavn(ds.getValue(Teltplass.class).getNavn());
+            teltplass1.setBeskrivelse(ds.getValue(Teltplass.class).getBeskrivelse());
+
+            listTeltplass.add(teltplass1);
+        }
+        Toast.makeText(getActivity(), String.valueOf(dataSnapshot.child("mineTeltplasser").child(UID).getChildrenCount()), Toast.LENGTH_SHORT).show();
     }
 }
