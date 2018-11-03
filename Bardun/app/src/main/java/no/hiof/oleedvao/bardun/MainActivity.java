@@ -1,6 +1,7 @@
 package no.hiof.oleedvao.bardun;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -74,6 +75,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Marker marker;
     private Marker geomarker;
 
+    private Button registrerTeltplass;
+
     private FirebaseDatabase mDatabase;
     private DatabaseReference mDatabaseRef;
 
@@ -86,7 +89,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         toolbar = findViewById(R.id.toolbarMain);
         setUpNavigationDrawer();
-
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -265,7 +267,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         uiSettings.setCompassEnabled(true);
     }
     @Override
-    public void onMapLongClick(LatLng latLng) {
+    public void onMapLongClick(final LatLng latLng) {
         // TODO: Lage bottomsheet(?) for registrering av teltplass steg 1. "Vil du lage ny teltplass her?"
         // TODO: Vis koordinater, hent stedsnavn
         // TODO: Legg til registrer-teltplass-ikon
@@ -279,6 +281,22 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         TextView nyTeltplassLatLong = findViewById(R.id.latlongTextview);
         nyTeltplassLatLong.setText(latLng.toString());
 
+        //Registrer teltplass knapp/funksjon
+        registrerTeltplass = findViewById(R.id.btn_registrerTeltplass);
+        registrerTeltplass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendToOprettTeltplass(latLng);
+            }
+        });
+    }
+
+    //Sender intent med latLng for opretting av teltplass
+    private void sendToOprettTeltplass(LatLng latLng) {
+        //Toast.makeText(this, latLng.toString(), Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(MainActivity.this, OpprettTeltplassActivity.class);
+        intent.putExtra("latLng", latLng);
+        startActivity(intent);
     }
     // endregion
 
@@ -286,6 +304,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public boolean onMarkerClick(Marker marker) {
         LatLng mPos = marker.getPosition();
+
+        // TODO: Legg til errorhandling for NullPointerException
         LatLng geoPos = geomarker.getPosition();
 
         if (mPos.equals(geoPos)) {

@@ -25,14 +25,16 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
         <activity android:name=".MainActivity" />
-        <activity android:name=".BrukerActivity" />
-        <activity android:name=".TeltplassActivity" />
+        <activity android:name=".BrukerActivity" >
+
+        </activity>
+        <activity android:name=".TeltplassActivity" >
+        </activity>
         <activity android:name=".RedigerBrukerActivity" />
         <activity android:name=".RedigerTeltplassActivity" />
         <activity android:name=".InstillingerActivity" />
         <activity android:name=".OpprettKommentarActivity" />
-        <activity android:name=".OpprettTeltplassActivity" >
-        </activity>
+        <activity android:name=".OpprettTeltplassActivity" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"

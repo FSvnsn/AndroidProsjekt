@@ -28,6 +28,9 @@
     <string name="textview_underlag">Kupert underlag:</string>
     <string name="textview_utsikt" >Grad av utsikt:</string>
     <string name="textview_avstand">Avstand fra turstart:</string>
+    <string name="switch_skog">Skog</string>
+    <string name="switch_fjell">Fjell</string>
+    <string name="switch_fiske">Fiske</string>
     <string name="mine_teltplasser_title">Mine Teltplasser</string>
     <string name="mine_favoritter_title">Mine Favoritter</string>
 </resources>
