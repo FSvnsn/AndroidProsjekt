@@ -19,6 +19,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +38,8 @@ public class MineTeltplasserFragment extends Fragment {
 
     private FirebaseDatabase mDatabase;
     private DatabaseReference mDatabaseRef;
+    private FirebaseStorage mStorage;
+    private StorageReference mStorageReference;
     private FirebaseAuth mAuth;
     private FirebaseUser CUser;
     private String UID;
@@ -63,6 +67,8 @@ public class MineTeltplasserFragment extends Fragment {
 
         mDatabase = FirebaseDatabase.getInstance();
         mDatabaseRef = mDatabase.getReference();
+        mStorage = FirebaseStorage.getInstance();
+        mStorageReference = mStorage.getReference();
         mAuth = FirebaseAuth.getInstance();
         CUser = mAuth.getCurrentUser();
         UID = CUser.getUid();
@@ -83,11 +89,11 @@ public class MineTeltplasserFragment extends Fragment {
 
     public void getMineTeltplasser(DataSnapshot dataSnapshot) {
         for (DataSnapshot ds : dataSnapshot.child("mineTeltplasser").child(UID).getChildren()){
-            Teltplass teltplass1 = new Teltplass();
             String navn = ds.child("navn").getValue(String.class);
             String beskrivelse = ds.child("beskrivelse").getValue(String.class);
+            String imageID = ds.child("imageId").getValue(String.class);
 
-            listTeltplass.add(new Teltplass(navn, beskrivelse));
+            listTeltplass.add(new Teltplass(navn, beskrivelse, imageID));
             recycleAdapter.notifyDataSetChanged();
         }
     }
