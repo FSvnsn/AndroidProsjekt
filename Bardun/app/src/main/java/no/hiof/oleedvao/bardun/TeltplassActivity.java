@@ -88,7 +88,7 @@ public class TeltplassActivity extends AppCompatActivity {
         CUser = mAuth.getCurrentUser();
 
         UID = CUser.getUid();
-        teltplassId = "30p000k30p000";
+        teltplassId = getIntent().getExtras().getString("Id");
 
         mDatabaseRef.addValueEventListener(new ValueEventListener(){
             @Override

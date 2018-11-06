@@ -6,36 +6,44 @@
     android:layout_margin="10dp">
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:id="@+id/linearLayoutItemTeltplass"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:padding="5dp">
 
         <ImageView
+            android:id="@+id/imgTeltplassQuickview"
             android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:id="@+id/imgTeltplassQuickview"/>
+            android:layout_height="100dp" />
 
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:padding="5dp">
 
             <TextView
+                android:id="@+id/txtCardNavn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/txtCardNavn"
-                android:text="Navn"
                 android:layout_marginBottom="4dp"
-                android:textStyle="bold"/>
+                android:text="Navn"
+                android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/txtCardBeskrivelse"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/txtCardBeskrivelse"
-                android:text="Beskrivelse"/>
+                android:text="Beskrivelse" />
+
+            <TextView
+                android:id="@+id/txtId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="txtId"
+                android:visibility="invisible" />
 
         </LinearLayout>
 

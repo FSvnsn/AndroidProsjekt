@@ -84,11 +84,12 @@ public class MineFavoritterFragment extends Fragment {
 
     public void getMineTeltplasser(DataSnapshot dataSnapshot) {
         for (DataSnapshot ds : dataSnapshot.child("mineFavoritter").child(UID).getChildren()){
+            String latLng = ds.child("latLng").getValue(String.class);
             String navn = ds.child("navn").getValue(String.class);
             String beskrivelse = ds.child("beskrivelse").getValue(String.class);
             String imageID = ds.child("imageId").getValue(String.class);
 
-            listTeltplass.add(new Teltplass(navn, beskrivelse, imageID));
+            listTeltplass.add(new Teltplass(latLng, navn, beskrivelse, imageID));
             recycleAdapter.notifyDataSetChanged();
         }
     }
