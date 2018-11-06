@@ -206,7 +206,6 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
 
             mDatabaseRef.child("teltplasser").child(teltplass.getLatLng()).setValue(teltplass);
             mDatabaseRef.child("mineTeltplasser").child(UID).child(teltplass.getLatLng()).setValue(teltplass);
-            mDatabaseRef.child("mineFavoritter").child(UID).child(teltplass.getLatLng()).setValue(teltplass);
         }
         else{
             Toast.makeText(this, "Du må fylle inn alle feltene", Toast.LENGTH_LONG).show();
