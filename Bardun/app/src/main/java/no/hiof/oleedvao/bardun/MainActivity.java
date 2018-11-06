@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private static final String TAG = "Batman";
     private GoogleMap mMap;
     private static final LatLngBounds LAT_LNG_BOUNDS = new LatLngBounds(
-            new LatLng(57.211431, 12.343246), new LatLng(72.975629, 15.166863));
+            new LatLng(57.931883, 0.162047), new LatLng(67.786666, 18.441137));
     private android.support.v7.widget.Toolbar toolbar;
     private TextView mTextView;
     private ConstraintLayout nyTeltplassHer;
@@ -131,7 +131,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
         if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-
             locationManager.requestLocationUpdates
                     (LocationManager.NETWORK_PROVIDER, 0, 0, new LocationListener() {
                         @Override
@@ -144,9 +143,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 List<Address> list = geocoder.getFromLocation(latitude, longitude, 1);
                                 String geoStedsnavn = list.get(0).getLocality();
                                 mMap.addMarker(new MarkerOptions()
-                                        .position(geolatLng)
-                                        .title(geoStedsnavn)
-                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_geo_location))
+                                                .position(geolatLng)
+                                                .title(geoStedsnavn)
+                                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_geo_location))
                                         //.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
                                 );
 
@@ -184,9 +183,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         List<Address> list = geocoder.getFromLocation(latitude, longitude, 1);
                         String geoStedsnavn = list.get(0).getLocality();
                         geomarker = mMap.addMarker(new MarkerOptions()
-                                .position(geolatLng)
-                                .title(geoStedsnavn)
-                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_geo_location))
+                                        .position(geolatLng)
+                                        .title(geoStedsnavn)
+                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_geo_location))
                                 //.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
 
                         );
