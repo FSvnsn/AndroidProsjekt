@@ -27,6 +27,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import no.hiof.oleedvao.bardun.BrukerActivity;
 import no.hiof.oleedvao.bardun.InstillingerActivity;
 import no.hiof.oleedvao.bardun.MainActivity;
+import no.hiof.oleedvao.bardun.MineTeltplasserActivity;
 import no.hiof.oleedvao.bardun.R;
 import no.hiof.oleedvao.bardun.TeltplassActivity;
 
@@ -82,6 +83,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationView
                 //startActivity(new Intent(getActivity(), BrukerActivity.class));
                 break;
             case R.id.nav_mine_teltplasser:
+                startActivity(new Intent(getActivity(), MineTeltplasserActivity.class));
                 break;
             case R.id.nav_favoritter:
                 break;
