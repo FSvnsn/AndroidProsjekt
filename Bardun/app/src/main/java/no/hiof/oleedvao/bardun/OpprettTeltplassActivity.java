@@ -171,9 +171,13 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
     }
 
     public void opprettTeltplass(View view){
-        if(editTextOpprettTeltplassNavn.getText().toString() != null ||
-                editTextOpprettTeltplassBeskrivelse.getText().toString() != null){
-            uploadImage(currentPhotoUri);
+        if(editTextOpprettTeltplassNavn.getText() != null &&
+                editTextOpprettTeltplassBeskrivelse.getText() != null){
+
+            // From gallery
+            //uploadImage(currentPhotoUri);
+
+            uploadImage(Uri.fromFile(new File(currentPhotoPath)));
 
             //Skaffer og converter latLng
             LatLng latLng = getIntent().getExtras().getParcelable("latLng");
@@ -215,6 +219,8 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
             currentImageId = UUID.randomUUID().toString();
 
             StorageReference ref = mStorageReference.child("images/"+ currentImageId);
+
+
             ref.putFile(filePath)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
