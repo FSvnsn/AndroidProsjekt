@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -37,10 +38,15 @@ import java.util.zip.Inflater;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.GeoDataClient;
+import com.google.android.gms.location.places.PlaceDetectionClient;
+import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -49,6 +55,7 @@ import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DataSnapshot;
@@ -57,6 +64,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import no.hiof.oleedvao.bardun.adapter.PlaceAutoCompleteAdapter;
 import no.hiof.oleedvao.bardun.fragment.NavigationDrawerFragment;
 
 
@@ -66,15 +74,20 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         GoogleMap.OnMapLongClickListener,
         GoogleMap.OnMyLocationButtonClickListener,
         GoogleMap.OnMyLocationClickListener,
-        ActivityCompat.OnRequestPermissionsResultCallback {
+        ActivityCompat.OnRequestPermissionsResultCallback,
+        GoogleApiClient.OnConnectionFailedListener {
 
     private static final String TAG = "Batman";
     private GoogleMap mMap;
+    private static final LatLngBounds LAT_LNG_BOUNDS = new LatLngBounds(
+            new LatLng(57.211431, 12.343246), new LatLng(72.975629, 15.166863));
     private android.support.v7.widget.Toolbar toolbar;
     private TextView mTextView;
     private ConstraintLayout nyTeltplassHer;
-    private EditText mSearchInput;
 
+    private AutoCompleteTextView mSearchInput;
+    private PlaceAutoCompleteAdapter mplaceAutoCompleteAdapter;
+    private GoogleApiClient mGoogleApiClient;
     private static final int REQUEST_LOCATION_PERMISSION = 1;
     LocationManager locationManager;
     LocationListener locationListener;
@@ -91,13 +104,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Views
         setContentView(R.layout.activity_main);
         nyTeltplassHer = findViewById(R.id.nyTeltplassHer);
         nyTeltplassHer.setVisibility(View.GONE);
-
         mSearchInput = findViewById(R.id.searchInput);
-
         toolbar = findViewById(R.id.toolbarMain);
+
         setUpNavigationDrawer();
 
         //Innhenter maps og sier fra når det er klart
@@ -205,6 +218,19 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
     private void initSearch() {
+
+        mGoogleApiClient = new GoogleApiClient
+                .Builder(this)
+                .addApi(Places.GEO_DATA_API)
+                .addApi(Places.PLACE_DETECTION_API)
+                .enableAutoManage(this, this)
+                .build();
+
+        mplaceAutoCompleteAdapter = new PlaceAutoCompleteAdapter(this, mGoogleApiClient,
+                LAT_LNG_BOUNDS, null);
+
+        mSearchInput.setAdapter(mplaceAutoCompleteAdapter);
+
         mSearchInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -412,6 +438,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onMyLocationClick(@NonNull Location location) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
 }
