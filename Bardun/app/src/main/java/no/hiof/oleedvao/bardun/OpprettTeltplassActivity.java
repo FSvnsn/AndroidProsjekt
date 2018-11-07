@@ -42,7 +42,7 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
     private String currentPhotoPath;
     private Uri currentPhotoUri;
     private String currentImageId;
-
+    
     private FirebaseDatabase mDatabase;
     private DatabaseReference mDatabaseRef;
     private FirebaseStorage mStorage;
@@ -91,6 +91,7 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
 
     //Metode for å ta bilde med kamera
     public void takePicture(View view) {
+
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
@@ -157,7 +158,7 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
 
         // Save a file: path for use with ACTION_VIEW intents
         currentPhotoPath = image.getAbsolutePath();
-        currentPhotoUri = Uri.parse(currentPhotoPath);
+        currentPhotoUri = Uri.fromFile(new File(currentPhotoPath));
         //galleryAddPic();
         return image;
     }
@@ -171,8 +172,9 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
     }
 
     public void opprettTeltplass(View view){
-        if(editTextOpprettTeltplassNavn.getText().toString() != null ||
-                editTextOpprettTeltplassBeskrivelse.getText().toString() != null){
+        if(editTextOpprettTeltplassNavn.getText() != null &&
+                editTextOpprettTeltplassBeskrivelse.getText() != null){
+
             uploadImage(currentPhotoUri);
 
             //Skaffer og converter latLng
@@ -215,6 +217,8 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
             currentImageId = UUID.randomUUID().toString();
 
             StorageReference ref = mStorageReference.child("images/"+ currentImageId);
+
+
             ref.putFile(filePath)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
