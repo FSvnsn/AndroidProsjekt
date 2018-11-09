@@ -39,8 +39,6 @@
         <activity android:name=".MineFavoritterActivity" />
         <activity android:name=".VisBrukerActivity" />
 
-        </activity>
-
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="no.hiof.oleedvao.bardun.fileprovider"
