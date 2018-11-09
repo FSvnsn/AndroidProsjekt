@@ -25,7 +25,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="@string/toolbar_title_main" />
+                    android:text="@string/toolbar_title_main"
+                    android:textSize="18sp" />
             </android.support.v7.widget.Toolbar>
 
         </android.support.design.widget.AppBarLayout>
@@ -49,10 +50,50 @@
                 tools:context=".MainActivity"
                 tools:layout="@layout/google_maps_fragment" />
 
+            <TextView
+                android:id="@+id/visTeltplassKlikk"
+                android:layout_width="329dp"
+                android:layout_height="33dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="32dp"
+                android:text="Vis teltplass"
+                android:textAlignment="center"
+                android:textColor="@color/colorAccent"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.512"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.131" />
+
+            <ImageButton
+                android:id="@+id/imageBtnFilter"
+                style="@style/Widget.AppCompat.ImageButton"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="336dp"
+                android:background="@color/colorPrimaryDark"
+                android:tint="@android:color/white"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.198"
+                app:srcCompat="@drawable/ic_filter" />
+
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/nyTeltplassHer"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                tools:layout_editor_absoluteX="0dp"
+                tools:layout_editor_absoluteY="0dp"
                 android:visibility="gone">
 
                 <TextView
@@ -110,27 +151,6 @@
 
             </android.support.constraint.ConstraintLayout>
 
-            <TextView
-                android:id="@+id/visTeltplassKlikk"
-                android:layout_width="329dp"
-                android:layout_height="39dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:imeOptions="actionSearch"
-                android:text="Vis teltplass"
-                android:textAlignment="center"
-                android:textColor="@color/colorAccent"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.512"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/searchMapRelativeLayout"
-                app:layout_constraintVertical_bias="0.0" />
-
             <RelativeLayout
                 android:id="@+id/searchMapRelativeLayout"
                 android:layout_width="match_parent"
@@ -165,6 +185,7 @@
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@+id/searchIcon"
                     android:layout_marginLeft="8dp"
+                    android:layout_marginBottom="0dp"
                     android:background="@null"
                     android:hint="Skriv inn stedsnavn eller teltplassnavn..."
                     android:textColor="@color/primaryTextColor"

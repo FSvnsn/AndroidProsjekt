@@ -1,6 +1,7 @@
 package no.hiof.oleedvao.bardun;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -17,6 +18,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -24,6 +26,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -88,12 +91,24 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private AutoCompleteTextView mSearchInput;
     private PlaceAutoCompleteAdapter mplaceAutoCompleteAdapter;
     private GoogleApiClient mGoogleApiClient;
+    private ImageButton imageButtonFilter;
+    //Location and permissions vars
     private static final int REQUEST_LOCATION_PERMISSION = 1;
     LocationManager locationManager;
     LocationListener locationListener;
     private Marker marker;
     private Marker geomarker;
     private FusedLocationProviderClient mFusedLocationProviderClient;
+
+    //filter vars
+    private ArrayList mSelectedItems = new ArrayList();
+    private String[] filterItems;
+    boolean[] checkedItems;
+    private boolean skog;
+    private boolean fjell;
+    private boolean fiske;
+
+    List<Marker> markers = new ArrayList<Marker>();
 
 
     private Button registrerTeltplass;
@@ -110,6 +125,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         nyTeltplassHer.setVisibility(View.GONE);
         mSearchInput = findViewById(R.id.searchInput);
         toolbar = findViewById(R.id.toolbarMain);
+        imageButtonFilter = findViewById(R.id.imageBtnFilter);
+        imageButtonFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                filterDialog();
+            }
+        });
 
         setUpNavigationDrawer();
 
@@ -218,6 +240,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
     private void initSearch() {
 
+
+    // region mapSetup
         mGoogleApiClient = new GoogleApiClient
                 .Builder(this)
                 .addApi(Places.GEO_DATA_API)
@@ -331,6 +355,118 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                             .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_teltplass_marker_green))
             );
         }
+    }
+
+    private void filterDialog() {
+        Toast.makeText(this, "Filter klikket", Toast.LENGTH_SHORT).show();
+        filterItems = getResources().getStringArray(R.array.filter_items);
+        checkedItems = new boolean[filterItems.length];
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(MainActivity.this);
+        mBuilder.setTitle("Filtrer teltplasser");
+
+        mBuilder.setMultiChoiceItems(filterItems, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                Toast.makeText(MainActivity.this, "Filter åpnes", Toast.LENGTH_SHORT).show();
+                if (isChecked) {
+                    // If the user checked the item, add it to the selected items
+                    mSelectedItems.add(which);
+                } else if (mSelectedItems.contains(which)) {
+                    // Else, if the item is already in the array, remove it
+                    mSelectedItems.remove(Integer.valueOf(which));
+                }
+            }
+        });
+
+        mBuilder.setPositiveButton("Ferdig", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //Sjekk søk opp mot databaseløkke
+                Toast.makeText(MainActivity.this, "Filtersøk: " + mSelectedItems.toString(), Toast.LENGTH_SHORT).show();
+                String item = "";
+                for (int i = 0; i < mSelectedItems.size(); i++) {
+                    item = filterItems[(int) mSelectedItems.get(i)];
+                    if(item.equals("Skog")) {
+                        Log.d(TAG,"Skog: " + item.toString());
+                        skog = true;
+                    }
+                    else if(item.equals("Fjell")) {
+                        Log.d(TAG,"Fjell: " + item.toString());
+                        fjell = true;
+                    }
+                    else if(item.equals("Fiske")) {
+                        Log.d(TAG,"Fiske: " + item.toString());
+                        fiske = true;
+                    }
+                }
+                Toast.makeText(MainActivity.this, "Skog = " + skog + "Fjell = " + fjell + "Fiske = " + fiske, Toast.LENGTH_LONG).show();
+                //Hva er datasnapshot her?
+                //filterMarkers(skog, fjell,fiske, datasnapshot);
+            }
+        });
+        mBuilder.setNegativeButton("Avbryt", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(MainActivity.this, "Avbryt klikket", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+            }
+        });
+        mBuilder.setNeutralButton("Tøm filter", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(MainActivity.this, "Tøm filter klikket", Toast.LENGTH_SHORT).show();
+                mSelectedItems.clear();
+                skog = false;
+                fjell = false;
+                fiske = false;
+            }
+        });
+
+        mBuilder.show();
+    }
+
+    private void filterMarkers(Boolean fSkog, Boolean fFjell, Boolean fFiske, DataSnapshot dataSnapshot){
+        //Fjerner alle markers
+        mMap.clear();
+        markers.clear();
+
+        //Oppretter markers
+        for(DataSnapshot ds : dataSnapshot.child("teltplasser").getChildren()){
+
+            Boolean meetsRequirements = true;
+
+            String name = ds.child("navn").getValue(String.class);
+            String location = ds.child("latLng").getValue(String.class);
+            Boolean skog = ds.child("skog").getValue(Boolean.class);
+            Boolean fjell = ds.child("fjell").getValue(Boolean.class);
+            Boolean fiske = ds.child("fiske").getValue(Boolean.class);
+
+            location = location.replace("p", ".");
+            location = location.replace("k", ",");
+
+            String fullLoc [] = location.split(",");
+            double latitude = Double.parseDouble(fullLoc[0]);
+            double longitude = Double.parseDouble(fullLoc[1]);
+
+            LatLng currLoc = new LatLng(latitude, longitude);
+            if(fSkog.equals(true) && !skog.equals(true)){
+                meetsRequirements = false;
+            }
+            if(fFjell.equals(true) && !fjell.equals(true)){
+                meetsRequirements = false;
+            }
+            if(fFiske.equals(true) && !fiske.equals(true)){
+                meetsRequirements = false;
+            }
+            if(meetsRequirements.equals(true)){
+                Marker marker = mMap.addMarker(new MarkerOptions()
+                        .position(currLoc)
+                        .title(name)
+                        .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_teltplass_marker_green)));
+                markers.add(marker);
+            }
+        }
+
     }
 
 
