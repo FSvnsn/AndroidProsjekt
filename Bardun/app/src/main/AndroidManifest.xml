@@ -28,6 +28,7 @@
 
         </activity>
         <activity android:name=".TeltplassActivity" >
+            
         </activity>
         <activity android:name=".RedigerBrukerActivity" />
         <activity android:name=".RedigerTeltplassActivity" />
@@ -35,6 +36,8 @@
         <activity android:name=".OpprettKommentarActivity" />
         <activity android:name=".OpprettTeltplassActivity" />
         <activity android:name=".VisBrukerActivity" />
+
+        </activity>
 
         <provider
             android:name="android.support.v4.content.FileProvider"

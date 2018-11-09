@@ -33,4 +33,7 @@
     <string name="switch_fiske">Fiske</string>
     <string name="mine_teltplasser_title">Mine Teltplasser</string>
     <string name="mine_favoritter_title">Mine Favoritter</string>
+    <string name="button_opprett_kommentar">Opprett Kommentar</string>
+    <string name="button_avbryt_kommentar">Avbryt</string>
+    <string name="edittext_kommentar_hint">Skriv kommentar her...</string>
 </resources>

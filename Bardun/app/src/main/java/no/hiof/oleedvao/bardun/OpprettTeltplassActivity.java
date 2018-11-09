@@ -39,10 +39,12 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
     private static final int REQUEST_IMAGE_GET = 1000;
     private static final int REQUEST_TAKE_PHOTO = 2000;
 
+    //Bilde-relaterte variabler
     private String currentPhotoPath;
     private Uri currentPhotoUri;
     private String currentImageId;
-    
+
+    //Database-relaterte variabler
     private FirebaseDatabase mDatabase;
     private DatabaseReference mDatabaseRef;
     private FirebaseStorage mStorage;
@@ -75,6 +77,7 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
         switchOpprettTeltplassFjell = findViewById(R.id.switchOpprettTeltplassFjell);
         switchOpprettTeltplassFiske = findViewById(R.id.switchOpprettTeltplassFiske);
 
+        //Instansierer database-relaterte variabler
         mDatabase = FirebaseDatabase.getInstance();
         mDatabaseRef = mDatabase.getReference();
         mStorage = FirebaseStorage.getInstance();
