@@ -82,8 +82,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     //filter vars
     private ArrayList mSelectedItems = new ArrayList();
-    private Button mOrder;
-    private TextView mItemSelected;
     private String[] filterItems;
     boolean[] checkedItems;
     private boolean skog;
