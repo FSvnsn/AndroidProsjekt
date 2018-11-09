@@ -90,7 +90,7 @@ public class TeltplassActivity extends AppCompatActivity {
         CUser = mAuth.getCurrentUser();
 
         UID = CUser.getUid();
-        teltplassId = "30p000k30p000";
+        teltplassId = getIntent().getExtras().getString("Id");
 
         mDatabaseRef.addValueEventListener(new ValueEventListener(){
             @Override
@@ -103,6 +103,13 @@ public class TeltplassActivity extends AppCompatActivity {
                 System.out.println("The read failed: " + databaseError.getCode());
             }
 
+        });
+
+        imageButtonFavoritt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addToFavoritter(v);
+            }
         });
     }
 
@@ -154,5 +161,35 @@ public class TeltplassActivity extends AppCompatActivity {
         DrawerLayout drawerLayout = findViewById(R.id.drawerLayoutTeltplass);
 
         navigationDrawerFragment.setUpDrawer(drawerLayout, toolbar);
+    }
+
+    private void addToFavoritter(View view){
+        mDatabaseRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                getData(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void getData(DataSnapshot dataSnapshot) {
+        Teltplass teltplass1 = new Teltplass();
+        teltplass1.setNavn(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getNavn());
+        teltplass1.setUnderlag((dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getUnderlag()));
+        teltplass1.setUtsikt(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getUtsikt());
+        teltplass1.setAvstand(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getAvstand());
+        teltplass1.setSkog(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getSkog());
+        teltplass1.setFjell(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getFjell());
+        teltplass1.setFiske(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getFiske());
+        teltplass1.setBeskrivelse(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getBeskrivelse());
+        teltplass1.setLatLng(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getLatLng());
+        teltplass1.setImageId(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getImageId());
+
+        mDatabaseRef.child("mineFavoritter").child(UID).child(teltplassId).setValue(teltplass1);
     }
 }

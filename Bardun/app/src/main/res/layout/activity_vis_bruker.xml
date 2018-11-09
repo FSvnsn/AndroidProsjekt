@@ -1,93 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/imgProfile"
+        android:id="@+id/imgVisBrukerBilde"
         android:layout_width="125dp"
         android:layout_height="125dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="15dp"
         android:layout_marginTop="15dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline6" />
+        app:layout_constraintTop_toTopOf="@+id/guideline9"
+        app:srcCompat="@android:drawable/ic_menu_gallery" />
 
-    <TextView
-        android:id="@+id/txtName"
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="45dp" />
+
+    <TextView
+        android:id="@+id/txtVisBrukerNavn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
-        android:text="@string/name_placeholder"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/imgProfile"
-        app:layout_constraintTop_toTopOf="@+id/imgProfile" />
+        android:text="TextView"
+        app:layout_constraintStart_toEndOf="@+id/imgVisBrukerBilde"
+        app:layout_constraintTop_toTopOf="@+id/imgVisBrukerBilde" />
 
     <TextView
-        android:id="@+id/txtEmail"
+        android:id="@+id/txtVisBrukerEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="15dp"
-        android:text="@string/email_placeholder"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/imgProfile"
-        app:layout_constraintTop_toBottomOf="@+id/txtName" />
-
-    <TextView
-        android:id="@+id/txtAge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="15dp"
         android:layout_marginTop="15dp"
-        android:text="@string/age_placeholder"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/imgProfile"
-        app:layout_constraintTop_toBottomOf="@+id/txtEmail" />
-
-    <Button
-        android:id="@+id/btnBrukerRediger"
-        android:layout_width="103dp"
-        android:layout_height="36dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/rediger_profil"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/imgProfile"
-        app:layout_constraintTop_toBottomOf="@+id/txtAge" />
+        android:text="TextView"
+        app:layout_constraintStart_toEndOf="@+id/imgVisBrukerBilde"
+        app:layout_constraintTop_toBottomOf="@+id/txtVisBrukerNavn" />
 
     <TextView
-        android:id="@+id/txtDescription"
-        android:layout_width="355dp"
+        android:id="@+id/txtVisBrukerAlder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:text="TextView"
+        app:layout_constraintStart_toEndOf="@+id/imgVisBrukerBilde"
+        app:layout_constraintTop_toBottomOf="@+id/txtVisBrukerEmail" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="184dp" />
+
+    <TextView
+        android:id="@+id/txtVisBrukerBeskrivelse"
+        android:layout_width="0dp"
         android:layout_height="75dp"
         android:layout_marginEnd="15dp"
         android:layout_marginStart="15dp"
         android:layout_marginTop="15dp"
-        android:text="Description"
+        android:text="TextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imgProfile" />
+        app:layout_constraintTop_toTopOf="@+id/guideline10" />
 
     <android.support.constraint.Guideline
-        android:id="@+id/guideline6"
+        android:id="@+id/guideline11"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="50dp" />
+        app:layout_constraintGuide_begin="272dp" />
 
+    <TextView
+        android:id="@+id/textView15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:text="Registrerte Teltplasser:"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline11" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="306dp" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvVisBrukerTeltplasser"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline12" />
 </android.support.constraint.ConstraintLayout>
