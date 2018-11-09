@@ -34,6 +34,7 @@
         <activity android:name=".InstillingerActivity" />
         <activity android:name=".OpprettKommentarActivity" />
         <activity android:name=".OpprettTeltplassActivity" />
+        <activity android:name=".VisBrukerActivity" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
