@@ -33,4 +33,10 @@
     <string name="switch_fiske">Fiske</string>
     <string name="mine_teltplasser_title">Mine Teltplasser</string>
     <string name="mine_favoritter_title">Mine Favoritter</string>
+
+    <string-array name="filter_items">
+        <item>Skog</item>
+        <item>Fjell</item>
+        <item>Fiske</item>
+    </string-array>
 </resources>

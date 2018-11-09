@@ -1,6 +1,7 @@
 package no.hiof.oleedvao.bardun;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -16,10 +17,12 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
@@ -69,12 +72,20 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private android.support.v7.widget.Toolbar toolbar;
     private TextView mTextView;
     private ConstraintLayout nyTeltplassHer;
-
+    private ImageButton imageButtonFilter;
+    //Location and permissions vars
     private static final int REQUEST_LOCATION_PERMISSION = 1;
     LocationManager locationManager;
     LocationListener locationListener;
     private Marker marker;
     private Marker geomarker;
+
+    //filter vars
+    private ArrayList mSelectedItems = new ArrayList();
+    private Button mOrder;
+    private TextView mItemSelected;
+    private String[] filterItems;
+    boolean[] checkedItems;
 
     List<Marker> markers = new ArrayList<Marker>();
 
@@ -89,6 +100,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         setContentView(R.layout.activity_main);
         nyTeltplassHer = findViewById(R.id.nyTeltplassHer);
         nyTeltplassHer.setVisibility(View.GONE);
+        imageButtonFilter = findViewById(R.id.imageBtnFilter);
+        imageButtonFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                filterDialog();
+            }
+        });
 
         toolbar = findViewById(R.id.toolbarMain);
         setUpNavigationDrawer();
@@ -185,6 +203,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
+
     // region mapSetup
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -260,6 +279,52 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
+    private void filterDialog() {
+        Toast.makeText(this, "Filter klikket", Toast.LENGTH_SHORT).show();
+        filterItems = getResources().getStringArray(R.array.filter_items);
+        checkedItems = new boolean[filterItems.length];
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(MainActivity.this);
+        mBuilder.setTitle("Filtrer teltplasser");
+
+        mBuilder.setMultiChoiceItems(filterItems, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                Toast.makeText(MainActivity.this, "Filter åpnes", Toast.LENGTH_SHORT).show();
+                /*if (isChecked) {
+                    // If the user checked the item, add it to the selected items
+                    mSelectedItems.add(which);
+                } else if (mSelectedItems.contains(which)) {
+                    // Else, if the item is already in the array, remove it
+                    mSelectedItems.remove(Integer.valueOf(which));
+                }*/
+            }
+        });
+
+        mBuilder.setPositiveButton("Ferdig", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //Sjekk søk opp mot databaseløkke
+                Toast.makeText(MainActivity.this, "Filtersøk trykket", Toast.LENGTH_SHORT).show();
+            }
+        });
+        mBuilder.setNegativeButton("Avbryt", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(MainActivity.this, "Avbryt klikker", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+            }
+        });
+        mBuilder.setNeutralButton("Tøm filter", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(MainActivity.this, "Tøm filter klikket", Toast.LENGTH_SHORT).show();
+                mSelectedItems.clear();
+            }
+        });
+
+        mBuilder.show();
+    }
+
     private void filterMarkers(Boolean fSkog, Boolean fFjell, Boolean fFiske, DataSnapshot dataSnapshot){
         //Fjerner alle markers
         mMap.clear();
@@ -295,7 +360,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
             if(meetsRequirements.equals(true)){
                 Marker marker = mMap.addMarker(new MarkerOptions()
-                        .position(currLoc).title(name).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_teltplass_marker_green)));
+                        .position(currLoc)
+                        .title(name)
+                        .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_teltplass_marker_green)));
                 markers.add(marker);
             }
         }
