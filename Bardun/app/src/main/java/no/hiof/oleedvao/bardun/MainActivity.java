@@ -86,6 +86,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private TextView mItemSelected;
     private String[] filterItems;
     boolean[] checkedItems;
+    private boolean skog;
+    private boolean fjell;
+    private boolean fiske;
 
     List<Marker> markers = new ArrayList<Marker>();
 
@@ -290,13 +293,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onClick(DialogInterface dialog, int which, boolean isChecked) {
                 Toast.makeText(MainActivity.this, "Filter åpnes", Toast.LENGTH_SHORT).show();
-                /*if (isChecked) {
+                if (isChecked) {
                     // If the user checked the item, add it to the selected items
                     mSelectedItems.add(which);
                 } else if (mSelectedItems.contains(which)) {
                     // Else, if the item is already in the array, remove it
                     mSelectedItems.remove(Integer.valueOf(which));
-                }*/
+                }
             }
         });
 
@@ -304,13 +307,32 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //Sjekk søk opp mot databaseløkke
-                Toast.makeText(MainActivity.this, "Filtersøk trykket", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Filtersøk: " + mSelectedItems.toString(), Toast.LENGTH_SHORT).show();
+                String item = "";
+                for (int i = 0; i < mSelectedItems.size(); i++) {
+                    item = filterItems[(int) mSelectedItems.get(i)];
+                    if(item.equals("Skog")) {
+                        Log.d(TAG,"Skog: " + item.toString());
+                        skog = true;
+                    }
+                    else if(item.equals("Fjell")) {
+                        Log.d(TAG,"Fjell: " + item.toString());
+                        fjell = true;
+                    }
+                    else if(item.equals("Fiske")) {
+                        Log.d(TAG,"Fiske: " + item.toString());
+                        fiske = true;
+                    }
+                }
+                Toast.makeText(MainActivity.this, "Skog = " + skog + "Fjell = " + fjell + "Fiske = " + fiske, Toast.LENGTH_LONG).show();
+                //Hva er datasnapshot her?
+                //filterMarkers(skog, fjell,fiske, datasnapshot);
             }
         });
         mBuilder.setNegativeButton("Avbryt", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(MainActivity.this, "Avbryt klikker", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Avbryt klikket", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             }
         });
@@ -319,6 +341,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onClick(DialogInterface dialog, int which) {
                 Toast.makeText(MainActivity.this, "Tøm filter klikket", Toast.LENGTH_SHORT).show();
                 mSelectedItems.clear();
+                skog = false;
+                fjell = false;
+                fiske = false;
             }
         });
 
