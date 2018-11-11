@@ -64,7 +64,7 @@
                     app:layout_constraintBottom_toTopOf="@+id/guideline5"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/guideline13"
                     app:srcCompat="@android:drawable/ic_menu_gallery" />
 
                 <TextView
@@ -128,7 +128,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    app:layout_constraintGuide_begin="222dp" />
+                    app:layout_constraintGuide_begin="275dp" />
 
                 <TextView
                     android:id="@+id/textView9"
@@ -195,57 +195,64 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    app:layout_constraintGuide_begin="274dp" />
+                    app:layout_constraintGuide_begin="331dp" />
 
                 <android.support.constraint.Guideline
                     android:id="@+id/guideline7"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    app:layout_constraintGuide_begin="429dp" />
+                    app:layout_constraintGuide_begin="491dp" />
 
                 <android.support.constraint.Guideline
                     android:id="@+id/guideline8"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    app:layout_constraintGuide_begin="374dp" />
+                    app:layout_constraintGuide_begin="430dp" />
 
                 <Switch
                     android:id="@+id/switchTeltplassSkog"
                     android:layout_width="89dp"
                     android:layout_height="23dp"
                     android:layout_marginBottom="8dp"
+                    android:clickable="false"
                     android:text="@string/switch_skog"
                     app:layout_constraintBottom_toTopOf="@+id/guideline7"
                     app:layout_constraintEnd_toStartOf="@+id/switchTeltplassFjell"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/guideline8"
-                    android:clickable="false"/>
+                    app:layout_constraintTop_toTopOf="@+id/guideline8" />
 
                 <Switch
                     android:id="@+id/switchTeltplassFjell"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:clickable="false"
                     android:text="@string/switch_fjell"
                     app:layout_constraintEnd_toStartOf="@+id/switchTeltplassFiske"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/switchTeltplassSkog"
-                    app:layout_constraintTop_toTopOf="@+id/switchTeltplassSkog"
-                    android:clickable="false"/>
+                    app:layout_constraintTop_toTopOf="@+id/switchTeltplassSkog" />
 
                 <Switch
                     android:id="@+id/switchTeltplassFiske"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
+                    android:clickable="false"
                     android:text="@string/switch_fiske"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/switchTeltplassFjell"
-                    app:layout_constraintTop_toTopOf="@+id/switchTeltplassSkog"
-                    android:clickable="false"/>
+                    app:layout_constraintTop_toTopOf="@+id/switchTeltplassSkog" />
+
+                <android.support.constraint.Guideline
+                    android:id="@+id/guideline13"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_begin="58dp" />
 
 
             </android.support.constraint.ConstraintLayout>
