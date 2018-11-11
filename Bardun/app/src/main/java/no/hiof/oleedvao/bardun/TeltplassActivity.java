@@ -6,6 +6,8 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -31,6 +33,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import no.hiof.oleedvao.bardun.adapter.ViewPagerAdapter;
+import no.hiof.oleedvao.bardun.fragment.BeskrivelseFragment;
+import no.hiof.oleedvao.bardun.fragment.KommentarerFragment;
 import no.hiof.oleedvao.bardun.fragment.NavigationDrawerFragment;
 
 public class TeltplassActivity extends AppCompatActivity {
@@ -58,6 +63,10 @@ public class TeltplassActivity extends AppCompatActivity {
     private Switch switchTeltplassFjell;
     private Switch switchTeltplassFiske;
 
+    private TabLayout tabLayoutTeltplass;
+    private ViewPager viewPagerTeltplass;
+    private ViewPagerAdapter adapter;
+
     final long ONE_MEGABYTE = 1024 * 1024;
 
     @Override
@@ -82,6 +91,14 @@ public class TeltplassActivity extends AppCompatActivity {
         switchTeltplassFjell = findViewById(R.id.switchTeltplassFjell);
         switchTeltplassFiske = findViewById(R.id.switchTeltplassFiske);
 
+        tabLayoutTeltplass = findViewById(R.id.TabLayoutTeltplass);
+        viewPagerTeltplass = findViewById(R.id.ViewPagerTeltplass);
+        adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.AddFragment(new BeskrivelseFragment(),"Beskrivelse");
+        adapter.AddFragment(new KommentarerFragment(),"Kommentarer");
+        viewPagerTeltplass.setAdapter(adapter);
+        tabLayoutTeltplass.setupWithViewPager(viewPagerTeltplass);
+
         mDatabase = FirebaseDatabase.getInstance();
         mDatabaseRef = mDatabase.getReference();
         mStorage = FirebaseStorage.getInstance();
@@ -91,6 +108,7 @@ public class TeltplassActivity extends AppCompatActivity {
 
         UID = CUser.getUid();
         teltplassId = getIntent().getExtras().getString("Id");
+        //teltplassId = "-22p288999008059143k-42p26186525076628"; //for testing
 
         mDatabaseRef.addValueEventListener(new ValueEventListener(){
             @Override
