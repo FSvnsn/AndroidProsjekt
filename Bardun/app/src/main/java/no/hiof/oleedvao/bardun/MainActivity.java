@@ -425,47 +425,62 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mBuilder.show();
     }
 
-    private void filterMarkers(Boolean fSkog, Boolean fFjell, Boolean fFiske, DataSnapshot dataSnapshot){
+    private void filterMarkers(final Boolean fSkog, final Boolean fFjell, final Boolean fFiske){
         //Fjerner alle markers
         mMap.clear();
         markers.clear();
 
-        //Oppretter markers
-        for(DataSnapshot ds : dataSnapshot.child("teltplasser").getChildren()){
+        mDatabaseRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                //Oppretter markers
+                for(DataSnapshot ds : dataSnapshot.child("teltplasser").getChildren()){
 
-            Boolean meetsRequirements = true;
+                    Boolean meetsRequirements = true;
 
-            String name = ds.child("navn").getValue(String.class);
-            String location = ds.child("latLng").getValue(String.class);
-            Boolean skog = ds.child("skog").getValue(Boolean.class);
-            Boolean fjell = ds.child("fjell").getValue(Boolean.class);
-            Boolean fiske = ds.child("fiske").getValue(Boolean.class);
+                    String name = ds.child("navn").getValue(String.class);
+                    String location = ds.child("latLng").getValue(String.class);
+                    Boolean skog = ds.child("skog").getValue(Boolean.class);
+                    Boolean fjell = ds.child("fjell").getValue(Boolean.class);
+                    Boolean fiske = ds.child("fiske").getValue(Boolean.class);
 
-            location = location.replace("p", ".");
-            location = location.replace("k", ",");
+                    location = location.replace("p", ".");
+                    location = location.replace("k", ",");
 
-            String fullLoc [] = location.split(",");
-            double latitude = Double.parseDouble(fullLoc[0]);
-            double longitude = Double.parseDouble(fullLoc[1]);
+                    String fullLoc [] = location.split(",");
+                    double latitude = Double.parseDouble(fullLoc[0]);
+                    double longitude = Double.parseDouble(fullLoc[1]);
 
-            LatLng currLoc = new LatLng(latitude, longitude);
-            if(fSkog.equals(true) && !skog.equals(true)){
-                meetsRequirements = false;
+                    LatLng currLoc = new LatLng(latitude, longitude);
+                    if(fSkog.equals(true) && !skog.equals(true)){
+                        meetsRequirements = false;
+                    }
+                    if(fFjell.equals(true) && !fjell.equals(true)){
+                        meetsRequirements = false;
+                    }
+                    if(fFiske.equals(true) && !fiske.equals(true)){
+                        meetsRequirements = false;
+                    }
+                    if(meetsRequirements.equals(true)){
+                        Marker marker = mMap.addMarker(new MarkerOptions()
+                                .position(currLoc)
+                                .title(name)
+                                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_teltplass_marker_green)));
+                        markers.add(marker);
+                    }
+                }
             }
-            if(fFjell.equals(true) && !fjell.equals(true)){
-                meetsRequirements = false;
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getCode());
             }
-            if(fFiske.equals(true) && !fiske.equals(true)){
-                meetsRequirements = false;
-            }
-            if(meetsRequirements.equals(true)){
-                Marker marker = mMap.addMarker(new MarkerOptions()
-                        .position(currLoc)
-                        .title(name)
-                        .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_teltplass_marker_green)));
-                markers.add(marker);
-            }
-        }
+
+        });
+
+
+
+
 
     }
 
