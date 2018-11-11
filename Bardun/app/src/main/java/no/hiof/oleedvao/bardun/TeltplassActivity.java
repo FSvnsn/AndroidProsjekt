@@ -44,6 +44,7 @@ public class TeltplassActivity extends AppCompatActivity {
     private FirebaseUser CUser;
     private String UID;
     private String teltplassId;
+    private String teltplassUID;
 
     private ImageView imageViewTeltplass;
     private TextView textViewTeltplassNavn;
@@ -96,6 +97,7 @@ public class TeltplassActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 showData(dataSnapshot);
+                teltplassUID = dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getUID();
             }
 
             @Override
@@ -189,7 +191,14 @@ public class TeltplassActivity extends AppCompatActivity {
         teltplass1.setBeskrivelse(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getBeskrivelse());
         teltplass1.setLatLng(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getLatLng());
         teltplass1.setImageId(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getImageId());
+        teltplass1.setUID(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getUID());
 
         mDatabaseRef.child("mineFavoritter").child(UID).child(teltplassId).setValue(teltplass1);
+    }
+
+    public void brukerClicked(View view) {
+        Intent intent = new Intent(TeltplassActivity.this, VisBrukerActivity.class);
+        intent.putExtra("UID", teltplassUID);
+        startActivity(intent);
     }
 }

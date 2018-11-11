@@ -106,7 +106,6 @@ public class BrukerActivity extends AppCompatActivity {
             catch(NullPointerException e){
                 Toast.makeText(BrukerActivity.this, "Du må logge inn for å oprette en brukerprofil!", Toast.LENGTH_LONG).show();
                 createUser();
-
             }
 
             Log.d("TAG","showData: name: " + test1.getName());

@@ -75,6 +75,7 @@
                     android:layout_marginTop="8dp"
                     android:text="Teltplassnavn"
                     android:textSize="24sp"
+                    android:onClick="brukerClicked"
                     app:layout_constraintEnd_toStartOf="@+id/imageButtonThumbsUp"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
