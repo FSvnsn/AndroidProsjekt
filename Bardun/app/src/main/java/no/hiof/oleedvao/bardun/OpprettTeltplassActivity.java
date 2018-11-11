@@ -22,6 +22,8 @@ import android.widget.Toast;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -39,14 +41,19 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
     private static final int REQUEST_IMAGE_GET = 1000;
     private static final int REQUEST_TAKE_PHOTO = 2000;
 
+    //Bilde-relaterte variabler
     private String currentPhotoPath;
     private Uri currentPhotoUri;
     private String currentImageId;
 
+    //Database-relaterte variabler
     private FirebaseDatabase mDatabase;
     private DatabaseReference mDatabaseRef;
     private FirebaseStorage mStorage;
     private StorageReference mStorageReference;
+    private FirebaseAuth mAuth;
+    private FirebaseUser CUser;
+    private String UID;
 
     //views
     private ImageView imageView;
@@ -75,10 +82,14 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
         switchOpprettTeltplassFjell = findViewById(R.id.switchOpprettTeltplassFjell);
         switchOpprettTeltplassFiske = findViewById(R.id.switchOpprettTeltplassFiske);
 
+        //Instansierer database-relaterte variabler
         mDatabase = FirebaseDatabase.getInstance();
         mDatabaseRef = mDatabase.getReference();
         mStorage = FirebaseStorage.getInstance();
         mStorageReference = mStorage.getReference();
+        mAuth = FirebaseAuth.getInstance();
+        CUser = mAuth.getCurrentUser();
+        UID = CUser.getUid();
     }
 
     //Metode for å hente bilde fra galleri
@@ -91,6 +102,7 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
 
     //Metode for å ta bilde med kamera
     public void takePicture(View view) {
+
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
@@ -157,7 +169,7 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
 
         // Save a file: path for use with ACTION_VIEW intents
         currentPhotoPath = image.getAbsolutePath();
-        currentPhotoUri = Uri.parse(currentPhotoPath);
+        currentPhotoUri = Uri.fromFile(new File(currentPhotoPath));
         //galleryAddPic();
         return image;
     }
@@ -171,8 +183,9 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
     }
 
     public void opprettTeltplass(View view){
-        if(editTextOpprettTeltplassNavn.getText().toString() != null ||
-                editTextOpprettTeltplassBeskrivelse.getText().toString() != null){
+        if(editTextOpprettTeltplassNavn.getText() != null &&
+                editTextOpprettTeltplassBeskrivelse.getText() != null){
+
             uploadImage(currentPhotoUri);
 
             //Skaffer og converter latLng
@@ -197,7 +210,7 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
                     currentImageId);
 
             mDatabaseRef.child("teltplasser").child(teltplass.getLatLng()).setValue(teltplass);
-
+            mDatabaseRef.child("mineTeltplasser").child(UID).child(teltplass.getLatLng()).setValue(teltplass);
         }
         else{
             Toast.makeText(this, "Du må fylle inn alle feltene", Toast.LENGTH_LONG).show();
@@ -215,6 +228,8 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
             currentImageId = UUID.randomUUID().toString();
 
             StorageReference ref = mStorageReference.child("images/"+ currentImageId);
+
+
             ref.putFile(filePath)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
