@@ -13,7 +13,7 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/textViewKommentarNavn"
+            android:id="@+id/textViewKommentarBrukernavn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -31,7 +31,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewKommentarNavn" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewKommentarBrukernavn" />
 
     </android.support.constraint.ConstraintLayout>
 

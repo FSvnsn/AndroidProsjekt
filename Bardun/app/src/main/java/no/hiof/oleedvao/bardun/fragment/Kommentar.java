@@ -1,23 +1,23 @@
 package no.hiof.oleedvao.bardun.fragment;
 
 public class Kommentar {
-    private String brukerNavn;
+    private String brukernavn;
     private String kommentar;
 
     public Kommentar(){
     }
 
-    public Kommentar(String brukerNavn, String kommentar){
-        this.brukerNavn = brukerNavn;
+    public Kommentar(String brukernavn, String kommentar){
+        this.brukernavn = brukernavn;
         this.kommentar = kommentar;
     }
 
     public String getBrukerNavn() {
-        return brukerNavn;
+        return brukernavn;
     }
 
-    public void setBrukerNavn(String brukerNavn) {
-        this.brukerNavn = brukerNavn;
+    public void setBrukernavn(String brukernavn) {
+        this.brukernavn = brukernavn;
     }
 
     public String getKommentar() {
