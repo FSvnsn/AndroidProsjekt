@@ -14,6 +14,8 @@ public class BeskrivelseFragment extends Fragment {
 
     View view;
 
+    private String teltplassId;
+
     public BeskrivelseFragment() {
     }
 
@@ -22,5 +24,14 @@ public class BeskrivelseFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_beskrivelse,container,false);
         return view;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (getArguments() != null){
+            teltplassId = getArguments().getString("teltplassId");
+        }
     }
 }

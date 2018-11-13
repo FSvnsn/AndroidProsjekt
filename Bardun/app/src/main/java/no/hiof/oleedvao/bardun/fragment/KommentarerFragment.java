@@ -33,6 +33,8 @@ public class KommentarerFragment extends Fragment {
     private List<Kommentar> lstKommentarer;
     private KommentarRecyclerViewAdapter recyclerViewAdapter;
 
+    private String teltplassId;
+
     private FirebaseDatabase mDatabase;
     private DatabaseReference mDatabaseRef;
     private FirebaseStorage mStorage;
@@ -67,9 +69,13 @@ public class KommentarerFragment extends Fragment {
         CUser = mAuth.getCurrentUser();
         UID = CUser.getUid();
 
+        if (getArguments() != null){
+            teltplassId = getArguments().getString("teltplassId");
+        }
+
         lstKommentarer = new ArrayList<>();
-        lstKommentarer.add(new Kommentar("Knerten", "NANI!!!"));
-        lstKommentarer.add(new Kommentar("Putin","Blyat..."));
+        lstKommentarer.add(new Kommentar("date","Knerten", "NANI!!!"));
+        lstKommentarer.add(new Kommentar("date","Putin","Blyat..."));
 
         mDatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -85,6 +91,8 @@ public class KommentarerFragment extends Fragment {
     }
 
     private void getKommentarer(DataSnapshot dataSnapshot){
-        //for(DataSnapshot ds : dataSnapshot.child("teltplassKommentarer").)
+        for(DataSnapshot ds : dataSnapshot.child("teltplassKommentarer").child(teltplassId).getChildren()){
+
+        }
     }
 }
