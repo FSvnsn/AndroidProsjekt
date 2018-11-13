@@ -36,6 +36,7 @@
     <string name="button_opprett_kommentar">Opprett Kommentar</string>
     <string name="button_avbryt_kommentar">Avbryt</string>
     <string name="edittext_kommentar_hint">Skriv kommentar her...</string>
+    <string name="registrert_av">Registrert av:</string>
 
     <string-array name="filter_items">
         <item>Skog</item>

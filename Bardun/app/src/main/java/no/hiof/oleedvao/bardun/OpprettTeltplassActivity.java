@@ -207,7 +207,8 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
                     switchOpprettTeltplassSkog.isChecked(),
                     switchOpprettTeltplassFjell.isChecked(),
                     switchOpprettTeltplassFiske.isChecked(),
-                    currentImageId);
+                    currentImageId,
+                    UID);
 
             mDatabaseRef.child("teltplasser").child(teltplass.getLatLng()).setValue(teltplass);
             mDatabaseRef.child("mineTeltplasser").child(UID).child(teltplass.getLatLng()).setValue(teltplass);

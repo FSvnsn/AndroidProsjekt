@@ -11,6 +11,7 @@ public class Teltplass {
     private Boolean fjell;
     private Boolean fiske;
     private String imageId;
+    private String UID;
 
     public Teltplass(){
 
@@ -23,7 +24,7 @@ public class Teltplass {
         this.imageId = imageId;
     }
 
-    public Teltplass(String latLng, String navn, String beskrivelse, int underlag, int utsikt, int avstand, Boolean skog, Boolean fjell, Boolean fiske, String imageId){
+    public Teltplass(String latLng, String navn, String beskrivelse, int underlag, int utsikt, int avstand, Boolean skog, Boolean fjell, Boolean fiske, String imageId, String UID){
         this.latLng = latLng;
         this.navn = navn;
         this.beskrivelse = beskrivelse;
@@ -34,6 +35,7 @@ public class Teltplass {
         this.fjell = fjell;
         this.fiske = fiske;
         this.imageId = imageId;
+        this.UID = UID;
     }
 
     //Gettere og settere
@@ -116,4 +118,8 @@ public class Teltplass {
     public void setImageId(String imageId) {
         this.imageId = imageId;
     }
+
+    public String getUID() { return UID; }
+
+    public void setUID(String UID) { this.UID = UID; }
 }

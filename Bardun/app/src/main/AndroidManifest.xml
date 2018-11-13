@@ -22,7 +22,7 @@
         </activity>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
+            android:value="AIzaSyB5DM5iZnmbLQ3JsoV5-H9q-s6pECSJa3M" />
         <activity android:name=".MainActivity" />
         <activity android:name=".BrukerActivity" >
 

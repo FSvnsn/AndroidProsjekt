@@ -49,6 +49,7 @@ public class TeltplassActivity extends AppCompatActivity {
     private FirebaseUser CUser;
     private String UID;
     private String teltplassId;
+    private String teltplassUID;
 
     private ImageView imageViewTeltplass;
     private TextView textViewTeltplassNavn;
@@ -59,6 +60,7 @@ public class TeltplassActivity extends AppCompatActivity {
     private TextView textViewTeltplassUnderlag;
     private TextView textViewTeltplassUtsikt;
     private TextView textViewTeltplassAvstand;
+    private TextView textViewBrukerNavn;
     private Switch switchTeltplassSkog;
     private Switch switchTeltplassFjell;
     private Switch switchTeltplassFiske;
@@ -66,6 +68,9 @@ public class TeltplassActivity extends AppCompatActivity {
     private TabLayout tabLayoutTeltplass;
     private ViewPager viewPagerTeltplass;
     private ViewPagerAdapter adapter;
+
+    private BeskrivelseFragment beskrivelseFragment;
+    private KommentarerFragment kommentarerFragment;
 
     final long ONE_MEGABYTE = 1024 * 1024;
 
@@ -87,6 +92,7 @@ public class TeltplassActivity extends AppCompatActivity {
         textViewTeltplassUnderlag = findViewById(R.id.textViewTeltplassUnderlag);
         textViewTeltplassUtsikt = findViewById(R.id.textViewTeltplassUtsikt);
         textViewTeltplassAvstand = findViewById(R.id.textViewTeltplassAvstand);
+        textViewBrukerNavn = findViewById(R.id.textViewBrukerNavn);
         switchTeltplassSkog = findViewById(R.id.switchTeltplassSkog);
         switchTeltplassFjell = findViewById(R.id.switchTeltplassFjell);
         switchTeltplassFiske = findViewById(R.id.switchTeltplassFiske);
@@ -94,6 +100,7 @@ public class TeltplassActivity extends AppCompatActivity {
         tabLayoutTeltplass = findViewById(R.id.TabLayoutTeltplass);
         viewPagerTeltplass = findViewById(R.id.ViewPagerTeltplass);
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
+
         adapter.AddFragment(new BeskrivelseFragment(),"Beskrivelse");
         adapter.AddFragment(new KommentarerFragment(),"Kommentarer");
         viewPagerTeltplass.setAdapter(adapter);
@@ -113,6 +120,7 @@ public class TeltplassActivity extends AppCompatActivity {
         mDatabaseRef.addValueEventListener(new ValueEventListener(){
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                teltplassUID = dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getUID();
                 showData(dataSnapshot);
             }
 
@@ -137,6 +145,7 @@ public class TeltplassActivity extends AppCompatActivity {
             textViewTeltplassUnderlag.setText(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getUnderlag().toString() + "/10");
             textViewTeltplassUtsikt.setText(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getUtsikt().toString() + "/10");
             textViewTeltplassAvstand.setText(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getAvstand().toString() + "/100");
+            textViewBrukerNavn.setText(dataSnapshot.child("users").child(teltplassUID).child("name").getValue(String.class));
             switchTeltplassSkog.setChecked(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getSkog());
             switchTeltplassFjell.setChecked(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getFjell());
             switchTeltplassFiske.setChecked(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getFiske());
@@ -207,7 +216,14 @@ public class TeltplassActivity extends AppCompatActivity {
         teltplass1.setBeskrivelse(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getBeskrivelse());
         teltplass1.setLatLng(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getLatLng());
         teltplass1.setImageId(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getImageId());
+        teltplass1.setUID(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getUID());
 
         mDatabaseRef.child("mineFavoritter").child(UID).child(teltplassId).setValue(teltplass1);
+    }
+
+    public void brukerClicked(View view) {
+        Intent intent = new Intent(TeltplassActivity.this, VisBrukerActivity.class);
+        intent.putExtra("UID", teltplassUID);
+        startActivity(intent);
     }
 }
