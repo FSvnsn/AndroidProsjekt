@@ -1,18 +1,20 @@
 package no.hiof.oleedvao.bardun.fragment;
 
 public class Kommentar {
+    private String date;
     private String brukernavn;
     private String kommentar;
 
     public Kommentar(){
     }
 
-    public Kommentar(String brukernavn, String kommentar){
+    public Kommentar(String date ,String brukernavn, String kommentar){
+        this.date = date;
         this.brukernavn = brukernavn;
         this.kommentar = kommentar;
     }
 
-    public String getBrukerNavn() {
+    public String getBrukernavn() {
         return brukernavn;
     }
 
@@ -26,5 +28,13 @@ public class Kommentar {
 
     public void setKommentar(String kommentar) {
         this.kommentar = kommentar;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

@@ -6,9 +6,11 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -32,6 +34,8 @@ public class KommentarerFragment extends Fragment {
     private RecyclerView recyclerView;
     private List<Kommentar> lstKommentarer;
     private KommentarRecyclerViewAdapter recyclerViewAdapter;
+
+    private String teltplassId;
 
     private FirebaseDatabase mDatabase;
     private DatabaseReference mDatabaseRef;
@@ -67,13 +71,18 @@ public class KommentarerFragment extends Fragment {
         CUser = mAuth.getCurrentUser();
         UID = CUser.getUid();
 
+        if (getArguments() != null){
+            teltplassId = getArguments().getString("teltplassId");
+        }
+
         lstKommentarer = new ArrayList<>();
-        lstKommentarer.add(new Kommentar("Knerten", "NANI!!!"));
-        lstKommentarer.add(new Kommentar("Putin","Blyat..."));
+        //lstKommentarer.add(new Kommentar("date","Knerten", "NANI!!!"));
+        //lstKommentarer.add(new Kommentar("date","Putin","Blyat..."));
 
         mDatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                getKommentarer(dataSnapshot);
 
             }
 
@@ -82,9 +91,20 @@ public class KommentarerFragment extends Fragment {
 
             }
         });
+
     }
 
     private void getKommentarer(DataSnapshot dataSnapshot){
-        //for(DataSnapshot ds : dataSnapshot.child("teltplassKommentarer").)
+        for(DataSnapshot ds : dataSnapshot.child("teltplassKommentarer").child(teltplassId).getChildren()){
+
+            Kommentar kommentar = new Kommentar();
+
+            kommentar.setDate(ds.child("date").getValue().toString());
+            kommentar.setBrukernavn(ds.child("brukernavn").getValue().toString());
+            kommentar.setKommentar(ds.child("kommentar").getValue().toString());
+            lstKommentarer.add(kommentar);
+            recyclerViewAdapter.notifyDataSetChanged();
+
+        }
     }
 }

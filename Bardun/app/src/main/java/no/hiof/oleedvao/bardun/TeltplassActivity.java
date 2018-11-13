@@ -101,8 +101,19 @@ public class TeltplassActivity extends AppCompatActivity {
         viewPagerTeltplass = findViewById(R.id.ViewPagerTeltplass);
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        adapter.AddFragment(new BeskrivelseFragment(),"Beskrivelse");
-        adapter.AddFragment(new KommentarerFragment(),"Kommentarer");
+        beskrivelseFragment = new BeskrivelseFragment();
+        kommentarerFragment = new KommentarerFragment();
+
+        teltplassId = getIntent().getExtras().getString("Id");
+        //teltplassId = "-22p288999008059143k-42p26186525076628"; //for testing
+
+        Bundle bundle = new Bundle();
+        bundle.putString("teltplassId", teltplassId);
+        beskrivelseFragment.setArguments(bundle);
+        kommentarerFragment.setArguments(bundle);
+
+        adapter.AddFragment(beskrivelseFragment,"Beskrivelse");
+        adapter.AddFragment(kommentarerFragment,"Kommentarer");
         viewPagerTeltplass.setAdapter(adapter);
         tabLayoutTeltplass.setupWithViewPager(viewPagerTeltplass);
 
@@ -114,8 +125,6 @@ public class TeltplassActivity extends AppCompatActivity {
         CUser = mAuth.getCurrentUser();
 
         UID = CUser.getUid();
-        teltplassId = getIntent().getExtras().getString("Id");
-        //teltplassId = "-22p288999008059143k-42p26186525076628"; //for testing
 
         mDatabaseRef.addValueEventListener(new ValueEventListener(){
             @Override
@@ -145,6 +154,7 @@ public class TeltplassActivity extends AppCompatActivity {
             textViewTeltplassUnderlag.setText(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getUnderlag().toString() + "/10");
             textViewTeltplassUtsikt.setText(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getUtsikt().toString() + "/10");
             textViewTeltplassAvstand.setText(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getAvstand().toString() + "/100");
+            //textViewBrukerNavn.setText(dataSnapshot.child("users").child(UID).child("name").getValue(String.class)); //Problem med forrige
             textViewBrukerNavn.setText(dataSnapshot.child("users").child(teltplassUID).child("name").getValue(String.class));
             switchTeltplassSkog.setChecked(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getSkog());
             switchTeltplassFjell.setChecked(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getFjell());
