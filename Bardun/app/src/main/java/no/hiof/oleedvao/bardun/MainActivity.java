@@ -400,8 +400,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     }
                 }
                 Toast.makeText(MainActivity.this, "Skog = " + skog + "Fjell = " + fjell + "Fiske = " + fiske, Toast.LENGTH_LONG).show();
-                //Hva er datasnapshot her?
-                //filterMarkers(skog, fjell,fiske, datasnapshot);
+                filterMarkers(skog, fjell,fiske);
             }
         });
         mBuilder.setNegativeButton("Avbryt", new DialogInterface.OnClickListener() {
@@ -419,6 +418,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 skog = false;
                 fjell = false;
                 fiske = false;
+                filterMarkers(skog, fjell,fiske);
             }
         });
 
@@ -475,13 +475,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 System.out.println("The read failed: " + databaseError.getCode());
             }
-
         });
-
-
-
-
-
     }
 
 
