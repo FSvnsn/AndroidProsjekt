@@ -55,6 +55,7 @@ public class TeltplassActivity extends AppCompatActivity {
     private TextView textViewTeltplassUnderlag;
     private TextView textViewTeltplassUtsikt;
     private TextView textViewTeltplassAvstand;
+    private TextView textViewBrukerNavn;
     private Switch switchTeltplassSkog;
     private Switch switchTeltplassFjell;
     private Switch switchTeltplassFiske;
@@ -79,6 +80,7 @@ public class TeltplassActivity extends AppCompatActivity {
         textViewTeltplassUnderlag = findViewById(R.id.textViewTeltplassUnderlag);
         textViewTeltplassUtsikt = findViewById(R.id.textViewTeltplassUtsikt);
         textViewTeltplassAvstand = findViewById(R.id.textViewTeltplassAvstand);
+        textViewBrukerNavn = findViewById(R.id.textViewBrukerNavn);
         switchTeltplassSkog = findViewById(R.id.switchTeltplassSkog);
         switchTeltplassFjell = findViewById(R.id.switchTeltplassFjell);
         switchTeltplassFiske = findViewById(R.id.switchTeltplassFiske);
@@ -96,8 +98,8 @@ public class TeltplassActivity extends AppCompatActivity {
         mDatabaseRef.addValueEventListener(new ValueEventListener(){
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                showData(dataSnapshot);
                 teltplassUID = dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getUID();
+                showData(dataSnapshot);
             }
 
             @Override
@@ -121,6 +123,7 @@ public class TeltplassActivity extends AppCompatActivity {
             textViewTeltplassUnderlag.setText(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getUnderlag().toString() + "/10");
             textViewTeltplassUtsikt.setText(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getUtsikt().toString() + "/10");
             textViewTeltplassAvstand.setText(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getAvstand().toString() + "/100");
+            textViewBrukerNavn.setText(dataSnapshot.child("users").child(teltplassUID).child("name").getValue(String.class));
             switchTeltplassSkog.setChecked(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getSkog());
             switchTeltplassFjell.setChecked(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getFjell());
             switchTeltplassFiske.setChecked(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getFiske());

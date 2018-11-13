@@ -8,4 +8,5 @@
     <color name="secondaryDarkColor">#00701a</color>
     <color name="primaryTextColor">#000000</color>
     <color name="secondaryTextColor">#000000</color>
+    <color name="hyperTextColor">#0000ff</color>
 </resources>

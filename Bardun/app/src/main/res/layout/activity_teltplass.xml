@@ -51,7 +51,8 @@
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="53dp">
 
                 <ImageView
                     android:id="@+id/imageViewTeltplass"
@@ -75,7 +76,6 @@
                     android:layout_marginTop="8dp"
                     android:text="Teltplassnavn"
                     android:textSize="24sp"
-                    android:onClick="brukerClicked"
                     app:layout_constraintEnd_toStartOf="@+id/imageButtonThumbsUp"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
@@ -196,21 +196,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    app:layout_constraintGuide_begin="274dp" />
+                    app:layout_constraintGuide_begin="305dp" />
 
                 <android.support.constraint.Guideline
                     android:id="@+id/guideline7"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    app:layout_constraintGuide_begin="429dp" />
+                    app:layout_constraintGuide_begin="469dp" />
 
                 <android.support.constraint.Guideline
                     android:id="@+id/guideline8"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    app:layout_constraintGuide_begin="374dp" />
+                    app:layout_constraintGuide_begin="412dp" />
 
                 <Switch
                     android:id="@+id/switchTeltplassSkog"
@@ -247,6 +247,27 @@
                     app:layout_constraintStart_toEndOf="@+id/switchTeltplassFjell"
                     app:layout_constraintTop_toTopOf="@+id/switchTeltplassSkog"
                     android:clickable="false"/>
+
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/registrert_av"
+                    app:layout_constraintBottom_toTopOf="@+id/guideline6"
+                    app:layout_constraintStart_toStartOf="@+id/textViewTeltplassNavn"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewTeltplassNavn" />
+
+                <TextView
+                    android:id="@+id/textViewBrukerNavn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:text="TextView"
+                    android:textColor="@color/hyperTextColor"
+                    android:onClick="brukerClicked"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView6"
+                    app:layout_constraintStart_toEndOf="@+id/textView6"
+                    app:layout_constraintTop_toTopOf="@+id/textView6" />
 
 
             </android.support.constraint.ConstraintLayout>
