@@ -148,7 +148,7 @@ public class BrukerActivity extends AppCompatActivity {
 
             txtName.setText(test1.getName());
             txtEmail.setText(test1.getEmail());
-            txtAge.setText(Integer.toString(test1.getAge()) + " år gammel.");
+            txtAge.setText(Integer.toString(test1.getAge()) + " år gammel");
             txtDescription.setText(test1.getDescription());
     }
 

@@ -1,6 +1,8 @@
 package no.hiof.oleedvao.bardun;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -8,14 +10,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,14 +36,20 @@ public class VisBrukerActivity extends AppCompatActivity {
 
     private FirebaseDatabase mDatabase;
     private DatabaseReference mDatabaseRef;
+    private FirebaseStorage mStorage;
+    private StorageReference mStorageReference;
 
     private TextView txtVisBrukerNavn;
     private TextView txtVisBrukerEmail;
     private TextView txtVisBrukerAlder;
+    private ImageView imgVisBrukerBilde;
+    private TextView txtVisBrukerBeskrivelse;
 
     private RecyclerView myRecyclerView;
     private List<Teltplass> listTeltplass;
     private RecycleViewAdapter recycleAdapter;
+
+    final long ONE_MEGABYTE = 1024 * 1024;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,10 +62,14 @@ public class VisBrukerActivity extends AppCompatActivity {
 
         mDatabase = FirebaseDatabase.getInstance();
         mDatabaseRef = mDatabase.getReference();
+        mStorage = FirebaseStorage.getInstance();
+        mStorageReference = mStorage.getReference();
 
         txtVisBrukerNavn = findViewById(R.id.txtVisBrukerNavn);
         txtVisBrukerEmail = findViewById(R.id.txtVisBrukerEmail);
         txtVisBrukerAlder = findViewById(R.id.txtVisBrukerAlder);
+        txtVisBrukerBeskrivelse = findViewById(R.id.txtVisBrukerBeskrivelse);
+        imgVisBrukerBilde = findViewById(R.id.imgVisBrukerBilde);
 
         myRecyclerView = findViewById(R.id.rvVisBrukerTeltplasser);
         recycleAdapter = new RecycleViewAdapter(VisBrukerActivity.this, listTeltplass);
@@ -92,6 +109,23 @@ public class VisBrukerActivity extends AppCompatActivity {
             test1.setName(dataSnapshot.child("users").child(UID).getValue(User.class).getName());
             test1.setEmail(dataSnapshot.child("users").child(UID).getValue(User.class).getEmail());
             test1.setAge(dataSnapshot.child("users").child(UID).getValue(User.class).getAge());
+            test1.setDescription(dataSnapshot.child("users").child(UID).getValue(User.class).getDescription());
+
+            String imageId = dataSnapshot.child("users").child(UID).getValue(User.class).getImageId();
+            StorageReference imageRef = mStorageReference.child("images/" + imageId);
+
+            imageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                @Override
+                public void onSuccess(byte[] bytes) {
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                    imgVisBrukerBilde.setImageBitmap(bitmap);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+
+                }
+            });
         }
         catch(NullPointerException e){
             Toast.makeText(VisBrukerActivity.this, UID, Toast.LENGTH_LONG).show();
@@ -104,6 +138,7 @@ public class VisBrukerActivity extends AppCompatActivity {
 
         txtVisBrukerNavn.setText(test1.getName());
         txtVisBrukerEmail.setText(test1.getEmail());
-        txtVisBrukerAlder.setText(Integer.toString(test1.getAge()));
+        txtVisBrukerAlder.setText(Integer.toString(test1.getAge()) + " år gammel");
+        txtVisBrukerBeskrivelse.setText(test1.getDescription());
     }
 }
