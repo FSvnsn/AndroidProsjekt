@@ -533,29 +533,26 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public boolean onMarkerClick(Marker marker) {
         LatLng mPos = marker.getPosition();
 
-        // TODO: Legg til errorhandling for NullPointerException
+        // TODO: Legg til test på om geomarker finnes
         try {
-             LatLng geoPos = geomarker.getPosition();
+            if (geomarker != null) {
+                LatLng geoPos = geomarker.getPosition();
 
-
-            if (mPos.equals(geoPos)) {
-                Toast.makeText(this, "Du har trykket på din egen posisjon", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-            else {
-
-                //Åpner Bottom Sheet med Teltplass Quickview
-                //TODO: Håndtere Teltplass-info om hver marker her
-                Log.d(TAG, "onMarkerClick runs + " + marker.getTag());
-
-                TeltplassQuickviewBottomSheetDialog bottomSheet = new TeltplassQuickviewBottomSheetDialog();
-                bottomSheet.show(getSupportFragmentManager(), "teltplassBottomSheet");
-                return false;
+                if (mPos.equals(geoPos)) {
+                    Toast.makeText(this, "Du har trykket på din egen posisjon", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
             }
         }
         catch (NullPointerException e) {
             Log.d(TAG, "Geomarker position not found");
         }
+        //Åpner Bottom Sheet med Teltplass Quickview
+        //TODO: Håndtere Teltplass-info om hver marker her
+        Log.d(TAG, "onMarkerClick runs + " + marker.getTag());
+
+        TeltplassQuickviewBottomSheetDialog bottomSheet = new TeltplassQuickviewBottomSheetDialog();
+        bottomSheet.show(getSupportFragmentManager(), "teltplassBottomSheet");
         return false;
 
     }
