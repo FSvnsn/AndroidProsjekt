@@ -74,13 +74,13 @@ public class KommentarerFragment extends Fragment {
         }
 
         lstKommentarer = new ArrayList<>();
-        lstKommentarer.add(new Kommentar("date","Knerten", "NANI!!!"));
-        lstKommentarer.add(new Kommentar("date","Putin","Blyat..."));
+        //lstKommentarer.add(new Kommentar("date","Knerten", "NANI!!!"));
+        //lstKommentarer.add(new Kommentar("date","Putin","Blyat..."));
 
         mDatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
+                getKommentarer(dataSnapshot);
             }
 
             @Override
@@ -92,6 +92,14 @@ public class KommentarerFragment extends Fragment {
 
     private void getKommentarer(DataSnapshot dataSnapshot){
         for(DataSnapshot ds : dataSnapshot.child("teltplassKommentarer").child(teltplassId).getChildren()){
+
+            Kommentar kommentar = new Kommentar();
+
+            kommentar.setDate(ds.child("date").getValue().toString());
+            kommentar.setBrukernavn(ds.child("brukernavn").getValue().toString());
+            kommentar.setKommentar(ds.child("kommentar").getValue().toString());
+            lstKommentarer.add(kommentar);
+            recyclerViewAdapter.notifyDataSetChanged();
 
         }
     }
