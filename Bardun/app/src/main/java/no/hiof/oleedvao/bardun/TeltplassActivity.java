@@ -67,6 +67,9 @@ public class TeltplassActivity extends AppCompatActivity {
     private ViewPager viewPagerTeltplass;
     private ViewPagerAdapter adapter;
 
+    private BeskrivelseFragment beskrivelseFragment;
+    private KommentarerFragment kommentarerFragment;
+
     final long ONE_MEGABYTE = 1024 * 1024;
 
     @Override
@@ -94,6 +97,7 @@ public class TeltplassActivity extends AppCompatActivity {
         tabLayoutTeltplass = findViewById(R.id.TabLayoutTeltplass);
         viewPagerTeltplass = findViewById(R.id.ViewPagerTeltplass);
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
+
         adapter.AddFragment(new BeskrivelseFragment(),"Beskrivelse");
         adapter.AddFragment(new KommentarerFragment(),"Kommentarer");
         viewPagerTeltplass.setAdapter(adapter);

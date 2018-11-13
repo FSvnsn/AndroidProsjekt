@@ -10,6 +10,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +32,14 @@ public class KommentarerFragment extends Fragment {
     private RecyclerView recyclerView;
     private List<Kommentar> lstKommentarer;
     private KommentarRecyclerViewAdapter recyclerViewAdapter;
+
+    private FirebaseDatabase mDatabase;
+    private DatabaseReference mDatabaseRef;
+    private FirebaseStorage mStorage;
+    private StorageReference mStorageReference;
+    private FirebaseAuth mAuth;
+    private FirebaseUser CUser;
+    private String UID;
 
     public KommentarerFragment() {
     }
@@ -41,8 +59,32 @@ public class KommentarerFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        mDatabase = FirebaseDatabase.getInstance();
+        mDatabaseRef = mDatabase.getReference();
+        mStorage = FirebaseStorage.getInstance();
+        mStorageReference = mStorage.getReference();
+        mAuth = FirebaseAuth.getInstance();
+        CUser = mAuth.getCurrentUser();
+        UID = CUser.getUid();
+
         lstKommentarer = new ArrayList<>();
         lstKommentarer.add(new Kommentar("Knerten", "NANI!!!"));
         lstKommentarer.add(new Kommentar("Putin","Blyat..."));
+
+        mDatabaseRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void getKommentarer(DataSnapshot dataSnapshot){
+        //for(DataSnapshot ds : dataSnapshot.child("teltplassKommentarer").)
     }
 }
