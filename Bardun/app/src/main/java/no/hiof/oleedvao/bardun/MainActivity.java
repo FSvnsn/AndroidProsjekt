@@ -489,8 +489,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         UiSettings uiSettings = mMap.getUiSettings();
 
         uiSettings.setCompassEnabled(true);
-        uiSettings.setMapToolbarEnabled(true);
-        uiSettings.setZoomControlsEnabled(true);
+        uiSettings.setMapToolbarEnabled(false);
+        uiSettings.setZoomControlsEnabled(false);
         uiSettings.setZoomGesturesEnabled(true);
         uiSettings.setCompassEnabled(true);
         uiSettings.setMyLocationButtonEnabled(true);
@@ -540,24 +540,29 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         LatLng mPos = marker.getPosition();
 
         // TODO: Legg til errorhandling for NullPointerException
-        LatLng geoPos = geomarker.getPosition();
+        try {
+             LatLng geoPos = geomarker.getPosition();
 
-        if (mPos.equals(geoPos)) {
-            Toast.makeText(this, "Du har trykket på din egen posisjon", Toast.LENGTH_SHORT).show();
-            return false;
+
+            if (mPos.equals(geoPos)) {
+                Toast.makeText(this, "Du har trykket på din egen posisjon", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+            else {
+
+                //Åpner Bottom Sheet med Teltplass Quickview
+                //TODO: Håndtere Teltplass-info om hver marker her
+                Log.d(TAG, "onMarkerClick runs + " + marker.getTag());
+
+                TeltplassQuickviewBottomSheetDialog bottomSheet = new TeltplassQuickviewBottomSheetDialog();
+                bottomSheet.show(getSupportFragmentManager(), "teltplassBottomSheet");
+                return false;
+            }
         }
-        else {
-
-            //Åpner Bottom Sheet med Teltplass Quickview
-            //TODO: Håndtere Teltplass-info om hver marker her
-            Log.d(TAG, "onMarkerClick runs + " + marker.getTag());
-
-            TeltplassQuickviewBottomSheetDialog bottomSheet = new TeltplassQuickviewBottomSheetDialog();
-            bottomSheet.show(getSupportFragmentManager(), "teltplassBottomSheet");
-            return false;
-
+        catch (NullPointerException e) {
+            Log.d(TAG, "Geomarker position not found");
         }
-
+        return false;
 
     }
     @Override
