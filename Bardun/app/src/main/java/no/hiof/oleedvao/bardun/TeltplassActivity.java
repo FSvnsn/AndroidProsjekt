@@ -129,7 +129,7 @@ public class TeltplassActivity extends AppCompatActivity {
         mDatabaseRef.addValueEventListener(new ValueEventListener(){
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                //teltplassUID = dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getUID();
+                teltplassUID = dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getUID();
                 showData(dataSnapshot);
             }
 
@@ -154,7 +154,8 @@ public class TeltplassActivity extends AppCompatActivity {
             textViewTeltplassUnderlag.setText(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getUnderlag().toString() + "/10");
             textViewTeltplassUtsikt.setText(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getUtsikt().toString() + "/10");
             textViewTeltplassAvstand.setText(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getAvstand().toString() + "/100");
-            textViewBrukerNavn.setText(dataSnapshot.child("users").child(UID).child("name").getValue(String.class));
+            //textViewBrukerNavn.setText(dataSnapshot.child("users").child(UID).child("name").getValue(String.class)); //Problem med forrige
+            textViewBrukerNavn.setText(dataSnapshot.child("users").child(teltplassUID).child("name").getValue(String.class));
             switchTeltplassSkog.setChecked(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getSkog());
             switchTeltplassFjell.setChecked(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getFjell());
             switchTeltplassFiske.setChecked(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getFiske());

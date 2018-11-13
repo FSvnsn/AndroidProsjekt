@@ -36,7 +36,7 @@ public class OpprettKommentarActivity extends AppCompatActivity {
     private String teltplassId;
 
     private Calendar cal;
-    String brukernavn;
+    private String brukernavn;
 
 
     @Override
