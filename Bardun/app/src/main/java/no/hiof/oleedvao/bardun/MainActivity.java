@@ -304,6 +304,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         mMap = googleMap;
 
+
         //Skaffer data fra Firebase og plasserer markører
         mDatabase = FirebaseDatabase.getInstance();
         mDatabaseRef = mDatabase.getReference();
@@ -320,6 +321,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
 
         });
+
 
         mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
 
@@ -553,6 +555,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         TeltplassQuickviewBottomSheetDialog bottomSheet = new TeltplassQuickviewBottomSheetDialog();
         bottomSheet.show(getSupportFragmentManager(), "teltplassBottomSheet");
+        TextView tvTeltplasstittel = findViewById(R.id.bottom_sheet_teltplass_tittel);
+        //tvTeltplasstittel.setText("Stavsro");
         return false;
 
     }
