@@ -556,6 +556,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         //Hent marker position og konverter til string
         String pos = marker.getPosition().toString();
+        String name = marker.getTitle();
         /*ArrayList<String> selectedMarkerData = new ArrayList<>();
         selectedMarkerData.add("teltplassID");
         selectedMarkerData.add("tittel");
@@ -566,7 +567,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         Bundle bundle = new Bundle();
         bundle.putString("latlong", pos);
-        bundle.putString("tittel", "Heime");
+        bundle.putString("tittel", name);
         bundle.putString("brukernavn", "Caroline");
         bundle.putString("dato", "14.01.2014");
         //bundle.putStringArrayList("selectedMarkerData",selectedMarkerData);
