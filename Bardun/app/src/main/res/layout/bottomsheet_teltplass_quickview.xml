@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
@@ -7,17 +9,48 @@
     android:padding="16dp">
 
     <TextView
+        android:id="@+id/bottom_sheet_teltplass_tittel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/bottom_sheet_teltplass_tittel"
-        android:text="Dette er en quickview av teltplass"
-        android:textSize="25sp" />
+        android:text="Teltplasstittel"
+        android:textSize="25sp"
+        tools:layout_editor_absoluteX="117dp"
+        tools:layout_editor_absoluteY="551dp" />
+
+    <TextView
+        android:id="@+id/tv_bottomsheet_latlong"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="LatLong" />
+
+    <TextView
+        android:id="@+id/tv_bottomsheet_brukernavn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Brukernavn" />
+
+    <TextView
+        android:id="@+id/tv_bottomsheet_dato"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="20.01.2018"
+        android:textSize="10sp" />
 
     <Button
         android:id="@+id/btn_visTeltplassActivity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:text="Vis teltplass"
+        tools:layout_editor_absoluteX="129dp"
+        tools:layout_editor_absoluteY="551dp" />
+
+    <ImageButton
+        android:id="@+id/imageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Vis teltplass" />
+        android:background="@android:color/transparent"
+        app:srcCompat="@drawable/ic_favorite_checked" />
 
 
 </LinearLayout>
