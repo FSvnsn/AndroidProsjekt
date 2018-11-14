@@ -33,6 +33,7 @@ import android.widget.Toast;
 import android.widget.Toolbar;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -553,10 +554,28 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         //TODO: Håndtere Teltplass-info om hver marker her
         Log.d(TAG, "onMarkerClick runs + " + marker.getTag());
 
+        //Hent marker position og konverter til string
+        String pos = marker.getPosition().toString();
+        /*ArrayList<String> selectedMarkerData = new ArrayList<>();
+        selectedMarkerData.add("teltplassID");
+        selectedMarkerData.add("tittel");
+        selectedMarkerData.add("latlong");
+        selectedMarkerData.add("brukernavn");
+        selectedMarkerData.add("registrertDato");
+        selectedMarkerData.add("brukerID");*/
+
+        Bundle bundle = new Bundle();
+        bundle.putString("latlong", pos);
+        bundle.putString("tittel", "Heime");
+        bundle.putString("brukernavn", "Caroline");
+        bundle.putString("dato", "14.01.2014");
+        //bundle.putStringArrayList("selectedMarkerData",selectedMarkerData);
+
+
         TeltplassQuickviewBottomSheetDialog bottomSheet = new TeltplassQuickviewBottomSheetDialog();
         bottomSheet.show(getSupportFragmentManager(), "teltplassBottomSheet");
-        TextView tvTeltplasstittel = findViewById(R.id.bottom_sheet_teltplass_tittel);
-        //tvTeltplasstittel.setText("Stavsro");
+
+        bottomSheet.setArguments(bundle);
         return false;
 
     }

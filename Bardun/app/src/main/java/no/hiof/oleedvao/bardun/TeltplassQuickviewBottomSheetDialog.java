@@ -19,6 +19,10 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
+
+import java.util.ArrayList;
+
 import no.hiof.oleedvao.bardun.R;
 
 import static no.hiof.oleedvao.bardun.R.*;
@@ -31,10 +35,10 @@ import static no.hiof.oleedvao.bardun.R.id.*;
 
 public class TeltplassQuickviewBottomSheetDialog extends BottomSheetDialogFragment {
 
-        private BottomSheetListener mListener;
-        private BottomSheetListener mListener2;
-        private String teltplassID;
-        private static final String TAG = "Superman";
+    private BottomSheetListener mListener;
+    private String teltplassID;
+    private static final String TAG = "Superman";
+
 
 
     @Nullable
@@ -42,16 +46,25 @@ public class TeltplassQuickviewBottomSheetDialog extends BottomSheetDialogFragme
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             View v = inflater.inflate(layout.bottomsheet_teltplass_quickview, container, false);
 
+            //Tar i mot data fra MainAcitivty
+            String tittel = getArguments().getString("tittel");
+            String latlong = getArguments().getString("latlong");
+            String brukernavn = getArguments().getString("brukernavn");
+            String dato = getArguments().getString("dato");
+
+            Log.d(TAG,"funnet " + tittel + " " + latlong + " " + brukernavn + " " + dato);
+
+            //Henter id på de ulike layout-elementene i bottom sheet
             TextView tv_bottomsheet_tittel = v.findViewById(bottom_sheet_teltplass_tittel);
             TextView tv_latlong = v.findViewById(tv_bottomsheet_latlong);
             TextView tv_brukernavn = v.findViewById(tv_bottomsheet_brukernavn);
             TextView tv_dato = v.findViewById(tv_bottomsheet_dato);
-            //TODO: Hent fra firebase her
-            //marker.getLocation og konverter til String for å søke i Firebase
-            tv_bottomsheet_tittel.setText("Stavsro");
-            tv_latlong.setText("Koordinater");
-            tv_brukernavn.setText("Brukernavn");
-            tv_dato.setText("Dato");
+
+            //Putter inn data fra marker her
+            tv_bottomsheet_tittel.setText(tittel);
+            tv_latlong.setText(latlong);
+            tv_brukernavn.setText(brukernavn);
+            tv_dato.setText(dato);
 
 
             final ImageButton ib_favoritt = v.findViewById(image_button_favoritt);
