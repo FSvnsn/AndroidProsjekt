@@ -183,8 +183,9 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
     }
 
     public void opprettTeltplass(View view){
-        if(editTextOpprettTeltplassNavn.getText() != null &&
-                editTextOpprettTeltplassBeskrivelse.getText() != null){
+        String emptyString = new String();
+        if(!editTextOpprettTeltplassNavn.getText().toString().equals(emptyString) &&
+                !editTextOpprettTeltplassBeskrivelse.getText().toString().equals(emptyString)){
 
             uploadImage(currentPhotoUri);
 
@@ -212,6 +213,9 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
 
             mDatabaseRef.child("teltplasser").child(teltplass.getLatLng()).setValue(teltplass);
             mDatabaseRef.child("mineTeltplasser").child(UID).child(teltplass.getLatLng()).setValue(teltplass);
+
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
         }
         else{
             Toast.makeText(this, "Du må fylle inn alle feltene", Toast.LENGTH_LONG).show();
