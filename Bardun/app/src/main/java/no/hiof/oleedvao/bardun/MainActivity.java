@@ -484,7 +484,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         uiSettings.setCompassEnabled(true);
         uiSettings.setMapToolbarEnabled(false);
-        uiSettings.setZoomControlsEnabled(false);
+        uiSettings.setZoomControlsEnabled(true);
         uiSettings.setZoomGesturesEnabled(true);
         uiSettings.setCompassEnabled(true);
         uiSettings.setMyLocationButtonEnabled(true);
