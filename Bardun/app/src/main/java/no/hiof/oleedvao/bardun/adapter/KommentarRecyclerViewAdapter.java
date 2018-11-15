@@ -35,7 +35,7 @@ public class KommentarRecyclerViewAdapter extends RecyclerView.Adapter<Kommentar
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
-        holder.textViewKommentarBrukernavn.setText(mData.get(position).getBrukerNavn());
+        holder.textViewKommentarBrukernavn.setText(mData.get(position).getBrukernavn());
         holder.textViewKommentar.setText(mData.get(position).getKommentar());
 
     }
