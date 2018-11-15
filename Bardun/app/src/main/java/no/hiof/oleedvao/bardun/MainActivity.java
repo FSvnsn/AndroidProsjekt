@@ -33,6 +33,7 @@ import android.widget.Toast;
 import android.widget.Toolbar;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -304,6 +305,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         mMap = googleMap;
 
+
         //Skaffer data fra Firebase og plasserer markører
         mDatabase = FirebaseDatabase.getInstance();
         mDatabaseRef = mDatabase.getReference();
@@ -320,6 +322,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
 
         });
+
 
         mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
 
@@ -338,6 +341,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             String name = ds.child("navn").getValue(String.class);
             String location = ds.child("latLng").getValue(String.class);
 
+            // Testing fra gruppemøte med Remi og Marius :))
+            // Legg i ArrayList
+            String test = ds.getKey();
+            // Teltplass test1 = ds.getValue(Teltplass.class);
+
+
             location = location.replace("p", ".");
             location = location.replace("k", ",");
 
@@ -349,11 +358,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             LatLng currLoc = new LatLng(latitude, longitude);
 
-            mMap.addMarker(new MarkerOptions()
+            Marker m = mMap.addMarker(new MarkerOptions()
                             .position(currLoc)
                             .title(name)
                             .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_teltplass_marker_green))
             );
+            m.setTag(test);
+            //Log.d(TAG, " key: " + m.getTag());
+
         }
     }
 
@@ -484,7 +496,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         uiSettings.setCompassEnabled(true);
         uiSettings.setMapToolbarEnabled(false);
-        uiSettings.setZoomControlsEnabled(false);
+        uiSettings.setZoomControlsEnabled(true);
         uiSettings.setZoomGesturesEnabled(true);
         uiSettings.setCompassEnabled(true);
         uiSettings.setMyLocationButtonEnabled(true);
@@ -551,8 +563,23 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         //TODO: Håndtere Teltplass-info om hver marker her
         Log.d(TAG, "onMarkerClick runs + " + marker.getTag());
 
+        //Hent marker position og konverter til string
+        String pos = marker.getPosition().toString();
+        String name = marker.getTitle();
+        String id = (String) marker.getTag();
+
+        Bundle bundle = new Bundle();
+        bundle.putString("latlong",pos);
+        bundle.putString("tittel",name);
+        bundle.putString("brukernavn", "Caroline");
+        bundle.putString("dato", "14.01.2014");
+        bundle.putString("id",id);
+
+
         TeltplassQuickviewBottomSheetDialog bottomSheet = new TeltplassQuickviewBottomSheetDialog();
         bottomSheet.show(getSupportFragmentManager(), "teltplassBottomSheet");
+
+        bottomSheet.setArguments(bundle);
         return false;
 
     }

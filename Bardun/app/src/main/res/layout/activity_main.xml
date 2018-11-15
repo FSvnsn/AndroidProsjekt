@@ -70,31 +70,13 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.131" />
 
-            <ImageButton
-                android:id="@+id/imageBtnFilter"
-                style="@style/Widget.AppCompat.ImageButton"
-                android:layout_width="38dp"
-                android:layout_height="38dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="336dp"
-                android:background="@color/colorPrimaryDark"
-                android:tint="@android:color/white"
-                android:visibility="visible"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.198"
-                app:srcCompat="@drawable/ic_filter" />
-
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/nyTeltplassHer"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:visibility="gone"
                 tools:layout_editor_absoluteX="0dp"
-                tools:layout_editor_absoluteY="0dp"
-                android:visibility="gone">
+                tools:layout_editor_absoluteY="0dp">
 
                 <TextView
                     android:id="@+id/latlongTextview"
@@ -156,14 +138,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginBottom="8dp"
-                android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="52dp"
                 android:background="#fff"
                 android:elevation="10dp"
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="@+id/map"
-                app:layout_constraintEnd_toEndOf="@+id/map"
+                app:layout_constraintEnd_toEndOf="@+id/visTeltplassKlikk"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/map"
                 app:layout_constraintTop_toTopOf="@+id/map"
@@ -183,19 +164,35 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/searchIcon"
-                    android:layout_marginLeft="8dp"
                     android:layout_marginBottom="0dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_toRightOf="@+id/searchIcon"
                     android:background="@null"
                     android:hint="Skriv inn stedsnavn eller teltplassnavn..."
-                    android:textColor="@color/primaryTextColor"
-                    android:textSize="15sp"
                     android:imeOptions="actionDone"
                     android:singleLine="true"
+                    android:textColor="@color/primaryTextColor"
+                    android:textSize="15sp"
                     tools:layout_editor_absoluteX="17dp"
                     tools:layout_editor_absoluteY="58dp" />
 
             </RelativeLayout>
+
+            <ImageButton
+                android:id="@+id/imageBtnFilter"
+                style="@style/Widget.AppCompat.ImageButton"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="12dp"
+                android:background="@color/colorPrimaryDark"
+                android:tint="@android:color/white"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="@+id/searchMapRelativeLayout"
+                app:layout_constraintTop_toTopOf="@+id/visTeltplassKlikk"
+                app:srcCompat="@drawable/ic_filter" />
 
 
         </android.support.constraint.ConstraintLayout>
