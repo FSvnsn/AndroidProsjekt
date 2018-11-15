@@ -341,6 +341,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             String name = ds.child("navn").getValue(String.class);
             String location = ds.child("latLng").getValue(String.class);
 
+            // Testing fra gruppemøte med Remi og Marius :))
+            // Legg i ArrayList
+            String test = ds.getKey();
+            // Teltplass test1 = ds.getValue(Teltplass.class);
+
+
             location = location.replace("p", ".");
             location = location.replace("k", ",");
 
@@ -352,11 +358,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             LatLng currLoc = new LatLng(latitude, longitude);
 
-            mMap.addMarker(new MarkerOptions()
+            Marker m = mMap.addMarker(new MarkerOptions()
                             .position(currLoc)
                             .title(name)
                             .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_teltplass_marker_green))
             );
+            m.setTag(test);
+            //Log.d(TAG, " key: " + m.getTag());
+
         }
     }
 
@@ -557,20 +566,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         //Hent marker position og konverter til string
         String pos = marker.getPosition().toString();
         String name = marker.getTitle();
-        /*ArrayList<String> selectedMarkerData = new ArrayList<>();
-        selectedMarkerData.add("teltplassID");
-        selectedMarkerData.add("tittel");
-        selectedMarkerData.add("latlong");
-        selectedMarkerData.add("brukernavn");
-        selectedMarkerData.add("registrertDato");
-        selectedMarkerData.add("brukerID");*/
+        String id = (String) marker.getTag();
 
         Bundle bundle = new Bundle();
-        bundle.putString("latlong", pos);
-        bundle.putString("tittel", name);
+        bundle.putString("latlong",pos);
+        bundle.putString("tittel",name);
         bundle.putString("brukernavn", "Caroline");
         bundle.putString("dato", "14.01.2014");
-        //bundle.putStringArrayList("selectedMarkerData",selectedMarkerData);
+        bundle.putString("id",id);
 
 
         TeltplassQuickviewBottomSheetDialog bottomSheet = new TeltplassQuickviewBottomSheetDialog();

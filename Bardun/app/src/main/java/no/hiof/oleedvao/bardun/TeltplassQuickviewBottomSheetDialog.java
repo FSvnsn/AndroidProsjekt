@@ -51,14 +51,18 @@ public class TeltplassQuickviewBottomSheetDialog extends BottomSheetDialogFragme
             String latlong = getArguments().getString("latlong");
             String brukernavn = getArguments().getString("brukernavn");
             String dato = getArguments().getString("dato");
+            final String id = getArguments().getString("id");
 
-            Log.d(TAG,"funnet " + tittel + " " + latlong + " " + brukernavn + " " + dato);
+
+        Log.d(TAG,"funnet " + tittel + " " + latlong + " " + brukernavn + " " + dato);
 
             //Henter id på de ulike layout-elementene i bottom sheet
             TextView tv_bottomsheet_tittel = v.findViewById(bottom_sheet_teltplass_tittel);
             TextView tv_latlong = v.findViewById(tv_bottomsheet_latlong);
             TextView tv_brukernavn = v.findViewById(tv_bottomsheet_brukernavn);
             TextView tv_dato = v.findViewById(tv_bottomsheet_dato);
+
+            Log.d(TAG, "id : " + id);
 
             //Putter inn data fra marker her
             tv_bottomsheet_tittel.setText(tittel);
@@ -82,8 +86,8 @@ public class TeltplassQuickviewBottomSheetDialog extends BottomSheetDialogFragme
                 public void onClick(View v) {
                     mListener.onButtonClicked("Vis teltplass klikket");
                     //Start TeltplassActivity ved å sende med ID?
-                    Intent intent = new Intent(getActivity(), InstillingerActivity.class);
-                    //intent.putExtra("teltplassID", teltplassID);
+                    Intent intent = new Intent(getActivity(), TeltplassActivity.class);
+                    intent.putExtra("Id", id);
                     startActivity(intent);
 
                     dismiss();
