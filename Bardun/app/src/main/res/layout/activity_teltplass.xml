@@ -200,21 +200,21 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        app:layout_constraintGuide_begin="331dp" />
+                        app:layout_constraintGuide_begin="366dp" />
 
                     <android.support.constraint.Guideline
                         android:id="@+id/guideline7"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        app:layout_constraintGuide_begin="480dp" />
+                        app:layout_constraintGuide_begin="505dp" />
 
                     <android.support.constraint.Guideline
                         android:id="@+id/guideline8"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        app:layout_constraintGuide_begin="430dp" />
+                        app:layout_constraintGuide_begin="472dp" />
 
                     <Switch
                         android:id="@+id/switchTeltplassSkog"
@@ -266,6 +266,7 @@
                         app:layout_constraintBottom_toTopOf="@+id/guideline6"
                         app:layout_constraintStart_toStartOf="@+id/textViewTeltplassNavn"
                         app:layout_constraintTop_toBottomOf="@+id/textViewTeltplassNavn" />
+
                     <android.support.constraint.Guideline
                         android:id="@+id/guideline13"
                         android:layout_width="wrap_content"
@@ -312,41 +313,52 @@
                         android:id="@+id/textViewCommentsTeltplass"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginStart="8dp"
                         android:text="(5)"
                         android:textColor="@android:color/darker_gray"
                         android:textSize="8sp"
-                        tools:layout_editor_absoluteX="297dp"
-                        tools:layout_editor_absoluteY="315dp" />
+                        app:layout_constraintEnd_toEndOf="@+id/imageButtonKommentar"
+                        app:layout_constraintStart_toStartOf="@+id/imageButtonKommentar"
+                        app:layout_constraintTop_toBottomOf="@+id/imageButtonKommentar" />
 
                     <TextView
                         android:id="@+id/textViewFavoritterTeltplass"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginStart="32dp"
                         android:text="(5)"
                         android:textColor="@android:color/darker_gray"
                         android:textSize="8sp"
-                        tools:layout_editor_absoluteX="349dp"
-                        tools:layout_editor_absoluteY="315dp" />
+                        app:layout_constraintEnd_toEndOf="@+id/imageButtonFavoritt"
+                        app:layout_constraintStart_toEndOf="@+id/textViewCommentsTeltplass"
+                        app:layout_constraintTop_toBottomOf="@+id/imageButtonFavoritt" />
 
                     <TextView
                         android:id="@+id/textViewThumbsdown2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginStart="8dp"
                         android:text="(1)"
                         android:textColor="@android:color/darker_gray"
                         android:textSize="8sp"
-                        tools:layout_editor_absoluteX="249dp"
-                        tools:layout_editor_absoluteY="315dp" />
+                        app:layout_constraintEnd_toEndOf="@+id/imageButtonThumbsDown"
+                        app:layout_constraintStart_toStartOf="@+id/imageButtonThumbsDown"
+                        app:layout_constraintTop_toBottomOf="@+id/imageButtonThumbsDown" />
 
                     <TextView
                         android:id="@+id/textViewThumbsup2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
                         android:text="(3)"
                         android:textColor="@android:color/darker_gray"
                         android:textSize="8sp"
-                        tools:layout_editor_absoluteX="201dp"
-                        tools:layout_editor_absoluteY="315dp" />
+                        app:layout_constraintEnd_toEndOf="@+id/imageButtonThumbsUp"
+                        app:layout_constraintStart_toStartOf="@+id/imageButtonThumbsUp"
+                        app:layout_constraintTop_toBottomOf="@+id/imageButtonThumbsUp" />
 
 
                 </android.support.constraint.ConstraintLayout>
