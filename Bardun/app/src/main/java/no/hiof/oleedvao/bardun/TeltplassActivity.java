@@ -74,6 +74,7 @@ public class TeltplassActivity extends AppCompatActivity {
     private KommentarerFragment kommentarerFragment;
 
     final long ONE_MEGABYTE = 1024 * 1024;
+    private boolean favoritt = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,7 +146,16 @@ public class TeltplassActivity extends AppCompatActivity {
         imageButtonFavoritt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //TODO: Hent fra database
                 addToFavoritter(v);
+                if (favoritt == false) {
+                    imageButtonFavoritt.setImageResource(R.drawable.ic_favorite_checked);
+                    favoritt = true;
+                }
+                else if (favoritt == true) {
+                    imageButtonFavoritt.setImageResource(R.drawable.ic_favorite_unchecked);
+                    favoritt = false;
+                }
             }
         });
     }
