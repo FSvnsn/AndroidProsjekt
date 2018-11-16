@@ -168,12 +168,17 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                             try {
                                 List<Address> list = geocoder.getFromLocation(latitude, longitude, 1);
                                 String geoStedsnavn = list.get(0).getLocality();
-                                mMap.addMarker(new MarkerOptions()
+                                Log.d(TAG, "Network provider before 1.geomarker = " + geomarker);
+                                if (geomarker != null) {
+                                    geomarker.remove();
+                                }
+                                geomarker = mMap.addMarker(new MarkerOptions()
                                                 .position(geolatLng)
                                                 .title(geoStedsnavn)
                                                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_geo_location))
-                                        //.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
                                 );
+                                Log.d(TAG, "Network provider after 1.geomarker = " + geomarker);
+
                                 imageBtnMyLoc.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
@@ -181,9 +186,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                                         mMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(geolatLng, 15, 0, 0)));
                                     }
                                 });
-
-                                //mMap.moveCamera(CameraUpdateFactory.newLatLng(geolatLng));
-                                //mMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(geolatLng, 15, 0, 0)));
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -215,13 +217,16 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     try {
                         List<Address> list = geocoder.getFromLocation(latitude, longitude, 1);
                         String geoStedsnavn = list.get(0).getLocality();
+                        Log.d(TAG, "GPS provider before 1.geomarker = " + geomarker);
+                        if (geomarker != null) {
+                            geomarker.remove();
+                        }
                         geomarker = mMap.addMarker(new MarkerOptions()
                                         .position(geolatLng)
                                         .title(geoStedsnavn)
                                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_geo_location))
-                                //.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-
                         );
+                        Log.d(TAG, "GPS provider after 1.geomarker = " + geomarker);
                         imageBtnMyLoc.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -230,8 +235,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                             }
                         });
 
-                        //mMap.moveCamera(CameraUpdateFactory.newLatLng(geolatLng));
-                        //mMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(geolatLng, 15, 0, 0)));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -252,13 +255,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 }
             });
-
         }
-
     }
 
     private void initSearch() {
-
 
         // region mapSetup
         mGoogleApiClient = new GoogleApiClient
@@ -312,9 +312,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             Log.d(TAG, "Location funnet!: " + address.toString());
             Toast.makeText(this, address.getLocality().toString(), Toast.LENGTH_SHORT).show();
-
         }
-
     }
 
     // region mapSetup og henting fra database
@@ -322,7 +320,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
 
         mMap = googleMap;
-
 
         //Skaffer data fra Firebase og plasserer markører
         mDatabase = FirebaseDatabase.getInstance();
@@ -340,7 +337,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
 
         });
-
 
         mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
         mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(NORGE, 0));
