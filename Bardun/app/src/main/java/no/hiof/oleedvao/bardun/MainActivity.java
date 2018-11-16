@@ -39,11 +39,15 @@ import android.widget.Toolbar;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.zip.Inflater;
 
 import android.os.AsyncTask;
@@ -387,29 +391,30 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         Teltplass sisteTeltplass = new Teltplass();
 
         Calendar calendar1 = Calendar.getInstance();
-        SimpleDateFormat formatter1 = new SimpleDateFormat("dd/M/yyyy h:mm");
         String currentDate = calendar1.getTime().toString();
-        String lastDate;
+        String lastDate = "Fri Nov 16 13:41:24 GMT+01:00 2017";
 
         //Toast.makeText(this, currentDate, Toast.LENGTH_LONG).show();
 
+
         for (DataSnapshot ds : dataSnapshot.child("mineTeltplasser").child(UID).getChildren()){
-            lastDate = (ds.child("timeStamp").getValue(String.class));
-            if(lastDate != null){
-                if (lastDate.compareTo(currentDate) <= 0){
-                    //Toast.makeText(this, "Riktig!", Toast.LENGTH_LONG).show();
+            String tempDate = (ds.child("timeStamp").getValue(String.class));
+            if(tempDate != null){
+                if (tempDate.compareTo(lastDate) >= 0){
+                    lastDate = tempDate;
                 }
             }
         }
 
         String textTitle = "Klar for en ny telttur?";
-        String textContent = "";
+        String textContent = "Du har ikke lagd en ny teltplass siden " + lastDate + ". Kanskje på tide å lage en ny?";
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setContentTitle(textTitle)
                 .setContentText(textContent)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(textContent));
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
 
