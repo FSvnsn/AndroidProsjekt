@@ -82,43 +82,49 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
+                        android:background="@android:color/transparent"
                         app:layout_constraintEnd_toStartOf="@+id/imageButtonThumbsDown"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toEndOf="@+id/textViewTeltplassNavn"
                         app:layout_constraintTop_toTopOf="@+id/textViewTeltplassNavn"
-                        app:srcCompat="@android:drawable/arrow_up_float" />
+                        app:srcCompat="@drawable/ic_thumbs_up" />
 
                     <ImageButton
                         android:id="@+id/imageButtonThumbsDown"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
+                        android:backgroundTint="@android:color/transparent"
+                        android:padding="0dp"
                         app:layout_constraintEnd_toStartOf="@+id/imageButtonKommentar"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toEndOf="@+id/imageButtonThumbsUp"
                         app:layout_constraintTop_toTopOf="@+id/imageButtonThumbsUp"
-                        app:srcCompat="@android:drawable/arrow_down_float" />
+                        app:srcCompat="@drawable/ic_thumbs_down" />
 
                     <ImageButton
                         android:id="@+id/imageButtonKommentar"
                         android:layout_width="36dp"
                         android:layout_height="31dp"
                         android:layout_marginStart="8dp"
+                        android:backgroundTint="@android:color/transparent"
                         android:onClick="navigerTilOpprettKommentar"
                         app:layout_constraintEnd_toStartOf="@+id/imageButtonFavoritt"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toEndOf="@+id/imageButtonThumbsDown"
                         app:layout_constraintTop_toTopOf="@+id/imageButtonThumbsDown"
-                        app:srcCompat="@android:drawable/ic_dialog_email" />
+                        app:srcCompat="@drawable/ic_comment" />
 
                     <ImageButton
                         android:id="@+id/imageButtonFavoritt"
                         android:layout_width="41dp"
                         android:layout_height="36dp"
                         android:layout_marginEnd="8dp"
+                        android:backgroundTint="@android:color/transparent"
+                        android:padding="0dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/imageButtonKommentar"
-                        app:srcCompat="@android:drawable/star_big_on" />
+                        app:srcCompat="@drawable/ic_favorite_unchecked" />
 
                     <android.support.constraint.Guideline
                         android:id="@+id/guideline5"
