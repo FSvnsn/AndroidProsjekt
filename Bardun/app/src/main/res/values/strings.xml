@@ -38,6 +38,7 @@
     <string name="edittext_kommentar_hint">Skriv kommentar her...</string>
     <string name="registrert_av">Registrert av:</string>
     <string name="beskrivelse">Beskrivelse</string>
+    <string name="button_avbryt">Avbryt</string>
 
     <string-array name="filter_items">
         <item>Skog</item>

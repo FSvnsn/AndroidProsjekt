@@ -222,6 +222,11 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
         }
     }
 
+    public void avbrytOpprettTeltplass(View view){
+        Intent intent = new Intent(this,MainActivity.class);
+        startActivity(intent);
+    }
+
     private void uploadImage(Uri filePath) {
 
         if(filePath != null)
