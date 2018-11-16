@@ -1,6 +1,8 @@
 package no.hiof.oleedvao.bardun;
 
 import android.Manifest;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -10,12 +12,15 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
@@ -34,9 +39,15 @@ import android.widget.Toolbar;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.zip.Inflater;
 
 import android.os.AsyncTask;
@@ -62,6 +73,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -115,7 +128,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private FirebaseDatabase mDatabase;
     private DatabaseReference mDatabaseRef;
+    private FirebaseAuth mAuth;
+    private FirebaseUser CUser;
+    private String UID;
+
     private ImageButton imageBtnMyLoc;
+    private String CHANNEL_ID = "default";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,6 +153,17 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         });
         imageBtnMyLoc = findViewById(R.id.imageBtnMyLoc);
 
+        mAuth = FirebaseAuth.getInstance();
+        CUser = mAuth.getCurrentUser();
+
+        try{
+            UID = CUser.getUid();
+        }
+        catch(NullPointerException e){
+            Toast.makeText(this, "Du er ikke logget inn!", Toast.LENGTH_LONG).show();
+        }
+
+        createNotificationChannel();
         setUpNavigationDrawer();
 
         //Innhenter maps og sier fra når det er klart
@@ -327,6 +356,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mDatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                //Viser notifikasjon for hvor lenge siden sist bruker har oprettet en teltplass
+                if(CUser != null){
+                    showNotification(dataSnapshot);
+                }
+
+                //Henter teltplasser fra Firebase og lager markører for hver i kartet
                 showMarkers(dataSnapshot);
             }
 
@@ -350,6 +385,40 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         setUpUISettings();
         initSearch();
 
+    }
+
+    private void showNotification(DataSnapshot dataSnapshot) {
+        Teltplass sisteTeltplass = new Teltplass();
+
+        Calendar calendar1 = Calendar.getInstance();
+        String currentDate = calendar1.getTime().toString();
+        String lastDate = "Fri Nov 16 13:41:24 GMT+01:00 2017";
+
+        //Toast.makeText(this, currentDate, Toast.LENGTH_LONG).show();
+
+
+        for (DataSnapshot ds : dataSnapshot.child("mineTeltplasser").child(UID).getChildren()){
+            String tempDate = (ds.child("timeStamp").getValue(String.class));
+            if(tempDate != null){
+                if (tempDate.compareTo(lastDate) >= 0){
+                    lastDate = tempDate;
+                }
+            }
+        }
+
+        String textTitle = "Klar for en ny telttur?";
+        String textContent = "Du har ikke lagd en ny teltplass siden " + lastDate + ". Kanskje på tide å lage en ny?";
+
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_minefavoritter)
+                .setContentTitle(textTitle)
+                .setContentText(textContent)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(textContent));
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+
+        notificationManager.notify(1, mBuilder.build());
     }
 
     private void showMarkers(DataSnapshot dataSnapshot) {
@@ -506,7 +575,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         });
     }
 
-
     private void setUpUISettings() {
         UiSettings uiSettings = mMap.getUiSettings();
 
@@ -633,5 +701,21 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
+    }
+
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.channel_name);
+            String description = getString(R.string.channel_description);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 }

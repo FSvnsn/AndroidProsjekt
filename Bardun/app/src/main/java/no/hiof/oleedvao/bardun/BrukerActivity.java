@@ -138,7 +138,10 @@ public class BrukerActivity extends AppCompatActivity {
                 });
             }
             catch(NullPointerException e){
-                Toast.makeText(BrukerActivity.this, "Du må logge inn for å oprette en brukerprofil!", Toast.LENGTH_LONG).show();
+                e.printStackTrace();
+            }
+
+            if (test1.getName() == "" || test1.getEmail() == null || test1.getAge() == 0){
                 createUser();
             }
 

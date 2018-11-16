@@ -56,30 +56,30 @@
                 android:id="@+id/btnLastOppBilde"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
                 android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
                 android:onClick="getPicture"
                 android:text="Last opp bilde"
-                app:layout_constraintBottom_toTopOf="@+id/btnTaBilde"
+                app:layout_constraintBottom_toTopOf="@+id/guideline19"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/imgRedigerBruker"
-                app:layout_constraintTop_toBottomOf="@+id/guideline17"
-                app:layout_constraintVertical_chainStyle="packed" />
+                app:layout_constraintTop_toTopOf="@+id/guideline18"
+                app:layout_constraintVertical_bias="0.75" />
 
             <Button
                 android:id="@+id/btnTaBilde"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="15dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
                 android:onClick="takePicture"
                 android:text="Ta bilde"
-                app:layout_constraintBottom_toTopOf="@+id/guideline19"
+                app:layout_constraintBottom_toTopOf="@+id/btnLastOppBilde"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/imgRedigerBruker"
-                app:layout_constraintTop_toBottomOf="@+id/btnLastOppBilde" />
+                app:layout_constraintStart_toEndOf="@+id/imgRedigerBruker" />
 
             <TextView
                 android:id="@+id/textView2"
@@ -104,7 +104,7 @@
                 android:inputType="textPersonName"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/inputEmail" />
+                app:layout_constraintTop_toTopOf="@+id/guideline19" />
 
             <EditText
                 android:id="@+id/inputEmail"
@@ -118,7 +118,7 @@
                 android:inputType="textEmailAddress"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/guideline19" />
+                app:layout_constraintTop_toBottomOf="@+id/inputNavn" />
 
             <EditText
                 android:id="@+id/inputAlder"
@@ -126,13 +126,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="15dp"
                 android:ems="10"
                 android:hint="@string/alder"
                 android:inputType="number"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.503"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/inputNavn" />
+                app:layout_constraintTop_toBottomOf="@+id/inputEmail" />
 
             <EditText
                 android:id="@+id/inputBeskrivelse"
