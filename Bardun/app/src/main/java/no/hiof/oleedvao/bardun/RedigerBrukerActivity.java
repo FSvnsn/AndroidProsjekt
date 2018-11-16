@@ -3,6 +3,7 @@ package no.hiof.oleedvao.bardun;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -104,6 +105,21 @@ public class RedigerBrukerActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        Bitmap bm =((BitmapDrawable)imgRedigerBruker.getDrawable()).getBitmap();
+        outState.putParcelable("bitmap",bm);
+
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        imgRedigerBruker.setImageBitmap((Bitmap) savedInstanceState.getParcelable("bitmap"));
+
+        super.onRestoreInstanceState(savedInstanceState);
     }
 
     public void getPicture(View view){

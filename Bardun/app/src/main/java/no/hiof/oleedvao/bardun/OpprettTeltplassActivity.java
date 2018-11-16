@@ -3,6 +3,7 @@ package no.hiof.oleedvao.bardun;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -91,6 +92,21 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         CUser = mAuth.getCurrentUser();
         UID = CUser.getUid();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        Bitmap bm =((BitmapDrawable)imageView.getDrawable()).getBitmap();
+        outState.putParcelable("bitmap",bm);
+
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        imageView.setImageBitmap((Bitmap) savedInstanceState.getParcelable("bitmap"));
+
+        super.onRestoreInstanceState(savedInstanceState);
     }
 
     //Metode for å hente bilde fra galleri
