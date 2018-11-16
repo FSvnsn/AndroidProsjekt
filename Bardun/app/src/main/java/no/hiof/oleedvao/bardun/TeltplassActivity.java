@@ -64,6 +64,7 @@ public class TeltplassActivity extends AppCompatActivity {
     private Switch switchTeltplassSkog;
     private Switch switchTeltplassFjell;
     private Switch switchTeltplassFiske;
+    private TextView textViewTeltplassTimeStamp;
 
     private TabLayout tabLayoutTeltplass;
     private ViewPager viewPagerTeltplass;
@@ -96,6 +97,7 @@ public class TeltplassActivity extends AppCompatActivity {
         switchTeltplassSkog = findViewById(R.id.switchTeltplassSkog);
         switchTeltplassFjell = findViewById(R.id.switchTeltplassFjell);
         switchTeltplassFiske = findViewById(R.id.switchTeltplassFiske);
+        textViewTeltplassTimeStamp = findViewById(R.id.textViewTeltplassTimeStamp);
 
         tabLayoutTeltplass = findViewById(R.id.TabLayoutTeltplass);
         viewPagerTeltplass = findViewById(R.id.ViewPagerTeltplass);
@@ -159,6 +161,7 @@ public class TeltplassActivity extends AppCompatActivity {
             switchTeltplassSkog.setChecked(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getSkog());
             switchTeltplassFjell.setChecked(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getFjell());
             switchTeltplassFiske.setChecked(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getFiske());
+            textViewTeltplassTimeStamp.setText(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getTimeStamp());
 
             String imageId = dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getImageId();
             StorageReference imageRef = mStorageReference.child("images/" + imageId);
