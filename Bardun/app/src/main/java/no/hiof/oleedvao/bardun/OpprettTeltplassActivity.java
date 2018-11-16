@@ -34,6 +34,7 @@ import com.google.firebase.storage.UploadTask;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
@@ -199,6 +200,9 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
             location = location.replace(".", "p");
             location = location.replace(",", "k");
 
+            Calendar cal = Calendar.getInstance();
+            String timeStamp = cal.getTime().toString();
+
             Teltplass teltplass = new Teltplass(location,
                     editTextOpprettTeltplassNavn.getText().toString(),
                     editTextOpprettTeltplassBeskrivelse.getText().toString(),
@@ -209,7 +213,8 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
                     switchOpprettTeltplassFjell.isChecked(),
                     switchOpprettTeltplassFiske.isChecked(),
                     currentImageId,
-                    UID);
+                    UID,
+                    timeStamp);
 
             mDatabaseRef.child("teltplasser").child(teltplass.getLatLng()).setValue(teltplass);
             mDatabaseRef.child("mineTeltplasser").child(UID).child(teltplass.getLatLng()).setValue(teltplass);

@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,15 +6,16 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="39dp">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="53dp">
+            android:layout_height="wrap_content">
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/imageViewTeltplass"
                 android:layout_width="275dp"
                 android:layout_height="198dp"
                 android:layout_marginBottom="8dp"
@@ -26,7 +25,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/guideline5"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/guideline13"
                 app:srcCompat="@android:drawable/ic_menu_gallery" />
 
             <TextView
@@ -47,7 +46,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:onClick="navigerTilOpprettKommentar"
                 app:layout_constraintEnd_toStartOf="@+id/imageButtonThumbsDown"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/textViewTeltplassNavn"
@@ -70,6 +68,7 @@
                 android:layout_width="36dp"
                 android:layout_height="31dp"
                 android:layout_marginStart="8dp"
+                android:onClick="navigerTilOpprettKommentar"
                 app:layout_constraintEnd_toStartOf="@+id/imageButtonFavoritt"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/imageButtonThumbsDown"
@@ -81,10 +80,7 @@
                 android:layout_width="41dp"
                 android:layout_height="36dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/imageButtonKommentar"
                 app:layout_constraintTop_toTopOf="@+id/imageButtonKommentar"
                 app:srcCompat="@android:drawable/star_big_on" />
 
@@ -93,7 +89,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_begin="222dp" />
+                app:layout_constraintGuide_begin="275dp" />
 
             <TextView
                 android:id="@+id/textView9"
@@ -147,7 +143,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
             <TextView
-                android:id="@+id/textViewTeltplassTurstart"
+                android:id="@+id/textViewTeltplassAvstand"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TextView"
@@ -160,27 +156,27 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_begin="305dp" />
+                app:layout_constraintGuide_begin="331dp" />
 
             <android.support.constraint.Guideline
                 android:id="@+id/guideline7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_begin="469dp" />
+                app:layout_constraintGuide_begin="480dp" />
 
             <android.support.constraint.Guideline
                 android:id="@+id/guideline8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_begin="412dp" />
+                app:layout_constraintGuide_begin="430dp" />
 
             <Switch
                 android:id="@+id/switchTeltplassSkog"
                 android:layout_width="89dp"
                 android:layout_height="23dp"
-                android:layout_marginBottom="8dp"
+                android:clickable="false"
                 android:text="@string/switch_skog"
                 app:layout_constraintBottom_toTopOf="@+id/guideline7"
                 app:layout_constraintEnd_toStartOf="@+id/switchTeltplassFjell"
@@ -192,6 +188,7 @@
                 android:id="@+id/switchTeltplassFjell"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:clickable="false"
                 android:text="@string/switch_fjell"
                 app:layout_constraintEnd_toStartOf="@+id/switchTeltplassFiske"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -203,6 +200,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
+                android:clickable="false"
                 android:text="@string/switch_fiske"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -210,19 +208,27 @@
                 app:layout_constraintTop_toTopOf="@+id/switchTeltplassSkog" />
 
             <TextView
-            android:id="@+id/textView6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/registrert_av"
-            app:layout_constraintBottom_toTopOf="@+id/guideline6"
-            app:layout_constraintStart_toStartOf="@+id/textViewTeltplassNavn"
-            app:layout_constraintTop_toBottomOf="@+id/textViewTeltplassNavn" />
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/registrert_av"
+                app:layout_constraintBottom_toTopOf="@+id/guideline6"
+                app:layout_constraintStart_toStartOf="@+id/textViewTeltplassNavn"
+                app:layout_constraintTop_toBottomOf="@+id/textViewTeltplassNavn" />
+
+            <android.support.constraint.Guideline
+                android:id="@+id/guideline13"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="58dp" />
 
             <TextView
                 android:id="@+id/textViewBrukerNavn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
+                android:layout_marginStart="16dp"
+                android:onClick="brukerClicked"
                 android:text="TextView"
                 android:textColor="@color/hyperTextColor"
                 app:layout_constraintBottom_toBottomOf="@+id/textView6"
@@ -230,9 +236,42 @@
                 app:layout_constraintTop_toTopOf="@+id/textView6" />
 
 
+            <android.support.design.widget.TabLayout
+                android:id="@+id/TabLayoutTeltplass"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/guideline7"
+                app:tabBackground="@color/colorPrimary"
+                app:tabIndicatorColor="@color/colorAccent"
+                app:tabTextColor="@color/common_google_signin_btn_text_dark_default">
+
+            </android.support.design.widget.TabLayout>
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/ViewPagerTeltplass"
+                android:layout_width="match_parent"
+                android:layout_height="248dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/TabLayoutTeltplass"></android.support.v4.view.ViewPager>
+
+            <TextView
+                android:id="@+id/textViewTeltplassTimeStamp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="TextView"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@+id/textViewBrukerNavn"
+                app:layout_constraintStart_toEndOf="@+id/textViewBrukerNavn"
+                app:layout_constraintTop_toTopOf="@+id/textViewBrukerNavn" />
+
+
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
-
 
 
 </android.support.constraint.ConstraintLayout>
