@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -82,6 +83,8 @@ public class TeltplassActivity extends AppCompatActivity {
 
         toolbar = findViewById(R.id.toolbarTeltplass);
         setUpNavigationDrawer();
+        //setSupportActionBar(toolbar);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //instantiatierer views
         imageViewTeltplass = findViewById(R.id.imageViewTeltplass);

@@ -27,7 +27,8 @@
         <activity android:name=".BrukerActivity" >
 
         </activity>
-        <activity android:name=".TeltplassActivity" >
+        <activity android:name=".TeltplassActivity"
+            android:parentActivityName=".MainActivity">
 
         </activity>
         <activity android:name=".RedigerBrukerActivity" />
