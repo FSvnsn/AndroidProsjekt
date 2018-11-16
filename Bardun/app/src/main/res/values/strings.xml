@@ -39,6 +39,8 @@
     <string name="registrert_av">Registrert av:</string>
     <string name="beskrivelse">Beskrivelse</string>
     <string name="button_avbryt">Avbryt</string>
+    <string name="channel_name">default</string>
+    <string name="channel_description">default notification channel</string>
 
     <string-array name="filter_items">
         <item>Skog</item>
