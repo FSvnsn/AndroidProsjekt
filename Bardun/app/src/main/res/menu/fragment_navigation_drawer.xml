@@ -4,20 +4,24 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_main"
-            android:icon="@android:drawable/ic_menu_mapmode"
+            android:icon="@drawable/ic_kart"
             android:title="@string/nav_main" />
         <item
             android:id="@+id/nav_bruker"
+            android:icon="@drawable/ic_minprofil"
             android:title="@string/nav_bruker" />
         <item
             android:id="@+id/nav_mine_teltplasser"
+            android:icon="@drawable/ic_minefavoritter"
             android:title="@string/nav_mine_teltplasser" />
         <item
             android:id="@+id/nav_favoritter"
+            android:icon="@drawable/ic_favorite_checked"
+            android:iconTint="@color/primaryTextColor"
             android:title="@string/nav_favoritter" />
         <item
             android:id="@+id/nav_innstillinger"
-            android:icon="@android:drawable/ic_menu_manage"
+            android:icon="@drawable/ic_innstillinger"
             android:title="@string/nav_innstillinger" />
     </group>
 </menu>
