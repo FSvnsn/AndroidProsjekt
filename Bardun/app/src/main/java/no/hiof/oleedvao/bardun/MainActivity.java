@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private static final String TAG = "Batman";
     private GoogleMap mMap;
-    private static final LatLngBounds LAT_LNG_BOUNDS = new LatLngBounds(
+    private static final LatLngBounds NORGE = new LatLngBounds(
             new LatLng(57.931883, 0.162047), new LatLng(67.786666, 18.441137));
     private android.support.v7.widget.Toolbar toolbar;
     private TextView mTextView;
@@ -116,6 +116,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private FirebaseDatabase mDatabase;
     private DatabaseReference mDatabaseRef;
+    private ImageButton imageBtnMyLoc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,6 +134,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 filterDialog();
             }
         });
+        imageBtnMyLoc = findViewById(R.id.imageBtnMyLoc);
 
         setUpNavigationDrawer();
 
@@ -150,6 +152,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     REQUEST_LOCATION_PERMISSION);
             mMap.setMyLocationEnabled(true);
             mMap.getUiSettings().setMyLocationButtonEnabled(true);
+
         }
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
@@ -160,7 +163,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         public void onLocationChanged(Location location) {
                             double latitude = location.getLatitude();
                             double longitude = location.getLongitude();
-                            LatLng geolatLng = new LatLng(latitude, longitude);
+                            final LatLng geolatLng = new LatLng(latitude, longitude);
                             Geocoder geocoder = new Geocoder(getApplicationContext());
                             try {
                                 List<Address> list = geocoder.getFromLocation(latitude, longitude, 1);
@@ -171,9 +174,16 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                                                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_geo_location))
                                         //.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
                                 );
+                                imageBtnMyLoc.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        mMap.moveCamera(CameraUpdateFactory.newLatLng(geolatLng));
+                                        mMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(geolatLng, 15, 0, 0)));
+                                    }
+                                });
 
-                                mMap.moveCamera(CameraUpdateFactory.newLatLng(geolatLng));
-                                mMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(geolatLng, 15, 0, 0)));
+                                //mMap.moveCamera(CameraUpdateFactory.newLatLng(geolatLng));
+                                //mMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(geolatLng, 15, 0, 0)));
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -200,7 +210,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 public void onLocationChanged(Location location) {
                     double latitude = location.getLatitude();
                     double longitude = location.getLongitude();
-                    LatLng geolatLng = new LatLng(latitude, longitude);
+                    final LatLng geolatLng = new LatLng(latitude, longitude);
                     Geocoder geocoder = new Geocoder(getApplicationContext());
                     try {
                         List<Address> list = geocoder.getFromLocation(latitude, longitude, 1);
@@ -212,9 +222,16 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 //.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
 
                         );
+                        imageBtnMyLoc.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                mMap.moveCamera(CameraUpdateFactory.newLatLng(geolatLng));
+                                mMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(geolatLng, 15, 0, 0)));
+                            }
+                        });
 
-                        mMap.moveCamera(CameraUpdateFactory.newLatLng(geolatLng));
-                        mMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(geolatLng, 15, 0, 0)));
+                        //mMap.moveCamera(CameraUpdateFactory.newLatLng(geolatLng));
+                        //mMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(geolatLng, 15, 0, 0)));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -239,10 +256,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
     }
+
     private void initSearch() {
 
 
-    // region mapSetup
+        // region mapSetup
         mGoogleApiClient = new GoogleApiClient
                 .Builder(this)
                 .addApi(Places.GEO_DATA_API)
@@ -251,7 +269,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .build();
 
         mplaceAutoCompleteAdapter = new PlaceAutoCompleteAdapter(this, mGoogleApiClient,
-                LAT_LNG_BOUNDS, null);
+                NORGE, null);
 
         mSearchInput.setAdapter(mplaceAutoCompleteAdapter);
 
@@ -268,28 +286,28 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
     }
-    private void getSearchResults(){
+
+    private void getSearchResults() {
         //Hent geolovcation for results
         String mSearchString = mSearchInput.getText().toString();
         Toast.makeText(this, "Du søkte: " + mSearchString.toString(), Toast.LENGTH_SHORT).show();
 
         Geocoder geocoder = new Geocoder(MainActivity.this);
         List<Address> list = new ArrayList<>();
-        try{
+        try {
             list = geocoder.getFromLocationName(mSearchString, 1);
-        }catch (IOException e){
-            Log.e(TAG, "geoLocate: IOException: " + e.getMessage() );
+        } catch (IOException e) {
+            Log.e(TAG, "geoLocate: IOException: " + e.getMessage());
         }
 
-        if(list.size() > 0){
+        if (list.size() > 0) {
             Address address = list.get(0);
-            double inputAddressLat= address.getLatitude();
-            double inputAddressLon= address.getLongitude();
-            LatLng inputLatLong = new LatLng(inputAddressLat,inputAddressLon);
+            double inputAddressLat = address.getLatitude();
+            double inputAddressLon = address.getLongitude();
+            LatLng inputLatLong = new LatLng(inputAddressLat, inputAddressLon);
 
             mMap.moveCamera(CameraUpdateFactory.newLatLng(inputLatLong));
-            mMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(inputLatLong, 15, 0, 0)));
-
+            mMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(inputLatLong, 14, 0, 0)));
 
 
             Log.d(TAG, "Location funnet!: " + address.toString());
@@ -325,6 +343,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
         mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(NORGE, 0));
+
+
 
         mMap.setOnMarkerClickListener(this);
         mMap.setOnMapLongClickListener(this);
@@ -499,7 +520,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         uiSettings.setZoomControlsEnabled(true);
         uiSettings.setZoomGesturesEnabled(true);
         uiSettings.setCompassEnabled(true);
-        uiSettings.setMyLocationButtonEnabled(true);
+        //uiSettings.setMyLocationButtonEnabled(true);
 
 
     }
