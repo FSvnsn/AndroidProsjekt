@@ -60,6 +60,7 @@ public class RedigerBrukerActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseUser CUser;
     private String UID;
+    private boolean uploadedPic = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,22 +87,41 @@ public class RedigerBrukerActivity extends AppCompatActivity {
         btnBrukerLagre.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(inputNavn.getText().toString() == null || inputEmail.getText().toString() == null || inputAlder.getText().toString() == null ){
-                    Toast.makeText(RedigerBrukerActivity.this, "Du må fylle inn alle feltene", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    uploadImage(currentPhotoUri);
-                    String navn = inputNavn.getText().toString();
-                    String email = inputEmail.getText().toString();
-                    String alder = inputAlder.getText().toString();
-                    int alderNum = Integer.parseInt(alder);
-                    String beskrivelse = inputBeskrivelse.getText().toString();
 
-                    User test1 = new User(navn, email, alderNum, beskrivelse, currentImageId);
-                    mDatabaseRef.child("users").child(UID).setValue(test1);
+
+                String navn = inputNavn.getText().toString();
+                String alder = inputAlder.getText().toString();
+                try {
+                    int alderNum = Integer.parseInt(alder);
+                    if (!(alder.matches(""))){
+                        mDatabaseRef.child("users").child(UID).child("age").setValue(alderNum);
+                    }
+                }
+                catch(NumberFormatException e){
+                    e.printStackTrace();
+                }
+                String email = inputEmail.getText().toString();
+                String beskrivelse = inputBeskrivelse.getText().toString();
+
+                if (uploadedPic == true){
+                    uploadImage(currentPhotoUri);
+                    mDatabaseRef.child("users").child(UID).child("imageId").setValue(currentImageId);
+                }
+
+                if(!(navn.matches(""))){
+                    mDatabaseRef.child("users").child(UID).child("name").setValue(navn);
+                }
+
+                if (!(email.matches(""))){
+                    mDatabaseRef.child("users").child(UID).child("email").setValue(email);
+                }
+
+                if (!(beskrivelse.matches(""))){
+                    mDatabaseRef.child("users").child(UID).child("description").setValue(beskrivelse);
+                }
+
                     Toast.makeText(RedigerBrukerActivity.this, "Bruker er lagret", Toast.LENGTH_LONG).show();
                     startActivity(new Intent(RedigerBrukerActivity.this, BrukerActivity.class));
-                }
             }
         });
     }
@@ -130,6 +150,7 @@ public class RedigerBrukerActivity extends AppCompatActivity {
             }
             // Continue only if the File was successfully created
             if (photoFile != null) {
+                uploadedPic = true;
                 Uri photoURI = FileProvider.getUriForFile(this,
                         "no.hiof.oleedvao.bardun.fileprovider",
                         photoFile);
@@ -150,6 +171,7 @@ public class RedigerBrukerActivity extends AppCompatActivity {
                 Bitmap picture = MediaStore.Images.Media.getBitmap(getContentResolver(), photoUri);
                 //set the image view bitmap to the retrieved image bitmap
                 imgRedigerBruker.setImageBitmap(picture);
+                uploadedPic = true;
             } catch (IOException e){
                 Toast.makeText(this, "Couldn't get picture", Toast.LENGTH_SHORT).show();
             }
