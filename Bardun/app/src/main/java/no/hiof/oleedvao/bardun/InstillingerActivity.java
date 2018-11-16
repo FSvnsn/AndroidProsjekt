@@ -15,12 +15,14 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class InstillingerActivity extends AppCompatActivity {
 
-    Button btnLogOut;
-    GoogleApiClient mGoogleApiClient;
-    FirebaseAuth mAuth;
+    private Button btnLogOut;
+    private GoogleApiClient mGoogleApiClient;
+    private FirebaseAuth mAuth;
+    private FirebaseUser CUser;
 
     @Override
     protected void onStart() {
@@ -34,6 +36,7 @@ public class InstillingerActivity extends AppCompatActivity {
 
         btnLogOut = (Button) findViewById(R.id.btnLogOut);
         mAuth = FirebaseAuth.getInstance();
+        CUser = mAuth.getCurrentUser();
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -50,12 +53,28 @@ public class InstillingerActivity extends AppCompatActivity {
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
-        btnLogOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signOut();
-            }
-        });
+        if (CUser != null){
+            btnLogOut.setText("Logg Ut");
+            btnLogOut.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    signOut();
+                }
+            });
+        }
+        else{
+            btnLogOut.setText("Logg Inn");
+            btnLogOut.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    signIn();
+                }
+            });
+        }
+    }
+
+    private void signIn() {
+        startActivity(new Intent(InstillingerActivity.this, LoginActivity.class));
     }
 
     private void signOut() {

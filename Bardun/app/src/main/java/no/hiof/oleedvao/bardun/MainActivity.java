@@ -111,7 +111,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     List<Marker> markers = new ArrayList<Marker>();
 
-
     private Button registrerTeltplass;
 
     private FirebaseDatabase mDatabase;
