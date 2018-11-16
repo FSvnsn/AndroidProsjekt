@@ -39,7 +39,9 @@ import android.widget.Toolbar;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.zip.Inflater;
@@ -149,7 +151,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         mAuth = FirebaseAuth.getInstance();
         CUser = mAuth.getCurrentUser();
-        UID = CUser.getUid();
+
+        try{
+            UID = CUser.getUid();
+        }
+        catch(NullPointerException e){
+            Toast.makeText(this, "Du er ikke logget inn!", Toast.LENGTH_LONG).show();
+        }
 
         createNotificationChannel();
         setUpNavigationDrawer();
@@ -345,7 +353,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 //Viser notifikasjon for hvor lenge siden sist bruker har oprettet en teltplass
-                showNotification(dataSnapshot);
+                if(CUser != null){
+                    showNotification(dataSnapshot);
+                }
 
                 //Henter teltplasser fra Firebase og lager markører for hver i kartet
                 showMarkers(dataSnapshot);
@@ -376,8 +386,20 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private void showNotification(DataSnapshot dataSnapshot) {
         Teltplass sisteTeltplass = new Teltplass();
 
+        Calendar calendar1 = Calendar.getInstance();
+        SimpleDateFormat formatter1 = new SimpleDateFormat("dd/M/yyyy h:mm");
+        String currentDate = calendar1.getTime().toString();
+        String lastDate;
+
+        //Toast.makeText(this, currentDate, Toast.LENGTH_LONG).show();
+
         for (DataSnapshot ds : dataSnapshot.child("mineTeltplasser").child(UID).getChildren()){
-            
+            lastDate = (ds.child("timeStamp").getValue(String.class));
+            if(lastDate != null){
+                if (lastDate.compareTo(currentDate) <= 0){
+                    //Toast.makeText(this, "Riktig!", Toast.LENGTH_LONG).show();
+                }
+            }
         }
 
         String textTitle = "Klar for en ny telttur?";
