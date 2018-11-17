@@ -29,6 +29,7 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -96,8 +97,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private static final String TAG = "Batman";
     private GoogleMap mMap;
-    //private static final LatLngBounds NORGE = new LatLngBounds(
-      //      new LatLng(57.931883, 0.162047), new LatLng(67.786666, 18.441137));
     private android.support.v7.widget.Toolbar toolbar;
     private TextView mTextView;
     private ConstraintLayout nyTeltplassHer;
@@ -106,6 +105,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private PlaceAutoCompleteAdapter mplaceAutoCompleteAdapter;
     private GoogleApiClient mGoogleApiClient;
     private ImageButton imageButtonFilter;
+
     //Location and permissions vars
     private static final int REQUEST_LOCATION_PERMISSION = 1;
     LocationManager locationManager;
@@ -130,6 +130,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private ImageButton imageBtnMyLoc;
     public static Marker mNyTeltplass;
     private String CHANNEL_ID = "default";
+    private static Marker mNyTeltplass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -346,6 +347,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
 
         mMap = googleMap;
+        Toast.makeText(this, "Trykk lenge på det stedet i kartet du vil opprette en teltplass", Toast.LENGTH_LONG).show();
 
 
         //Skaffer data fra Firebase og plasserer markører
@@ -454,21 +456,23 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void filterDialog() {
-        Toast.makeText(this, "Filter klikket", Toast.LENGTH_SHORT).show();
         filterItems = getResources().getStringArray(R.array.filter_items);
         checkedItems = new boolean[filterItems.length];
+        for (int i = 0; i < checkedItems.length;i++) {
+            if (mSelectedItems.contains(i)) {
+                checkedItems[i] = true;
+            }
+        }
+
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(MainActivity.this);
         mBuilder.setTitle("Filtrer teltplasser");
 
         mBuilder.setMultiChoiceItems(filterItems, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                Toast.makeText(MainActivity.this, "Filter åpnes", Toast.LENGTH_SHORT).show();
                 if (isChecked) {
-                    // If the user checked the item, add it to the selected items
                     mSelectedItems.add(which);
                 } else if (mSelectedItems.contains(which)) {
-                    // Else, if the item is already in the array, remove it
                     mSelectedItems.remove(Integer.valueOf(which));
                 }
             }
@@ -477,8 +481,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mBuilder.setPositiveButton("Ferdig", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //Sjekk søk opp mot databaseløkke
-                Toast.makeText(MainActivity.this, "Filtersøk: " + mSelectedItems.toString(), Toast.LENGTH_SHORT).show();
                 String item = "";
                 for (int i = 0; i < mSelectedItems.size(); i++) {
                     item = filterItems[(int) mSelectedItems.get(i)];
@@ -495,7 +497,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         fiske = true;
                     }
                 }
-                Toast.makeText(MainActivity.this, "Skog = " + skog + "Fjell = " + fjell + "Fiske = " + fiske, Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, "Teltplasser filtrert", Toast.LENGTH_SHORT).show();
                 filterMarkers(skog, fjell,fiske);
             }
         });
@@ -588,31 +590,39 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapLongClick(final LatLng latLng) {
 
         // TODO: Bytt registrer-teltplass-ikon
+        mAuth = FirebaseAuth.getInstance();
+        CUser = mAuth.getCurrentUser();
 
-        mNyTeltplass = mMap.addMarker(new MarkerOptions()
-                .position(latLng)
-                .title("Ny teltplass")
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_opprett_teltplass))
-                .draggable(true)
-        );
-        mNyTeltplass.setDraggable(true);
+        if(CUser == null) {
+            Toast.makeText(MainActivity.this,
+                    "Du må logge inn for å opprette teltplass", Toast.LENGTH_LONG).show();
+        }
+        else {
+            mNyTeltplass = mMap.addMarker(new MarkerOptions()
+                    .position(latLng)
+                    .title("Ny teltplass")
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_opprett_teltplass))
+                    .draggable(true)
+            );
+            mNyTeltplass.setDraggable(true);
 
-        double lat = mNyTeltplass.getPosition().latitude;
-        double lng = mNyTeltplass.getPosition().longitude;
-        String latString = String.valueOf(lat);
-        String lngString = String.valueOf(lng);
-        String latlngString = latString + "," + lngString;
-        Log.d(TAG, "latlng: " + latlngString);
+            double lat = mNyTeltplass.getPosition().latitude;
+            double lng = mNyTeltplass.getPosition().longitude;
+            String latString = String.valueOf(lat);
+            String lngString = String.valueOf(lng);
+            String latlngString = latString + "," + lngString;
+            Log.d(TAG, "latlng: " + latlngString);
 
 
-        Bundle bundleRegistrer = new Bundle();
-        bundleRegistrer.putString("latlong", latlngString);
-        bundleRegistrer.putString("tittel", "Ny teltplass her?");
+            Bundle bundleRegistrer = new Bundle();
+            bundleRegistrer.putString("latlong", latlngString);
+            bundleRegistrer.putString("tittel", "Ny teltplass her?");
 
-        OpprettTeltplassBottomSheetDialog bottomSheetRegistrer = new OpprettTeltplassBottomSheetDialog();
-        bottomSheetRegistrer.show(getSupportFragmentManager(), "teltplassBottomSheetRegistrer");
+            OpprettTeltplassBottomSheetDialog bottomSheetRegistrer = new OpprettTeltplassBottomSheetDialog();
+            bottomSheetRegistrer.show(getSupportFragmentManager(), "teltplassBottomSheetRegistrer");
 
-        bottomSheetRegistrer.setArguments(bundleRegistrer);
+            bottomSheetRegistrer.setArguments(bundleRegistrer);
+        }
 
     }
 
