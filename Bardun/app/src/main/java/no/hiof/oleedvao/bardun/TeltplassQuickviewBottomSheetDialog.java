@@ -35,14 +35,14 @@ public class TeltplassQuickviewBottomSheetDialog extends BottomSheetDialogFragme
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-            bottomsheetTag = getTag();
+           /* bottomsheetTag = getTag();
             Log.d(TAG, bottomsheetTag);
 
 
             if (bottomsheetTag.equals("teltplassBottomSheetRegistrer")) {
                 v = inflater.inflate(layout.bottomsheet_registrer_teltplass, container, false);
                 Log.d(TAG, "registrer teltpplass skal vises");
-/*
+
                 String latlongstring = getArguments().getString("latlong");
                 String[] latlong =  latlongstring.split(",");
                 double latitude = Double.parseDouble(latlong[0]);
@@ -55,13 +55,13 @@ public class TeltplassQuickviewBottomSheetDialog extends BottomSheetDialogFragme
                 //String tittel = getArguments().getString("tittel");
 
                 //Henter id på de ulike layout-elementene i bottom sheet
-                TextView tv_bottomsheet_tittel = v.findViewById(bottom_sheet_registrer_tittel);
+                //TextView tv_bottomsheet_tittel = v.findViewById(bottom_sheet_registrer_tittel);
                 //TextView tv_latlong = v.findViewById(tv_bottomsheet_registrer_latlong);
 
-                tv_bottomsheet_tittel.setText("Ny teltplass her?");
+                //tv_bottomsheet_tittel.setText("Ny teltplass her?");
                 //tv_latlong.setText(latlongstring);
-              
 
+/*
                 Button btnVisTeltplass = v.findViewById(btn_OpprettTeltplassActivity);
                 btnVisTeltplass.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -77,7 +77,7 @@ public class TeltplassQuickviewBottomSheetDialog extends BottomSheetDialogFragme
                 });
 
             }
-            else {
+            else {*/
                 v = inflater.inflate(layout.bottomsheet_teltplass_quickview, container, false);
                 Log.d(TAG, "quickview teltplass skal vises");
 
@@ -125,7 +125,7 @@ public class TeltplassQuickviewBottomSheetDialog extends BottomSheetDialogFragme
                 });
 
 
-            }
+           // }
             return v;
 
         }
