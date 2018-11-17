@@ -14,6 +14,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import static no.hiof.oleedvao.bardun.R.*;
 import static no.hiof.oleedvao.bardun.R.id.*;
 
@@ -40,31 +42,40 @@ public class TeltplassQuickviewBottomSheetDialog extends BottomSheetDialogFragme
             if (bottomsheetTag.equals("teltplassBottomSheetRegistrer")) {
                 v = inflater.inflate(layout.bottomsheet_registrer_teltplass, container, false);
                 Log.d(TAG, "registrer teltpplass skal vises");
+/*
+                String latlongstring = getArguments().getString("latlong");
+                String[] latlong =  latlongstring.split(",");
+                double latitude = Double.parseDouble(latlong[0]);
+                double longitude = Double.parseDouble(latlong[1]);
+                final LatLng location = new LatLng(latitude, longitude);*/
 
-                /*String latlong = getArguments().getString("latlong");
-                String tittel = getArguments().getString("tittel");
+                /** Appen krasjer når den prøver å hente getArguments() her.
+                 * Sendes med i en bundle på samme måte som under, men virker som de ikke finnes?
+                 */
+                //String tittel = getArguments().getString("tittel");
 
                 //Henter id på de ulike layout-elementene i bottom sheet
                 TextView tv_bottomsheet_tittel = v.findViewById(bottom_sheet_registrer_tittel);
-                TextView tv_latlong = v.findViewById(tv_bottomsheet_registrer_latlong);
+                //TextView tv_latlong = v.findViewById(tv_bottomsheet_registrer_latlong);
 
-                tv_bottomsheet_tittel.setText(tittel);
-                tv_latlong.setText(latlong);
+                tv_bottomsheet_tittel.setText("Ny teltplass her?");
+                //tv_latlong.setText(latlongstring);
+              
 
-                Button btnVisTeltplass = v.findViewById(btn_registrerTeltplass);
+                Button btnVisTeltplass = v.findViewById(btn_OpprettTeltplassActivity);
                 btnVisTeltplass.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mListener.onButtonClicked("Registrer teltplass klikket");
-                        //Start OpprettTeltplassActivity
-                        Intent intent = new Intent(getActivity(), OpprettTeltplassActivity.class);
-                        //intent.putExtra("Latlng", latlng);
+                        mListener.onButtonClicked("Opprett teltplass klikket");
+                        //Start OpprettTeltplassActivity ved å sende med ID
+                        Intent intent = new Intent(getActivity(), InstillingerActivity.class);
+                        //intent.putExtra("LatLng", latlng);
                         startActivity(intent);
 
                         dismiss();
                     }
                 });
-*/
+
             }
             else {
                 v = inflater.inflate(layout.bottomsheet_teltplass_quickview, container, false);
@@ -104,7 +115,7 @@ public class TeltplassQuickviewBottomSheetDialog extends BottomSheetDialogFragme
                     @Override
                     public void onClick(View v) {
                         mListener.onButtonClicked("Vis teltplass klikket");
-                        //Start TeltplassActivity ved å sende med ID?
+                        //Start TeltplassActivity ved å sende med ID
                         Intent intent = new Intent(getActivity(), TeltplassActivity.class);
                         intent.putExtra("Id", id);
                         startActivity(intent);

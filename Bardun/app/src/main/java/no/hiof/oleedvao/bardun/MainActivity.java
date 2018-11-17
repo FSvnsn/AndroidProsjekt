@@ -531,8 +531,19 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         );
         mNyTeltplass.setDraggable(true);
 
-        //showBottomsheetRegistrerTeltplass(mNyTeltplass);
+        //Åpner bottoms sheet for registreringsmelding av nye teltplass
+        TeltplassQuickviewBottomSheetDialog bottomSheetRegistrer = new TeltplassQuickviewBottomSheetDialog();
+        bottomSheetRegistrer.show(getSupportFragmentManager(), "teltplassBottomSheetRegistrer");
 
+        //showBottomsheetRegistrerTeltplass(mNyTeltplass);
+        /*registrerTeltplass = findViewById(R.id.btn_OpprettTeltplassActivity);
+        registrerTeltplass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, InstillingerActivity.class);
+                startActivity(intent);
+            }
+        });
 
         /*
         nyTeltplassHer.setVisibility(View.VISIBLE);
@@ -554,17 +565,16 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         if (mNyTeltplass != null) {
             //String pos = mNyTeltplass.getPosition().toString();
-            Log.d(TAG, "showBottomsheetRegistrerTeltplass : " + mNyTeltplass.getTitle());
+            //Log.d(TAG, "showBottomsheetRegistrerTeltplass : " + mNyTeltplass.getTitle());
 
-//Fungerer uten denne:
-           /* Bundle bundleRegistrer = new Bundle();
-            bundleRegistrer.putString("latlong", pos);
+            Bundle bundleRegistrer = new Bundle();
+            bundleRegistrer.putString("latlong", mNyTeltplass.getPosition().toString());
             bundleRegistrer.putString("tittel", "Ny teltplass");
 
-            */TeltplassQuickviewBottomSheetDialog bottomSheetRegistrer = new TeltplassQuickviewBottomSheetDialog();
+            TeltplassQuickviewBottomSheetDialog bottomSheetRegistrer = new TeltplassQuickviewBottomSheetDialog();
             bottomSheetRegistrer.show(getSupportFragmentManager(), "teltplassBottomSheetRegistrer");
 
-         //   bottomSheetRegistrer.setArguments(bundleRegistrer);
+            bottomSheetRegistrer.setArguments(bundleRegistrer);
         }
     }
 
@@ -596,11 +606,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             Log.d(TAG, "Geomarker position not found");
         }
         //Åpner Bottom Sheet med Teltplass Quickview
-        Log.d(TAG, "onMarkerClick runs + " + marker.getTag());
         String nyteltplass = "Ny teltplass";
 
         if (marker.getTitle().equals(nyteltplass)) {
-            Log.d(TAG, "ny teltplass marker er klikke tpå");
+            Log.d(TAG, "ny teltplass marker er klikket på");
             TeltplassQuickviewBottomSheetDialog bottomSheetRegistrer = new TeltplassQuickviewBottomSheetDialog();
             bottomSheetRegistrer.show(getSupportFragmentManager(), "teltplassBottomSheetRegistrer");
 
@@ -636,6 +645,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         //TODO: Åpne teltplass-activity her og send med teltplass-ID
         mTextView = findViewById(R.id.visTeltplassKlikk);
         mTextView.setText(text);
+        Log.d(TAG, "onButtoncliked");
+
     }
     // endregion
 
