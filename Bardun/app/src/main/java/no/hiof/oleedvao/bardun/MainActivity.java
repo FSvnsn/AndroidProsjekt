@@ -128,7 +128,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private String UID;
 
     private ImageButton imageBtnMyLoc;
-    public static Marker mNyTeltplass;
     private String CHANNEL_ID = "default";
     private static Marker mNyTeltplass;
 
