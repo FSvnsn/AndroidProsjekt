@@ -35,49 +35,6 @@ public class TeltplassQuickviewBottomSheetDialog extends BottomSheetDialogFragme
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-           /* bottomsheetTag = getTag();
-            Log.d(TAG, bottomsheetTag);
-
-
-            if (bottomsheetTag.equals("teltplassBottomSheetRegistrer")) {
-                v = inflater.inflate(layout.bottomsheet_registrer_teltplass, container, false);
-                Log.d(TAG, "registrer teltpplass skal vises");
-
-                String latlongstring = getArguments().getString("latlong");
-                String[] latlong =  latlongstring.split(",");
-                double latitude = Double.parseDouble(latlong[0]);
-                double longitude = Double.parseDouble(latlong[1]);
-                final LatLng location = new LatLng(latitude, longitude);*/
-
-                /** Appen krasjer når den prøver å hente getArguments() her.
-                 * Sendes med i en bundle på samme måte som under, men virker som de ikke finnes?
-                 */
-                //String tittel = getArguments().getString("tittel");
-
-                //Henter id på de ulike layout-elementene i bottom sheet
-                //TextView tv_bottomsheet_tittel = v.findViewById(bottom_sheet_registrer_tittel);
-                //TextView tv_latlong = v.findViewById(tv_bottomsheet_registrer_latlong);
-
-                //tv_bottomsheet_tittel.setText("Ny teltplass her?");
-                //tv_latlong.setText(latlongstring);
-
-/*
-                Button btnVisTeltplass = v.findViewById(btn_OpprettTeltplassActivity);
-                btnVisTeltplass.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mListener.onButtonClicked("Opprett teltplass klikket");
-                        //Start OpprettTeltplassActivity ved å sende med ID
-                        Intent intent = new Intent(getActivity(), InstillingerActivity.class);
-                        //intent.putExtra("LatLng", latlng);
-                        startActivity(intent);
-
-                        dismiss();
-                    }
-                });
-
-            }
-            else {*/
                 v = inflater.inflate(layout.bottomsheet_teltplass_quickview, container, false);
                 Log.d(TAG, "quickview teltplass skal vises");
 
@@ -93,8 +50,6 @@ public class TeltplassQuickviewBottomSheetDialog extends BottomSheetDialogFragme
                 TextView tv_latlong = v.findViewById(tv_bottomsheet_latlong);
                 TextView tv_brukernavn = v.findViewById(tv_bottomsheet_brukernavn);
                 TextView tv_dato = v.findViewById(tv_bottomsheet_dato);
-
-                Log.d(TAG, "id : " + id);
 
                 //Putter inn data fra marker her
                 tv_bottomsheet_tittel.setText(tittel);
@@ -124,8 +79,6 @@ public class TeltplassQuickviewBottomSheetDialog extends BottomSheetDialogFragme
                     }
                 });
 
-
-           // }
             return v;
 
         }

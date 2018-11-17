@@ -83,8 +83,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private static final String TAG = "Batman";
     private GoogleMap mMap;
-    private static final LatLngBounds NORGE = new LatLngBounds(
-            new LatLng(57.931883, 0.162047), new LatLng(67.786666, 18.441137));
+    //private static final LatLngBounds NORGE = new LatLngBounds(
+      //      new LatLng(57.931883, 0.162047), new LatLng(67.786666, 18.441137));
     private android.support.v7.widget.Toolbar toolbar;
     private TextView mTextView;
     private ConstraintLayout nyTeltplassHer;
@@ -108,12 +108,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     List<Marker> markers = new ArrayList<Marker>();
 
-
-    private Button registrerTeltplass;
-
     private FirebaseDatabase mDatabase;
     private DatabaseReference mDatabaseRef;
     private ImageButton imageBtnMyLoc;
+    public static Marker mNyTeltplass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -264,6 +262,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .addApi(Places.PLACE_DETECTION_API)
                 .enableAutoManage(this, this)
                 .build();
+        final LatLngBounds NORGE = new LatLngBounds(
+                new LatLng(57.931883, 0.162047), new LatLng(67.786666, 18.441137));
 
         mplaceAutoCompleteAdapter = new PlaceAutoCompleteAdapter(this, mGoogleApiClient,
                 NORGE, null);
@@ -318,6 +318,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         mMap = googleMap;
 
+
         //Skaffer data fra Firebase og plasserer markører
         mDatabase = FirebaseDatabase.getInstance();
         mDatabaseRef = mDatabase.getReference();
@@ -334,11 +335,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
 
         });
+        final LatLngBounds NORGE = new LatLngBounds(
+                new LatLng(57.931883, 0.162047), new LatLng(67.786666, 18.441137));
 
         mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
         mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(NORGE, 0));
-
-
 
         mMap.setOnMarkerClickListener(this);
         mMap.setOnMapLongClickListener(this);
@@ -513,8 +514,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         uiSettings.setZoomControlsEnabled(true);
         uiSettings.setZoomGesturesEnabled(true);
         uiSettings.setCompassEnabled(true);
-        //uiSettings.setMyLocationButtonEnabled(true);
-
 
     }
     @Override
@@ -522,7 +521,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         // TODO: Bytt registrer-teltplass-ikon
 
-        Marker mNyTeltplass = mMap.addMarker(new MarkerOptions()
+        mNyTeltplass = mMap.addMarker(new MarkerOptions()
                 .position(latLng)
                 .title("Ny teltplass")
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_opprett_teltplass))
@@ -653,5 +652,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
-    //public String toString ()
+    public static Marker getmNyTeltplass(){
+        return mNyTeltplass;
+    }
 }
