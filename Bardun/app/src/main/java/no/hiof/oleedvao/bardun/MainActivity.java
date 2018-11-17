@@ -24,6 +24,7 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -385,21 +386,23 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void filterDialog() {
-        Toast.makeText(this, "Filter klikket", Toast.LENGTH_SHORT).show();
         filterItems = getResources().getStringArray(R.array.filter_items);
         checkedItems = new boolean[filterItems.length];
+        for (int i = 0; i < checkedItems.length;i++) {
+            if (mSelectedItems.contains(i)) {
+                checkedItems[i] = true;
+            }
+        }
+
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(MainActivity.this);
         mBuilder.setTitle("Filtrer teltplasser");
 
         mBuilder.setMultiChoiceItems(filterItems, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                Toast.makeText(MainActivity.this, "Filter åpnes", Toast.LENGTH_SHORT).show();
                 if (isChecked) {
-                    // If the user checked the item, add it to the selected items
                     mSelectedItems.add(which);
                 } else if (mSelectedItems.contains(which)) {
-                    // Else, if the item is already in the array, remove it
                     mSelectedItems.remove(Integer.valueOf(which));
                 }
             }
@@ -408,8 +411,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mBuilder.setPositiveButton("Ferdig", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //Sjekk søk opp mot databaseløkke
-                Toast.makeText(MainActivity.this, "Filtersøk: " + mSelectedItems.toString(), Toast.LENGTH_SHORT).show();
                 String item = "";
                 for (int i = 0; i < mSelectedItems.size(); i++) {
                     item = filterItems[(int) mSelectedItems.get(i)];
@@ -426,7 +427,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         fiske = true;
                     }
                 }
-                Toast.makeText(MainActivity.this, "Skog = " + skog + "Fjell = " + fjell + "Fiske = " + fiske, Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, "Teltplasser filtrert", Toast.LENGTH_SHORT).show();
                 filterMarkers(skog, fjell,fiske);
             }
         });
