@@ -63,6 +63,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -84,8 +86,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private static final String TAG = "Batman";
     private GoogleMap mMap;
-    //private static final LatLngBounds NORGE = new LatLngBounds(
-      //      new LatLng(57.931883, 0.162047), new LatLng(67.786666, 18.441137));
     private android.support.v7.widget.Toolbar toolbar;
     private TextView mTextView;
     private ConstraintLayout nyTeltplassHer;
@@ -94,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private PlaceAutoCompleteAdapter mplaceAutoCompleteAdapter;
     private GoogleApiClient mGoogleApiClient;
     private ImageButton imageButtonFilter;
+
     //Location and permissions vars
     private static final int REQUEST_LOCATION_PERMISSION = 1;
     LocationManager locationManager;
@@ -111,8 +112,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private FirebaseDatabase mDatabase;
     private DatabaseReference mDatabaseRef;
+    private FirebaseAuth mAuth;
+    private FirebaseUser CUser;
+
     private ImageButton imageBtnMyLoc;
-    public static Marker mNyTeltplass;
+    private static Marker mNyTeltplass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -318,6 +322,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
 
         mMap = googleMap;
+        Toast.makeText(this, "Trykk lenge på det stedet i kartet du vil opprette en teltplass", Toast.LENGTH_LONG).show();
 
 
         //Skaffer data fra Firebase og plasserer markører
@@ -521,31 +526,39 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapLongClick(final LatLng latLng) {
 
         // TODO: Bytt registrer-teltplass-ikon
+        mAuth = FirebaseAuth.getInstance();
+        CUser = mAuth.getCurrentUser();
 
-        mNyTeltplass = mMap.addMarker(new MarkerOptions()
-                .position(latLng)
-                .title("Ny teltplass")
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_opprett_teltplass))
-                .draggable(true)
-        );
-        mNyTeltplass.setDraggable(true);
+        if(CUser == null) {
+            Toast.makeText(MainActivity.this,
+                    "Du må logge inn for å opprette teltplass", Toast.LENGTH_LONG).show();
+        }
+        else {
+            mNyTeltplass = mMap.addMarker(new MarkerOptions()
+                    .position(latLng)
+                    .title("Ny teltplass")
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_opprett_teltplass))
+                    .draggable(true)
+            );
+            mNyTeltplass.setDraggable(true);
 
-        double lat = mNyTeltplass.getPosition().latitude;
-        double lng = mNyTeltplass.getPosition().longitude;
-        String latString = String.valueOf(lat);
-        String lngString = String.valueOf(lng);
-        String latlngString = latString + "," + lngString;
-        Log.d(TAG, "latlng: " + latlngString);
+            double lat = mNyTeltplass.getPosition().latitude;
+            double lng = mNyTeltplass.getPosition().longitude;
+            String latString = String.valueOf(lat);
+            String lngString = String.valueOf(lng);
+            String latlngString = latString + "," + lngString;
+            Log.d(TAG, "latlng: " + latlngString);
 
 
-        Bundle bundleRegistrer = new Bundle();
-        bundleRegistrer.putString("latlong", latlngString);
-        bundleRegistrer.putString("tittel", "Ny teltplass her?");
+            Bundle bundleRegistrer = new Bundle();
+            bundleRegistrer.putString("latlong", latlngString);
+            bundleRegistrer.putString("tittel", "Ny teltplass her?");
 
-        OpprettTeltplassBottomSheetDialog bottomSheetRegistrer = new OpprettTeltplassBottomSheetDialog();
-        bottomSheetRegistrer.show(getSupportFragmentManager(), "teltplassBottomSheetRegistrer");
+            OpprettTeltplassBottomSheetDialog bottomSheetRegistrer = new OpprettTeltplassBottomSheetDialog();
+            bottomSheetRegistrer.show(getSupportFragmentManager(), "teltplassBottomSheetRegistrer");
 
-        bottomSheetRegistrer.setArguments(bundleRegistrer);
+            bottomSheetRegistrer.setArguments(bundleRegistrer);
+        }
 
     }
 
