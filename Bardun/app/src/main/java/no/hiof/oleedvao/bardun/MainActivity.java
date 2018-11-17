@@ -109,10 +109,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     //Location and permissions vars
     private static final int REQUEST_LOCATION_PERMISSION = 1;
     LocationManager locationManager;
-    LocationListener locationListener;
-    private Marker marker;
     private Marker geomarker;
-    private FusedLocationProviderClient mFusedLocationProviderClient;
 
     //filter vars
     private ArrayList mSelectedItems = new ArrayList();
@@ -123,6 +120,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private boolean fiske;
 
     List<Marker> markers = new ArrayList<Marker>();
+
 
     private Button registrerTeltplass;
 
@@ -589,39 +587,36 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
     @Override
     public void onMapLongClick(final LatLng latLng) {
-        // TODO: Lage bottomsheet(?) for registrering av teltplass steg 1. "Vil du lage ny teltplass her?"
-        // TODO: Vis koordinater, hent stedsnavn
-        // TODO: Legg til registrer-teltplass-ikon
 
-        Marker mNew = mMap.addMarker(new MarkerOptions()
+        // TODO: Bytt registrer-teltplass-ikon
+
+        Marker mNyTeltplass = mMap.addMarker(new MarkerOptions()
                 .position(latLng)
                 .title("Ny teltplass")
-                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_teltplass_marker_green))
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_opprett_teltplass))
                 .draggable(true)
         );
-        mNew.setDraggable(true);
+        mNyTeltplass.setDraggable(true);
 
-        nyTeltplassHer.setVisibility(View.VISIBLE);
-        TextView nyTeltplassLatLong = findViewById(R.id.latlongTextview);
-        nyTeltplassLatLong.setText(latLng.toString());
+        double lat = mNyTeltplass.getPosition().latitude;
+        double lng = mNyTeltplass.getPosition().longitude;
+        String latString = String.valueOf(lat);
+        String lngString = String.valueOf(lng);
+        String latlngString = latString + "," + lngString;
+        Log.d(TAG, "latlng: " + latlngString);
 
-        //Registrer teltplass knapp/funksjon
-        registrerTeltplass = findViewById(R.id.btn_registrerTeltplass);
-        registrerTeltplass.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sendToOprettTeltplass(latLng);
-            }
-        });
+
+        Bundle bundleRegistrer = new Bundle();
+        bundleRegistrer.putString("latlong", latlngString);
+        bundleRegistrer.putString("tittel", "Ny teltplass her?");
+
+        OpprettTeltplassBottomSheetDialog bottomSheetRegistrer = new OpprettTeltplassBottomSheetDialog();
+        bottomSheetRegistrer.show(getSupportFragmentManager(), "teltplassBottomSheetRegistrer");
+
+        bottomSheetRegistrer.setArguments(bundleRegistrer);
+
     }
 
-    //Sender intent med latLng for opretting av teltplass
-    private void sendToOprettTeltplass(LatLng latLng) {
-        //Toast.makeText(this, latLng.toString(), Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(MainActivity.this, OpprettTeltplassActivity.class);
-        intent.putExtra("latLng", latLng);
-        startActivity(intent);
-    }
     // endregion
 
     // region markerEvents
@@ -629,7 +624,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public boolean onMarkerClick(Marker marker) {
         LatLng mPos = marker.getPosition();
 
-        // TODO: Legg til test på om geomarker finnes
         try {
             if (geomarker != null) {
                 LatLng geoPos = geomarker.getPosition();
@@ -643,27 +637,51 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         catch (NullPointerException e) {
             Log.d(TAG, "Geomarker position not found");
         }
-        //Åpner Bottom Sheet med Teltplass Quickview
-        //TODO: Håndtere Teltplass-info om hver marker her
-        Log.d(TAG, "onMarkerClick runs + " + marker.getTag());
+        //Åpner Bottom Sheet med OpprettTeltplass
+        String nyteltplass = "Ny teltplass";
 
-        //Hent marker position og konverter til string
-        String pos = marker.getPosition().toString();
-        String name = marker.getTitle();
-        String id = (String) marker.getTag();
-
-        Bundle bundle = new Bundle();
-        bundle.putString("latlong",pos);
-        bundle.putString("tittel",name);
-        bundle.putString("brukernavn", "Caroline");
-        bundle.putString("dato", "14.01.2014");
-        bundle.putString("id",id);
+        if (marker.getTitle().equals(nyteltplass)) {
+            Log.d(TAG, "ny teltplass marker er klikket på");
+            double lat = marker.getPosition().latitude;
+            double lng = marker.getPosition().longitude;
+            String latString = String.valueOf(lat);
+            String lngString = String.valueOf(lng);
+            String latlngString = latString + "," + lngString;
+            Log.d(TAG, "latlng: " + latlngString);
 
 
-        TeltplassQuickviewBottomSheetDialog bottomSheet = new TeltplassQuickviewBottomSheetDialog();
-        bottomSheet.show(getSupportFragmentManager(), "teltplassBottomSheet");
+            Bundle bundleRegistrer = new Bundle();
+            bundleRegistrer.putString("latlong", latlngString);
+            bundleRegistrer.putString("tittel", "Ny teltplass her?");
 
-        bottomSheet.setArguments(bundle);
+            OpprettTeltplassBottomSheetDialog bottomSheetRegistrer = new OpprettTeltplassBottomSheetDialog();
+            bottomSheetRegistrer.show(getSupportFragmentManager(), "teltplassBottomSheetRegistrer");
+
+            bottomSheetRegistrer.setArguments(bundleRegistrer);
+
+        }
+        else {
+            Log.d(TAG, "eksisterende teltplass er klikket på");
+
+            //Hent marker position og konverter til string
+            String pos = marker.getPosition().toString();
+            String name = marker.getTitle();
+            String id = (String) marker.getTag();
+
+            Bundle bundle = new Bundle();
+            bundle.putString("latlong",pos);
+            bundle.putString("tittel",name);
+            bundle.putString("brukernavn", "Caroline");
+            bundle.putString("dato", "14.01.2014");
+            bundle.putString("id",id);
+
+
+            TeltplassQuickviewBottomSheetDialog bottomSheet = new TeltplassQuickviewBottomSheetDialog();
+            bottomSheet.show(getSupportFragmentManager(), "teltplassBottomSheet");
+
+            bottomSheet.setArguments(bundle);
+        }
+
         return false;
 
     }
@@ -673,6 +691,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         //TODO: Åpne teltplass-activity her og send med teltplass-ID
         mTextView = findViewById(R.id.visTeltplassKlikk);
         mTextView.setText(text);
+        Log.d(TAG, "onButtoncliked");
+
     }
     // endregion
 
@@ -686,7 +706,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public boolean onMyLocationButtonClick() {
 
-        // TODO: Knappen vises ikke, finn ut hvorfor
         mMap.moveCamera(CameraUpdateFactory.newLatLng(geomarker.getPosition()));
         mMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(geomarker.getPosition(), 15, 0, 0)));
 
