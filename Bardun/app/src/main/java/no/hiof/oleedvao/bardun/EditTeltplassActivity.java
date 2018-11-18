@@ -221,7 +221,7 @@ public class EditTeltplassActivity extends AppCompatActivity {
         if(!editTextEditTeltplassNavn.getText().toString().equals(emptyString) &&
                 !editTextEditTeltplassBeskrivelse.getText().toString().equals(emptyString)){
 
-            if(currentPhotoUri != null){
+            if(!currentPhotoUri.equals(null)){
                 uploadImage(currentPhotoUri);
             }
 
@@ -255,9 +255,9 @@ public class EditTeltplassActivity extends AppCompatActivity {
 
     public void slettTeltplass(View view){
 
-        //Fjerner ikke alle steder
+        /*//Fjerner ikke alle steder
         mDatabaseRef.child("teltplasser").child(teltplassId).removeValue();
-        mDatabaseRef.child("mineTeltplasser").child(UID).child(teltplassId).removeValue();
+        mDatabaseRef.child("mineTeltplasser").child(UID).child(teltplassId).removeValue();*/
 
         Intent intent = new Intent(this,MainActivity.class);
         startActivity(intent);
