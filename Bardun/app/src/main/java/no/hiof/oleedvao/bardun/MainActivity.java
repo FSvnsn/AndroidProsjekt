@@ -96,6 +96,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         GoogleApiClient.OnConnectionFailedListener {
 
     private static final String TAG = "Batman";
+    private static final String TAG2 = "Svendsen";
     private GoogleMap mMap;
     private android.support.v7.widget.Toolbar toolbar;
     private TextView mTextView;
@@ -356,21 +357,30 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mDatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                //Viser notifikasjon for hvor lenge siden sist bruker har oprettet en teltplass
-                if(CUser != null){
-                    showNotification(dataSnapshot);
+                try{
+                    //Viser notifikasjon for hvor lenge siden sist bruker har oprettet en teltplass
+                    Boolean sendNotification = dataSnapshot.child("users").child(UID).child("sendNotification").getValue(Boolean.class);
+
+                    if(CUser != null && sendNotification == Boolean.TRUE){
+                        showNotification(dataSnapshot);
+                    }
+
+                    //Henter teltplasser fra Firebase og lager markører for hver i kartet
+                    showMarkers(dataSnapshot);
+                }
+                catch (NullPointerException e){
+                    e.printStackTrace();
+                    Log.d(TAG2, "Ingen bruker logget inn");
+                }
+            }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    System.out.println("The read failed: " + databaseError.getCode());
                 }
 
-                //Henter teltplasser fra Firebase og lager markører for hver i kartet
-                showMarkers(dataSnapshot);
-            }
+            });
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                System.out.println("The read failed: " + databaseError.getCode());
-            }
-
-        });
         final LatLngBounds NORGE = new LatLngBounds(
                 new LatLng(57.931883, 0.162047), new LatLng(67.786666, 18.441137));
 
