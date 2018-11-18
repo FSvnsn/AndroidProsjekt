@@ -253,6 +253,16 @@ public class EditTeltplassActivity extends AppCompatActivity {
         }
     }
 
+    public void slettTeltplass(View view){
+
+        //Fjerner ikke alle steder
+        mDatabaseRef.child("teltplasser").child(teltplassId).removeValue();
+        mDatabaseRef.child("mineTeltplasser").child(UID).child(teltplassId).removeValue();
+
+        Intent intent = new Intent(this,MainActivity.class);
+        startActivity(intent);
+    }
+
     public void avbrytOpprettTeltplass(View view){
         Intent intent = new Intent(this,MainActivity.class);
         startActivity(intent);
