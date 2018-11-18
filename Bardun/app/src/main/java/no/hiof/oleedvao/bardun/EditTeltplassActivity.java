@@ -109,7 +109,8 @@ public class EditTeltplassActivity extends AppCompatActivity {
 
     }
 
-    @Override
+    //Removed due to TransactionTooLargeException
+    /*@Override
     protected void onSaveInstanceState(Bundle outState) {
         Bitmap bm =((BitmapDrawable)imageView.getDrawable()).getBitmap();
         outState.putParcelable("bitmap",bm);
@@ -122,7 +123,7 @@ public class EditTeltplassActivity extends AppCompatActivity {
         imageView.setImageBitmap((Bitmap) savedInstanceState.getParcelable("bitmap"));
 
         super.onRestoreInstanceState(savedInstanceState);
-    }
+    }*/
 
     //Metode for å hente bilde fra galleri
     public void getPicture(View view){
