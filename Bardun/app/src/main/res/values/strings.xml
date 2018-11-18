@@ -41,6 +41,7 @@
     <string name="button_avbryt">Avbryt</string>
     <string name="channel_name">default</string>
     <string name="channel_description">default notification channel</string>
+    <string name="button_edit_teltplass">Rediger</string>
 
     <string-array name="filter_items">
         <item>Skog</item>

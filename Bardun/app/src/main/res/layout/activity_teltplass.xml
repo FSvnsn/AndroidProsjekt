@@ -133,7 +133,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        app:layout_constraintGuide_begin="275dp" />
+                        app:layout_constraintGuide_begin="304dp" />
 
                     <TextView
                         android:id="@+id/textView9"
@@ -200,21 +200,21 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        app:layout_constraintGuide_begin="366dp" />
+                        app:layout_constraintGuide_begin="374dp" />
 
                     <android.support.constraint.Guideline
                         android:id="@+id/guideline7"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        app:layout_constraintGuide_begin="505dp" />
+                        app:layout_constraintGuide_begin="516dp" />
 
                     <android.support.constraint.Guideline
                         android:id="@+id/guideline8"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        app:layout_constraintGuide_begin="472dp" />
+                        app:layout_constraintGuide_begin="477dp" />
 
                     <Switch
                         android:id="@+id/switchTeltplassSkog"
@@ -272,7 +272,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        app:layout_constraintGuide_begin="58dp" />
+                        app:layout_constraintGuide_begin="92dp" />
 
                     <TextView
                         android:id="@+id/textViewBrukerNavn"
@@ -319,6 +319,19 @@
                         app:layout_constraintBottom_toBottomOf="@+id/textViewBrukerNavn"
                         app:layout_constraintStart_toEndOf="@+id/textViewBrukerNavn"
                         app:layout_constraintTop_toTopOf="@+id/textViewBrukerNavn" />
+
+                    <Button
+                        android:id="@+id/buttonEditTeltplass"
+                        android:layout_width="67dp"
+                        android:layout_height="36dp"
+                        android:layout_marginEnd="8dp"
+                        android:clickable="false"
+                        android:onClick="naviateEditTeltplassActivity"
+                        android:text="@string/button_edit_teltplass"
+                        android:textSize="10sp"
+                        android:visibility="invisible"
+                        app:layout_constraintBottom_toTopOf="@+id/guideline13"
+                        app:layout_constraintEnd_toEndOf="parent" />
 
                 </android.support.constraint.ConstraintLayout>
             </ScrollView>

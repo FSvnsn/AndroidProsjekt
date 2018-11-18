@@ -65,6 +65,7 @@ public class TeltplassActivity extends AppCompatActivity {
     private Switch switchTeltplassFjell;
     private Switch switchTeltplassFiske;
     private TextView textViewTeltplassTimeStamp;
+    private Button buttonEditTeltplass;
 
     private TabLayout tabLayoutTeltplass;
     private ViewPager viewPagerTeltplass;
@@ -99,6 +100,7 @@ public class TeltplassActivity extends AppCompatActivity {
         switchTeltplassFjell = findViewById(R.id.switchTeltplassFjell);
         switchTeltplassFiske = findViewById(R.id.switchTeltplassFiske);
         textViewTeltplassTimeStamp = findViewById(R.id.textViewTeltplassTimeStamp);
+        buttonEditTeltplass = findViewById(R.id.buttonEditTeltplass);
 
         tabLayoutTeltplass = findViewById(R.id.TabLayoutTeltplass);
         viewPagerTeltplass = findViewById(R.id.ViewPagerTeltplass);
@@ -176,6 +178,11 @@ public class TeltplassActivity extends AppCompatActivity {
             String imageId = dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getImageId();
             StorageReference imageRef = mStorageReference.child("images/" + imageId);
 
+            if(teltplassUID.equals(UID)){
+                buttonEditTeltplass.setVisibility(View.VISIBLE);
+                buttonEditTeltplass.setClickable(true);
+            }
+
             imageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                 @Override
                 public void onSuccess(byte[] bytes) {
@@ -248,5 +255,9 @@ public class TeltplassActivity extends AppCompatActivity {
         Intent intent = new Intent(TeltplassActivity.this, VisBrukerActivity.class);
         intent.putExtra("UID", teltplassUID);
         startActivity(intent);
+    }
+
+    public void naviateEditTeltplassActivity(View view){
+
     }
 }
