@@ -3,6 +3,7 @@ package no.hiof.oleedvao.bardun;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Environment;
@@ -14,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -25,8 +27,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -42,6 +47,8 @@ import java.util.UUID;
 public class OpprettTeltplassActivity extends AppCompatActivity {
     private static final int REQUEST_IMAGE_GET = 1000;
     private static final int REQUEST_TAKE_PHOTO = 2000;
+    final long ONE_MEGABYTE = 1024 * 1024;
+    private Boolean editTeltplass = false;
 
     //Bilde-relaterte variabler
     private String currentPhotoPath;
@@ -67,6 +74,7 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
     private Switch switchOpprettTeltplassSkog;
     private Switch switchOpprettTeltplassFjell;
     private Switch switchOpprettTeltplassFiske;
+    private Button buttonOpprettTeltplass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,15 +82,16 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
         setContentView(R.layout.activity_opprett_teltplass);
 
         //Instantierer views
-        imageView = findViewById(R.id.imageViewOpprettTeltplass);
-        editTextOpprettTeltplassNavn = findViewById(R.id.editTextOpprettTeltplassNavn);
-        editTextOpprettTeltplassBeskrivelse = findViewById(R.id.editTextOpprettTeltplassBeskrivelse);
-        seekBarOpprettTeltplassUnderlag = findViewById(R.id.seekBarOpprettTeltplassUnderlag);
-        seekBarOpprettTeltplassAvstand = findViewById(R.id.seekBarOpprettTeltplassAvstand);
-        seekBarOpprettTeltplassUtsikt = findViewById(R.id.seekBarOpprettTeltplassUtsikt);
-        switchOpprettTeltplassSkog = findViewById(R.id.switchOppretTeltplassSkog);
-        switchOpprettTeltplassFjell = findViewById(R.id.switchOpprettTeltplassFjell);
-        switchOpprettTeltplassFiske = findViewById(R.id.switchOpprettTeltplassFiske);
+        imageView = findViewById(R.id.imageViewEditTeltplass);
+        editTextOpprettTeltplassNavn = findViewById(R.id.editTextEditTeltplassNavn);
+        editTextOpprettTeltplassBeskrivelse = findViewById(R.id.editTextEditTeltplassBeskrivelse);
+        seekBarOpprettTeltplassUnderlag = findViewById(R.id.seekBarEditTeltplassUnderlag);
+        seekBarOpprettTeltplassAvstand = findViewById(R.id.seekBarEditTeltplassAvstand);
+        seekBarOpprettTeltplassUtsikt = findViewById(R.id.seekBarEditTeltplassUtsikt);
+        switchOpprettTeltplassSkog = findViewById(R.id.switchEditTeltplassSkog);
+        switchOpprettTeltplassFjell = findViewById(R.id.switchEditTeltplassFjell);
+        switchOpprettTeltplassFiske = findViewById(R.id.switchEditTeltplassFiske);
+        buttonOpprettTeltplass = findViewById(R.id.buttonLagreTeltplassEndringer);
 
         //Instansierer database-relaterte variabler
         mDatabase = FirebaseDatabase.getInstance();
@@ -92,6 +101,7 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         CUser = mAuth.getCurrentUser();
         UID = CUser.getUid();
+
     }
 
     @Override
@@ -200,6 +210,7 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
     }
 
     public void opprettTeltplass(View view){
+
         String emptyString = new String();
         if(!editTextOpprettTeltplassNavn.getText().toString().equals(emptyString) &&
                 !editTextOpprettTeltplassBeskrivelse.getText().toString().equals(emptyString)){
@@ -287,5 +298,7 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
 
         }
     }
+
+
 
 }

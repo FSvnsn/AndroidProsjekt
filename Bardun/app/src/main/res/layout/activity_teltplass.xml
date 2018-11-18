@@ -321,7 +321,7 @@
                         app:layout_constraintTop_toTopOf="@+id/textViewBrukerNavn" />
 
                     <Button
-                        android:id="@+id/buttonEditTeltplass"
+                        android:id="@+id/buttonLagreTeltplassEndringer"
                         android:layout_width="67dp"
                         android:layout_height="36dp"
                         android:layout_marginEnd="8dp"
