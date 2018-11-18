@@ -23,8 +23,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -35,6 +38,8 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
+
+import static java.lang.Boolean.TRUE;
 
 public class RedigerBrukerActivity extends AppCompatActivity {
 
@@ -62,6 +67,7 @@ public class RedigerBrukerActivity extends AppCompatActivity {
     private FirebaseUser CUser;
     private String UID;
     private boolean uploadedPic = false;
+    private String TAG = "Svendsen";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,8 +127,32 @@ public class RedigerBrukerActivity extends AppCompatActivity {
                     mDatabaseRef.child("users").child(UID).child("description").setValue(beskrivelse);
                 }
 
+                checkIfFirstTime();
+
                     Toast.makeText(RedigerBrukerActivity.this, "Bruker er lagret", Toast.LENGTH_LONG).show();
                     startActivity(new Intent(RedigerBrukerActivity.this, BrukerActivity.class));
+            }
+        });
+    }
+
+    //sjekker om bruker har endret på notifikasjons instillinger
+    private void checkIfFirstTime() {
+        mDatabaseRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                Boolean sendNotification = dataSnapshot.child("users").child(UID).child("sendNotification").getValue(Boolean.class);
+
+                if (sendNotification == null){
+                    mDatabaseRef.child("users").child(UID).child("sendNotification").setValue(TRUE);
+                    Log.d(TAG, "Finnes ingen notifikasjons instillinger");
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
     }

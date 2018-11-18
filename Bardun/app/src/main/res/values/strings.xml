@@ -14,7 +14,7 @@
     <string name="toolbar_title_main">Bardun</string>
     <string name="toolbar_title_teltplass">Teltplass</string>
     <string name="toolbar_title_bruker">Bruker</string>
-    <string name="log_out">Log Out</string>
+    <string name="log_out">Logg Ut</string>
     <string name="name_placeholder">Navn</string>
     <string name="email_placeholder">Email@domain.com</string>
     <string name="rediger_bruker">Rediger Bruker:</string>
@@ -41,6 +41,7 @@
     <string name="button_avbryt">Avbryt</string>
     <string name="channel_name">default</string>
     <string name="channel_description">default notification channel</string>
+    <string name="varslinger">Varslinger</string>
 
     <string-array name="filter_items">
         <item>Skog</item>

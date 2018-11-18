@@ -6,16 +6,18 @@ public class User {
     private String description;
     private String imageId;
     private int age;
+    private Boolean sendNotification;
 
     public User(){
     }
 
-    public User(String name, String email, int age, String description, String imageId){
+    public User(String name, String email, int age, String description, String imageId, Boolean sendNotification){
         this.name = name;
         this.email = email;
         this.age = age;
         this.description = description;
         this.imageId = imageId;
+        this.sendNotification = sendNotification;
     }
 
     public String getName() {
@@ -56,5 +58,13 @@ public class User {
 
     public void setImageId(String imageId) {
         this.imageId = imageId;
+    }
+
+    public Boolean getSendNotification() {
+        return sendNotification;
+    }
+
+    public void setSendNotification(Boolean sendNotification) {
+        this.sendNotification = sendNotification;
     }
 }
