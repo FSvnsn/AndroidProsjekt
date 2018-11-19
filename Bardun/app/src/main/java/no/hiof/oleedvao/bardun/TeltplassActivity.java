@@ -3,15 +3,12 @@ package no.hiof.oleedvao.bardun;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -20,7 +17,6 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -65,6 +61,7 @@ public class TeltplassActivity extends AppCompatActivity {
     private Switch switchTeltplassFjell;
     private Switch switchTeltplassFiske;
     private TextView textViewTeltplassTimeStamp;
+    private Button buttonEditTeltplass;
 
     private TabLayout tabLayoutTeltplass;
     private ViewPager viewPagerTeltplass;
@@ -99,6 +96,7 @@ public class TeltplassActivity extends AppCompatActivity {
         switchTeltplassFjell = findViewById(R.id.switchTeltplassFjell);
         switchTeltplassFiske = findViewById(R.id.switchTeltplassFiske);
         textViewTeltplassTimeStamp = findViewById(R.id.textViewTeltplassTimeStamp);
+        buttonEditTeltplass = findViewById(R.id.buttonLagreTeltplassEndringer);
 
         tabLayoutTeltplass = findViewById(R.id.TabLayoutTeltplass);
         viewPagerTeltplass = findViewById(R.id.ViewPagerTeltplass);
@@ -191,11 +189,14 @@ public class TeltplassActivity extends AppCompatActivity {
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    
+
                 }
             });
 
-
+            if(teltplassUID.equals(UID)){
+                buttonEditTeltplass.setVisibility(View.VISIBLE);
+                buttonEditTeltplass.setClickable(true);
+            }
 
         }
         catch(NullPointerException e){
@@ -253,6 +254,12 @@ public class TeltplassActivity extends AppCompatActivity {
     public void brukerClicked(View view) {
         Intent intent = new Intent(TeltplassActivity.this, VisBrukerActivity.class);
         intent.putExtra("UID", teltplassUID);
+        startActivity(intent);
+    }
+
+    public void naviateEditTeltplassActivity(View view){
+        Intent intent = new Intent(TeltplassActivity.this, EditTeltplassActivity.class);
+        intent.putExtra("Id", teltplassId);
         startActivity(intent);
     }
 }

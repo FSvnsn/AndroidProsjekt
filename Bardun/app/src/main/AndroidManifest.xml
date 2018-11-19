@@ -38,6 +38,7 @@
         <activity android:name=".MineTeltplasserActivity" />
         <activity android:name=".MineFavoritterActivity" />
         <activity android:name=".VisBrukerActivity" />
+        <activity android:name=".EditTeltplassActivity"/>
 
         <provider
             android:name="android.support.v4.content.FileProvider"

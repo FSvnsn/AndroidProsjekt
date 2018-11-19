@@ -42,13 +42,11 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.UUID;
 
-public class OpprettTeltplassActivity extends AppCompatActivity {
+public class EditTeltplassActivity extends AppCompatActivity {
     private static final int REQUEST_IMAGE_GET = 1000;
     private static final int REQUEST_TAKE_PHOTO = 2000;
     final long ONE_MEGABYTE = 1024 * 1024;
-    private Boolean editTeltplass = false;
 
     //Bilde-relaterte variabler
     private String currentPhotoPath;
@@ -63,35 +61,37 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseUser CUser;
     private String UID;
+    private String teltplassId;
+    private String imageId;
 
     //views
     private ImageView imageView;
-    private EditText editTextOpprettTeltplassNavn;
-    private EditText editTextOpprettTeltplassBeskrivelse;
-    private SeekBar seekBarOpprettTeltplassUnderlag;
-    private SeekBar seekBarOpprettTeltplassUtsikt;
-    private SeekBar seekBarOpprettTeltplassAvstand;
-    private Switch switchOpprettTeltplassSkog;
-    private Switch switchOpprettTeltplassFjell;
-    private Switch switchOpprettTeltplassFiske;
-    private Button buttonOpprettTeltplass;
+    private EditText editTextEditTeltplassNavn;
+    private EditText editTextEditTeltplassBeskrivelse;
+    private SeekBar seekBarEditTeltplassUnderlag;
+    private SeekBar seekBarEditTeltplassUtsikt;
+    private SeekBar seekBarEditTeltplassAvstand;
+    private Switch switchEditTeltplassSkog;
+    private Switch switchEditTeltplassFjell;
+    private Switch switchEditTeltplassFiske;
+    private Button buttonLagreTeltplassEndringer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_opprett_teltplass);
+        setContentView(R.layout.activity_edit_teltplass);
 
         //Instantierer views
         imageView = findViewById(R.id.imageViewEditTeltplass);
-        editTextOpprettTeltplassNavn = findViewById(R.id.editTextEditTeltplassNavn);
-        editTextOpprettTeltplassBeskrivelse = findViewById(R.id.editTextEditTeltplassBeskrivelse);
-        seekBarOpprettTeltplassUnderlag = findViewById(R.id.seekBarEditTeltplassUnderlag);
-        seekBarOpprettTeltplassAvstand = findViewById(R.id.seekBarEditTeltplassAvstand);
-        seekBarOpprettTeltplassUtsikt = findViewById(R.id.seekBarEditTeltplassUtsikt);
-        switchOpprettTeltplassSkog = findViewById(R.id.switchEditTeltplassSkog);
-        switchOpprettTeltplassFjell = findViewById(R.id.switchEditTeltplassFjell);
-        switchOpprettTeltplassFiske = findViewById(R.id.switchEditTeltplassFiske);
-        buttonOpprettTeltplass = findViewById(R.id.buttonLagreTeltplassEndringer);
+        editTextEditTeltplassNavn = findViewById(R.id.editTextEditTeltplassNavn);
+        editTextEditTeltplassBeskrivelse = findViewById(R.id.editTextEditTeltplassBeskrivelse);
+        seekBarEditTeltplassUnderlag = findViewById(R.id.seekBarEditTeltplassUnderlag);
+        seekBarEditTeltplassAvstand = findViewById(R.id.seekBarEditTeltplassAvstand);
+        seekBarEditTeltplassUtsikt = findViewById(R.id.seekBarEditTeltplassUtsikt);
+        switchEditTeltplassSkog = findViewById(R.id.switchEditTeltplassSkog);
+        switchEditTeltplassFjell = findViewById(R.id.switchEditTeltplassFjell);
+        switchEditTeltplassFiske = findViewById(R.id.switchEditTeltplassFiske);
+        buttonLagreTeltplassEndringer = findViewById(R.id.buttonLagreTeltplassEndringer);
 
         //Instansierer database-relaterte variabler
         mDatabase = FirebaseDatabase.getInstance();
@@ -102,9 +102,15 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
         CUser = mAuth.getCurrentUser();
         UID = CUser.getUid();
 
+        teltplassId = getIntent().getStringExtra("Id");
+        showData();
+
+
+
     }
 
-    @Override
+    //Removed due to TransactionTooLargeException
+    /*@Override
     protected void onSaveInstanceState(Bundle outState) {
         Bitmap bm =((BitmapDrawable)imageView.getDrawable()).getBitmap();
         outState.putParcelable("bitmap",bm);
@@ -117,7 +123,7 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
         imageView.setImageBitmap((Bitmap) savedInstanceState.getParcelable("bitmap"));
 
         super.onRestoreInstanceState(savedInstanceState);
-    }
+    }*/
 
     //Metode for å hente bilde fra galleri
     public void getPicture(View view){
@@ -209,36 +215,28 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
         this.sendBroadcast(mediaScanIntent);
     }
 
-    public void opprettTeltplass(View view){
+    public void editTeltplass(View view){
 
         String emptyString = new String();
-        if(!editTextOpprettTeltplassNavn.getText().toString().equals(emptyString) &&
-                !editTextOpprettTeltplassBeskrivelse.getText().toString().equals(emptyString)){
+        if(!editTextEditTeltplassNavn.getText().toString().equals(emptyString) &&
+                !editTextEditTeltplassBeskrivelse.getText().toString().equals(emptyString)){
 
-            uploadImage(currentPhotoUri);
-
-            //Skaffer og converter latLng
-            LatLng latLng = getIntent().getExtras().getParcelable("latLng");
-            double latitude = latLng.latitude;
-            double longitude = latLng.longitude;
-            String lat = String.valueOf(latitude);
-            String lng = String.valueOf(longitude);
-            String location = lat + "," + lng;
-            location = location.replace(".", "p");
-            location = location.replace(",", "k");
+            if(!currentPhotoUri.equals(null)){
+                uploadImage(currentPhotoUri);
+            }
 
             Calendar cal = Calendar.getInstance();
             String timeStamp = cal.getTime().toString();
 
-            Teltplass teltplass = new Teltplass(location,
-                    editTextOpprettTeltplassNavn.getText().toString(),
-                    editTextOpprettTeltplassBeskrivelse.getText().toString(),
-                    seekBarOpprettTeltplassUnderlag.getProgress(),
-                    seekBarOpprettTeltplassUtsikt.getProgress(),
-                    seekBarOpprettTeltplassAvstand.getProgress(),
-                    switchOpprettTeltplassSkog.isChecked(),
-                    switchOpprettTeltplassFjell.isChecked(),
-                    switchOpprettTeltplassFiske.isChecked(),
+            Teltplass teltplass = new Teltplass(teltplassId,
+                    editTextEditTeltplassNavn.getText().toString(),
+                    editTextEditTeltplassBeskrivelse.getText().toString(),
+                    seekBarEditTeltplassUnderlag.getProgress(),
+                    seekBarEditTeltplassUtsikt.getProgress(),
+                    seekBarEditTeltplassAvstand.getProgress(),
+                    switchEditTeltplassSkog.isChecked(),
+                    switchEditTeltplassFjell.isChecked(),
+                    switchEditTeltplassFiske.isChecked(),
                     currentImageId,
                     UID,
                     timeStamp);
@@ -246,12 +244,23 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
             mDatabaseRef.child("teltplasser").child(teltplass.getLatLng()).setValue(teltplass);
             mDatabaseRef.child("mineTeltplasser").child(UID).child(teltplass.getLatLng()).setValue(teltplass);
 
-            Intent intent = new Intent(this, MainActivity.class);
+            Intent intent = new Intent(EditTeltplassActivity.this, TeltplassActivity.class);
+            intent.putExtra("Id", teltplassId);
             startActivity(intent);
         }
         else{
             Toast.makeText(this, "Du må fylle inn alle feltene", Toast.LENGTH_LONG).show();
         }
+    }
+
+    public void slettTeltplass(View view){
+
+        /*//Fjerner ikke alle steder
+        mDatabaseRef.child("teltplasser").child(teltplassId).removeValue();
+        mDatabaseRef.child("mineTeltplasser").child(UID).child(teltplassId).removeValue();*/
+
+        Intent intent = new Intent(this,MainActivity.class);
+        startActivity(intent);
     }
 
     public void avbrytOpprettTeltplass(View view){
@@ -267,9 +276,7 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
 
-            currentImageId = UUID.randomUUID().toString();
-
-            StorageReference ref = mStorageReference.child("images/"+ currentImageId);
+            StorageReference ref = mStorageReference.child("images/"+ imageId);
 
 
             ref.putFile(filePath)
@@ -277,14 +284,14 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             progressDialog.dismiss();
-                            Toast.makeText(OpprettTeltplassActivity.this, "Uploaded", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(EditTeltplassActivity.this, "Uploaded", Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             progressDialog.dismiss();
-                            Toast.makeText(OpprettTeltplassActivity.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(EditTeltplassActivity.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
@@ -299,6 +306,44 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
         }
     }
 
+    private void showData(){
 
+        mDatabaseRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot ds) {
+                editTextEditTeltplassNavn.setText(ds.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getNavn());
+                editTextEditTeltplassBeskrivelse.setText(ds.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getBeskrivelse());
+                seekBarEditTeltplassUnderlag.setProgress(ds.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getUnderlag());
+                seekBarEditTeltplassUtsikt.setProgress(ds.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getUtsikt());
+                seekBarEditTeltplassAvstand.setProgress(ds.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getAvstand());
+                switchEditTeltplassSkog.setChecked(ds.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getSkog());
+                switchEditTeltplassFjell.setChecked(ds.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getFjell());
+                switchEditTeltplassFiske.setChecked(ds.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getFiske());
+
+                imageId = ds.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getImageId();
+                StorageReference imageRef = mStorageReference.child("images/" + imageId);
+
+                imageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                    @Override
+                    public void onSuccess(byte[] bytes) {
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                        imageView.setImageBitmap(bitmap);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+    }
 
 }
