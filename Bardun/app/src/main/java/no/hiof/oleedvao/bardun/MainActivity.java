@@ -382,7 +382,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             Marker m = mMap.addMarker(new MarkerOptions()
                             .position(currLoc)
                             .title(name)
-                            .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_teltplass_marker_green))
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.teltikon_green_filles))
             );
             m.setTag(test);
             //Log.d(TAG, " key: " + m.getTag());
@@ -537,7 +537,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             mNyTeltplass = mMap.addMarker(new MarkerOptions()
                     .position(latLng)
                     .title("Ny teltplass")
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_opprett_teltplass))
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.registrer_teltplass))
                     .draggable(true)
             );
             mNyTeltplass.setDraggable(true);
