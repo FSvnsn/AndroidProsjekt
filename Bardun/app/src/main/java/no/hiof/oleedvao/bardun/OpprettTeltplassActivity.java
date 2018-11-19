@@ -104,6 +104,8 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
 
     }
 
+    //Commented due to TransactionTooLargeException
+    /*
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         Bitmap bm =((BitmapDrawable)imageView.getDrawable()).getBitmap();
@@ -117,7 +119,7 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
         imageView.setImageBitmap((Bitmap) savedInstanceState.getParcelable("bitmap"));
 
         super.onRestoreInstanceState(savedInstanceState);
-    }
+    }*/
 
     //Metode for å hente bilde fra galleri
     public void getPicture(View view){
