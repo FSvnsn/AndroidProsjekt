@@ -3,6 +3,7 @@ package no.hiof.oleedvao.bardun;
 import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -12,6 +13,8 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
@@ -49,6 +52,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.zip.Inflater;
 
 import android.os.AsyncTask;
@@ -150,15 +154,21 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         });
         imageBtnMyLoc = findViewById(R.id.imageBtnMyLoc);
 
-        mAuth = FirebaseAuth.getInstance();
-        CUser = mAuth.getCurrentUser();
+        if(isConnectedToInternet()){
+            mAuth = FirebaseAuth.getInstance();
+            CUser = mAuth.getCurrentUser();
 
-        try{
-            UID = CUser.getUid();
+            try{
+                UID = CUser.getUid();
+            }
+            catch(NullPointerException e){
+                Toast.makeText(this, "Du er ikke logget inn!", Toast.LENGTH_LONG).show();
+            }
         }
-        catch(NullPointerException e){
-            Toast.makeText(this, "Du er ikke logget inn!", Toast.LENGTH_LONG).show();
+        else{
+            Toast.makeText(this, "Får ikke tilgang til Internett! Sjekk tilkoblingen din.", Toast.LENGTH_LONG).show();
         }
+
 
         createNotificationChannel();
         setUpNavigationDrawer();
@@ -349,37 +359,44 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap = googleMap;
         Toast.makeText(this, "Trykk lenge på det stedet i kartet du vil opprette en teltplass", Toast.LENGTH_LONG).show();
 
+        if(isConnectedToInternet()){
+            //Skaffer data fra Firebase og plasserer markører
+            mDatabase = FirebaseDatabase.getInstance();
+            mDatabaseRef = mDatabase.getReference();
 
-        //Skaffer data fra Firebase og plasserer markører
-        mDatabase = FirebaseDatabase.getInstance();
-        mDatabaseRef = mDatabase.getReference();
+            mDatabaseRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    try{
+                        //Viser notifikasjon for hvor lenge siden sist bruker har oprettet en teltplass
+                        Boolean sendNotification = dataSnapshot.child("users").child(UID).child("sendNotification").getValue(Boolean.class);
 
-        mDatabaseRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                try{
-                    //Viser notifikasjon for hvor lenge siden sist bruker har oprettet en teltplass
-                    Boolean sendNotification = dataSnapshot.child("users").child(UID).child("sendNotification").getValue(Boolean.class);
+                        if(CUser != null && sendNotification == Boolean.TRUE){
+                            showNotification(dataSnapshot);
+                        }
 
-                    if(CUser != null && sendNotification == Boolean.TRUE){
-                        showNotification(dataSnapshot);
+                        //Henter teltplasser fra Firebase og lager markører for hver i kartet
+                        showMarkers(dataSnapshot);
                     }
-
-                    //Henter teltplasser fra Firebase og lager markører for hver i kartet
-                    showMarkers(dataSnapshot);
+                    catch (NullPointerException e){
+                        e.printStackTrace();
+                        Log.d(TAG2, "Ingen bruker logget inn");
+                    }
                 }
-                catch (NullPointerException e){
-                    e.printStackTrace();
-                    Log.d(TAG2, "Ingen bruker logget inn");
-                }
-            }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
-                    System.out.println("The read failed: " + databaseError.getCode());
+                    //System.out.println("The read failed: " + databaseError.getCode());
+                    Log.e("OOF", "Read from database failed: " + databaseError.toString());
                 }
 
             });
+        }
+        else{
+
+            Toast.makeText(this, "Får ikke tilgang til Internett! Sjekk tilkoblingen din.", Toast.LENGTH_LONG).show();
+        }
+
 
         final LatLngBounds NORGE = new LatLngBounds(
                 new LatLng(57.931883, 0.162047), new LatLng(67.786666, 18.441137));
@@ -757,5 +774,23 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
     public static Marker getmNyTeltplass(){
         return mNyTeltplass;
+    }
+
+    //src:
+    //https://stackoverflow.com/questions/19050444/how-to-handle-with-no-internet-and-lost-connection-in-android
+    public boolean isConnectedToInternet(){
+        ConnectivityManager connectivity = (ConnectivityManager)getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivity != null)
+        {
+            NetworkInfo[] info = connectivity.getAllNetworkInfo();
+            if (info != null)
+                for (int i = 0; i < info.length; i++)
+                    if (info[i].getState() == NetworkInfo.State.CONNECTED)
+                    {
+                        return true;
+                    }
+
+        }
+        return false;
     }
 }
