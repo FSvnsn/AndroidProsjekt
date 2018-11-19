@@ -742,10 +742,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
     @Override
     public void onButtonClicked(String text) {
-        // Når visTeltplass-knapp inni bottom sheet er trykket skjer dette:
-        //TODO: Åpne teltplass-activity her og send med teltplass-ID
-        mTextView = findViewById(R.id.visTeltplassKlikk);
-        mTextView.setText(text);
         Log.d(TAG, "onButtoncliked");
 
     }
