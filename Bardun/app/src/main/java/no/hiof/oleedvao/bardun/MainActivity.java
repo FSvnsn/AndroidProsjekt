@@ -292,6 +292,24 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             });
         }
     }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        if (requestCode == REQUEST_LOCATION_PERMISSION) {
+            // Request for camera permission.
+            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission has been granted.
+                Log.d(TAG, "Permission for location granted");
+                //Start locating
+            } else {
+                // Permission request was denied.
+                Log.d(TAG, "Permission for location NOT granted");
+
+                //
+            }
+        }
+    }
+
 
     private void initSearch() {
 
