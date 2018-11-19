@@ -157,6 +157,7 @@ public class RedigerBrukerActivity extends AppCompatActivity {
         });
     }
 
+    /*
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         Bitmap bm =((BitmapDrawable)imgRedigerBruker.getDrawable()).getBitmap();
@@ -170,7 +171,7 @@ public class RedigerBrukerActivity extends AppCompatActivity {
         imgRedigerBruker.setImageBitmap((Bitmap) savedInstanceState.getParcelable("bitmap"));
 
         super.onRestoreInstanceState(savedInstanceState);
-    }
+    }*/
 
     public void getPicture(View view){
         //creates implicit intent to get image
