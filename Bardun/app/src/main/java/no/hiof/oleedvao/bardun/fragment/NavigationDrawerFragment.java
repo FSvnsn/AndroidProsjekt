@@ -68,15 +68,15 @@ public class NavigationDrawerFragment extends Fragment implements NavigationView
 
         mAuth = FirebaseAuth.getInstance();
         CUser = mAuth.getCurrentUser();
-        UID = CUser.getUid();
+       // UID = CUser.getUid();
 
         navigationView = view.findViewById(R.id.navigationView);
         headerView = navigationView.getHeaderView(0);
         textViewHeader = headerView.findViewById(R.id.textViewNavDrawerHeader);
-        textViewUserName = headerView.findViewById(R.id.textViewNavDrawerBrukerNavn);
+        //textViewUserName = headerView.findViewById(R.id.textViewNavDrawerBrukerNavn);
         textViewHeader.setText("Bardun");
 
-        mDatabaseRef.addValueEventListener(new ValueEventListener() {
+        /*mDatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 textViewUserName.setText(dataSnapshot.child("users").child(UID).child("name").getValue().toString());
@@ -86,7 +86,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationView
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        });*/
 
 
         navigationView.setNavigationItemSelectedListener(this);
