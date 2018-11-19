@@ -1,4 +1,4 @@
-
+package no.hiof.oleedvao.bardun;
 
 import android.Manifest;
 import android.app.NotificationChannel;
@@ -86,6 +86,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import no.hiof.oleedvao.bardun.OpprettTeltplassBottomSheetDialog;
+import no.hiof.oleedvao.bardun.R;
+import no.hiof.oleedvao.bardun.Teltplass;
+import no.hiof.oleedvao.bardun.TeltplassQuickviewBottomSheetDialog;
 import no.hiof.oleedvao.bardun.adapter.PlaceAutoCompleteAdapter;
 import no.hiof.oleedvao.bardun.fragment.NavigationDrawerFragment;
 
