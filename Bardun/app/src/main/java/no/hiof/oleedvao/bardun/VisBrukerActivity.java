@@ -44,6 +44,7 @@ public class VisBrukerActivity extends AppCompatActivity {
     private TextView txtVisBrukerAlder;
     private ImageView imgVisBrukerBilde;
     private TextView txtVisBrukerBeskrivelse;
+    private android.support.v7.widget.Toolbar toolbar;
 
     private RecyclerView myRecyclerView;
     private List<Teltplass> listTeltplass;
@@ -70,6 +71,11 @@ public class VisBrukerActivity extends AppCompatActivity {
         txtVisBrukerAlder = findViewById(R.id.txtVisBrukerAlder);
         txtVisBrukerBeskrivelse = findViewById(R.id.txtVisBrukerBeskrivelse);
         imgVisBrukerBilde = findViewById(R.id.imgVisBrukerBilde);
+
+        toolbar = findViewById(R.id.toolbar_instillinger);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Bardun");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         myRecyclerView = findViewById(R.id.rvVisBrukerTeltplasser);
         recycleAdapter = new RecycleViewAdapter(VisBrukerActivity.this, listTeltplass);

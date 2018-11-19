@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -32,6 +33,8 @@ public class InstillingerActivity extends AppCompatActivity {
 
     private Button btnLogOut;
     private Switch switchNotifications;
+    private android.support.v7.widget.Toolbar toolbarInstillinger;
+
     private FirebaseDatabase mDatabase;
     private DatabaseReference mDatabaseRef;
     private GoogleApiClient mGoogleApiClient;
@@ -53,6 +56,10 @@ public class InstillingerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_instillinger);
 
         btnLogOut = (Button) findViewById(R.id.btnLogOut);
+        toolbarInstillinger = findViewById(R.id.toolbar_instillinger);
+        setSupportActionBar(toolbarInstillinger);
+        getSupportActionBar().setTitle("Instillinger");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         switchNotifications = findViewById(R.id.switchNotifications);
         switchReady = FALSE;
 

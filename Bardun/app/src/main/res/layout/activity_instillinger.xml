@@ -6,6 +6,10 @@
     android:layout_height="match_parent"
     tools:context=".InstillingerActivity">
 
+    <include
+        android:id="@+id/toolbar_instillinger"
+        layout="@layout/toolbar_instillinger"/>
+
     <Button
         android:id="@+id/btnLogOut"
         style="@style/Widget.MaterialComponents.Button"
@@ -16,6 +20,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="@string/log_out"
+        android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

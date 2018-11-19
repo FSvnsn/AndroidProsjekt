@@ -5,6 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <include
+        android:id="@+id/toolbar_instillinger"
+        layout="@layout/toolbar_instillinger"/>
+
     <ImageView
         android:id="@+id/imgVisBrukerBilde"
         android:layout_width="125dp"
