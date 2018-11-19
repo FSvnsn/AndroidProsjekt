@@ -609,6 +609,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 .position(currLoc)
                                 .title(name)
                                 .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_teltplass_marker_green)));
+
+                        location = location.replace(".", "p");
+                        location = location.replace(",", "k");
+
                         marker.setTag(location); //Må muligens se nærmere på
                         markers.add(marker);
                     }
