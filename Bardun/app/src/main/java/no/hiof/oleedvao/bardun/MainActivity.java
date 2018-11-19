@@ -1,4 +1,4 @@
-package no.hiof.oleedvao.bardun;
+
 
 import android.Manifest;
 import android.app.NotificationChannel;
@@ -492,7 +492,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             Marker m = mMap.addMarker(new MarkerOptions()
                             .position(currLoc)
                             .title(name)
-                            .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_teltplass_marker_green))
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.teltikon_green_filles))
             );
             m.setTag(test);
             //Log.d(TAG, " key: " + m.getTag());
@@ -608,11 +608,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         Marker marker = mMap.addMarker(new MarkerOptions()
                                 .position(currLoc)
                                 .title(name)
-                                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_teltplass_marker_green)));
-
-                        location = location.replace(".", "p");
-                        location = location.replace(",", "k");
-
+                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.teltikon_green_filles)));
                         marker.setTag(location); //Må muligens se nærmere på
                         markers.add(marker);
                     }
@@ -651,7 +647,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             mNyTeltplass = mMap.addMarker(new MarkerOptions()
                     .position(latLng)
                     .title("Ny teltplass")
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_opprett_teltplass))
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.registrer_teltplass))
                     .draggable(true)
             );
             mNyTeltplass.setDraggable(true);
@@ -730,8 +726,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             Bundle bundle = new Bundle();
             bundle.putString("latlong",pos);
             bundle.putString("tittel",name);
-            bundle.putString("brukernavn", "Caroline");
-            bundle.putString("dato", "14.01.2014");
+            bundle.putString("brukernavn", "Brukernavn");
+            bundle.putString("dato", "14.11.2018");
             bundle.putString("id",id);
 
 

@@ -50,26 +50,6 @@
                 tools:context=".MainActivity"
                 tools:layout="@layout/google_maps_fragment" />
 
-            <TextView
-                android:id="@+id/visTeltplassKlikk"
-                android:layout_width="329dp"
-                android:layout_height="33dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="32dp"
-                android:text="Vis teltplass"
-                android:textAlignment="center"
-                android:textColor="@color/colorAccent"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.512"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.131" />
-
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/nyTeltplassHer"
                 android:layout_width="match_parent"
@@ -138,14 +118,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginBottom="8dp"
-                android:layout_marginStart="8dp"
                 android:layout_marginTop="52dp"
                 android:background="#fff"
                 android:elevation="10dp"
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="@+id/map"
-                app:layout_constraintEnd_toEndOf="@+id/visTeltplassKlikk"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/map"
                 app:layout_constraintTop_toTopOf="@+id/map"
                 app:layout_constraintVertical_bias="0.0">
@@ -168,7 +145,7 @@
                     android:layout_marginLeft="8dp"
                     android:layout_toRightOf="@+id/searchIcon"
                     android:background="@null"
-                    android:hint="Skriv inn stedsnavn eller teltplassnavn..."
+                    android:hint="Skriv inn stedsnavn..."
                     android:imeOptions="actionDone"
                     android:singleLine="true"
                     android:textColor="@color/primaryTextColor"
@@ -187,14 +164,14 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:background="@color/colorPrimaryDark"
                 android:tint="@android:color/white"
                 android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.975"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/visTeltplassKlikk"
+                app:layout_constraintTop_toBottomOf="@+id/searchMapRelativeLayout"
                 app:srcCompat="@drawable/ic_filter" />
 
             <ImageButton
