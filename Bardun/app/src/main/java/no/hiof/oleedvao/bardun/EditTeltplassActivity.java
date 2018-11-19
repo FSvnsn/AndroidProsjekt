@@ -217,40 +217,42 @@ public class EditTeltplassActivity extends AppCompatActivity {
 
     public void editTeltplass(View view){
 
-        String emptyString = new String();
+        if(currentPhotoUri != null){
+            uploadImage(currentPhotoUri);
+        }
+
+        Calendar cal = Calendar.getInstance();
+        String timeStamp = cal.getTime().toString();
+
+        Teltplass teltplass = new Teltplass(teltplassId,
+                editTextEditTeltplassNavn.getText().toString(),
+                editTextEditTeltplassBeskrivelse.getText().toString(),
+                seekBarEditTeltplassUnderlag.getProgress(),
+                seekBarEditTeltplassUtsikt.getProgress(),
+                seekBarEditTeltplassAvstand.getProgress(),
+                switchEditTeltplassSkog.isChecked(),
+                switchEditTeltplassFjell.isChecked(),
+                switchEditTeltplassFiske.isChecked(),
+                currentImageId,
+                UID,
+                timeStamp);
+
+        mDatabaseRef.child("teltplasser").child(teltplass.getLatLng()).setValue(teltplass);
+        mDatabaseRef.child("mineTeltplasser").child(UID).child(teltplass.getLatLng()).setValue(teltplass);
+
+        Intent intent = new Intent(EditTeltplassActivity.this, TeltplassActivity.class);
+        intent.putExtra("Id", teltplassId);
+        startActivity(intent);
+
+        /*String emptyString = new String();
         if(!editTextEditTeltplassNavn.getText().toString().equals(emptyString) &&
                 !editTextEditTeltplassBeskrivelse.getText().toString().equals(emptyString)){
 
-            if(!currentPhotoUri.equals(null)){
-                uploadImage(currentPhotoUri);
-            }
 
-            Calendar cal = Calendar.getInstance();
-            String timeStamp = cal.getTime().toString();
-
-            Teltplass teltplass = new Teltplass(teltplassId,
-                    editTextEditTeltplassNavn.getText().toString(),
-                    editTextEditTeltplassBeskrivelse.getText().toString(),
-                    seekBarEditTeltplassUnderlag.getProgress(),
-                    seekBarEditTeltplassUtsikt.getProgress(),
-                    seekBarEditTeltplassAvstand.getProgress(),
-                    switchEditTeltplassSkog.isChecked(),
-                    switchEditTeltplassFjell.isChecked(),
-                    switchEditTeltplassFiske.isChecked(),
-                    currentImageId,
-                    UID,
-                    timeStamp);
-
-            mDatabaseRef.child("teltplasser").child(teltplass.getLatLng()).setValue(teltplass);
-            mDatabaseRef.child("mineTeltplasser").child(UID).child(teltplass.getLatLng()).setValue(teltplass);
-
-            Intent intent = new Intent(EditTeltplassActivity.this, TeltplassActivity.class);
-            intent.putExtra("Id", teltplassId);
-            startActivity(intent);
         }
         else{
             Toast.makeText(this, "Du må fylle inn alle feltene", Toast.LENGTH_LONG).show();
-        }
+        }*/
     }
 
     public void slettTeltplass(View view){
@@ -264,7 +266,8 @@ public class EditTeltplassActivity extends AppCompatActivity {
     }
 
     public void avbrytOpprettTeltplass(View view){
-        Intent intent = new Intent(this,MainActivity.class);
+        Intent intent = new Intent(this, TeltplassActivity.class);
+        intent.putExtra("Id", teltplassId);
         startActivity(intent);
     }
 
