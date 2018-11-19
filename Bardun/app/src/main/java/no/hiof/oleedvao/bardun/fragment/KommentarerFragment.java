@@ -69,7 +69,13 @@ public class KommentarerFragment extends Fragment {
         mStorageReference = mStorage.getReference();
         mAuth = FirebaseAuth.getInstance();
         CUser = mAuth.getCurrentUser();
-        UID = CUser.getUid();
+
+        try{
+            UID = CUser.getUid();
+        }
+        catch (NullPointerException e){
+            e.printStackTrace();
+        }
 
         if (getArguments() != null){
             teltplassId = getArguments().getString("teltplassId");
