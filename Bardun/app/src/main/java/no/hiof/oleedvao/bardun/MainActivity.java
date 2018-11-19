@@ -162,7 +162,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 UID = CUser.getUid();
             }
             catch(NullPointerException e){
-                Toast.makeText(this, "Du er ikke logget inn!", Toast.LENGTH_LONG).show();
+               // Toast.makeText(this, "Du er ikke logget inn!", Toast.LENGTH_LONG).show();
             }
         }
         else{
@@ -367,6 +367,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             mDatabaseRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                    //Henter teltplasser fra Firebase og lager markører for hver i kartet
+                    showMarkers(dataSnapshot);
+
                     try{
                         //Viser notifikasjon for hvor lenge siden sist bruker har oprettet en teltplass
                         Boolean sendNotification = dataSnapshot.child("users").child(UID).child("sendNotification").getValue(Boolean.class);
@@ -374,9 +378,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         if(CUser != null && sendNotification == Boolean.TRUE){
                             showNotification(dataSnapshot);
                         }
-
-                        //Henter teltplasser fra Firebase og lager markører for hver i kartet
-                        showMarkers(dataSnapshot);
                     }
                     catch (NullPointerException e){
                         e.printStackTrace();
@@ -402,7 +403,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 new LatLng(57.931883, 0.162047), new LatLng(67.786666, 18.441137));
 
         mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(NORGE, 0));
+        //mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(NORGE, 0));
 
         mMap.setOnMarkerClickListener(this);
         mMap.setOnMapLongClickListener(this);

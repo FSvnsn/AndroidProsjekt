@@ -67,7 +67,15 @@ public class BeskrivelseFragment extends Fragment {
         mStorageReference = mStorage.getReference();
         mAuth = FirebaseAuth.getInstance();
         CUser = mAuth.getCurrentUser();
-        UID = CUser.getUid();
+
+        try
+        {
+            UID = CUser.getUid();
+        }
+        catch(NullPointerException e){
+            e.printStackTrace();
+        }
+
 
         //Gets beskrivelse from database
         mDatabaseRef.addValueEventListener(new ValueEventListener() {

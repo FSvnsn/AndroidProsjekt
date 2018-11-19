@@ -127,7 +127,13 @@ public class TeltplassActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         CUser = mAuth.getCurrentUser();
 
-        UID = CUser.getUid();
+        try
+        {
+            UID = CUser.getUid();
+        }
+        catch(NullPointerException e){
+            e.printStackTrace();
+        }
 
         mDatabaseRef.addValueEventListener(new ValueEventListener(){
             @Override

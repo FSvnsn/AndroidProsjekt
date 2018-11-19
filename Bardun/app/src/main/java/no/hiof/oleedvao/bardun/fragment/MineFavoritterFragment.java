@@ -66,7 +66,14 @@ public class MineFavoritterFragment extends Fragment {
         mStorageReference = mStorage.getReference();
         mAuth = FirebaseAuth.getInstance();
         CUser = mAuth.getCurrentUser();
-        UID = CUser.getUid();
+        try
+        {
+            UID = CUser.getUid();
+        }
+        catch(NullPointerException e){
+            e.printStackTrace();
+        }
+
         listTeltplass = new ArrayList<Teltplass>();
 
         mDatabaseRef.addValueEventListener(new ValueEventListener() {
