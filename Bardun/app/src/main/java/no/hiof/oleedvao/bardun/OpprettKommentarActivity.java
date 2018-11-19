@@ -1,5 +1,6 @@
 package no.hiof.oleedvao.bardun;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -78,9 +79,15 @@ public class OpprettKommentarActivity extends AppCompatActivity {
         Kommentar kommentar = new Kommentar(date.toString(), brukernavn, editTextKommentar.getText().toString());
 
         mDatabaseRef.child("teltplassKommentarer").child(teltplassId).child(date.toString()).setValue(kommentar);
+
+        Intent intent = new Intent(this, TeltplassActivity.class);
+        intent.putExtra("Id",teltplassId);
+        startActivity(intent);
     }
 
     public void avbrytKommentar(View view){
-
+        Intent intent = new Intent(this, TeltplassActivity.class);
+        intent.putExtra("Id",teltplassId);
+        startActivity(intent);
     }
 }
