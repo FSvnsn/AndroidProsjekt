@@ -199,7 +199,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        app:layout_constraintGuide_begin="374dp" />
+                        app:layout_constraintGuide_begin="404dp" />
 
                     <android.support.constraint.Guideline
                         android:id="@+id/guideline7"
@@ -312,12 +312,11 @@
                         android:id="@+id/textViewTeltplassTimeStamp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
                         android:text="TextView"
                         android:textSize="12sp"
-                        app:layout_constraintBottom_toBottomOf="@+id/textViewBrukerNavn"
-                        app:layout_constraintStart_toEndOf="@+id/textViewBrukerNavn"
-                        app:layout_constraintTop_toTopOf="@+id/textViewBrukerNavn" />
+                        app:layout_constraintBottom_toTopOf="@+id/guideline6"
+                        app:layout_constraintStart_toStartOf="@+id/textViewBrukerNavn"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewBrukerNavn" />
 
                     <Button
                         android:id="@+id/buttonLagreTeltplassEndringer"
