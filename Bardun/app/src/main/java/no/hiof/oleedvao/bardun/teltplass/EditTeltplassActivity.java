@@ -1,10 +1,12 @@
-package no.hiof.oleedvao.bardun;
+package no.hiof.oleedvao.bardun.teltplass;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -22,7 +24,6 @@ import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -42,6 +43,9 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+
+import no.hiof.oleedvao.bardun.R;
+import no.hiof.oleedvao.bardun.main.MainActivity;
 
 public class EditTeltplassActivity extends AppCompatActivity {
     private static final int REQUEST_IMAGE_GET = 1000;
@@ -93,6 +97,7 @@ public class EditTeltplassActivity extends AppCompatActivity {
         switchEditTeltplassFiske = findViewById(R.id.switchEditTeltplassFiske);
         buttonLagreTeltplassEndringer = findViewById(R.id.buttonLagreTeltplassEndringer);
 
+        //TODO : sjekk internett
         //Instansierer database-relaterte variabler
         mDatabase = FirebaseDatabase.getInstance();
         mDatabaseRef = mDatabase.getReference();
@@ -102,7 +107,10 @@ public class EditTeltplassActivity extends AppCompatActivity {
         CUser = mAuth.getCurrentUser();
         UID = CUser.getUid();
 
+        //henter teltplassId fra forrige Activity
         teltplassId = getIntent().getStringExtra("Id");
+
+        //viser data
         showData();
 
 
@@ -159,8 +167,10 @@ public class EditTeltplassActivity extends AppCompatActivity {
         }
     }
 
+    //metode for å behandle resultater for implisitte intents
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        //Behandling av hentet bilde fra galleri
         if(requestCode == REQUEST_IMAGE_GET && resultCode == RESULT_OK){
             try{
                 //get the image uri
@@ -171,9 +181,11 @@ public class EditTeltplassActivity extends AppCompatActivity {
                 //set the image view bitmap to the retrieved image bitmap
                 imageView.setImageBitmap(picture);
             } catch (IOException e){
+                Log.e("Implicit Intent", "Failed to get image: " + e.getStackTrace());
                 Toast.makeText(this, "Couldn't get picture", Toast.LENGTH_SHORT).show();
             }
         }
+        //Behandling av bilde tatt med kamera
         else if(requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK){
             try{
                 //Retrieves file from saved photo path
@@ -183,12 +195,14 @@ public class EditTeltplassActivity extends AppCompatActivity {
                 //sets the image view bitmap to the retrieved image bitmap
                 imageView.setImageBitmap(picture);
             }catch(Exception e){
+                Log.e("Implicit Intent", "Failed to capture image: " + e.getStackTrace());
                 Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    //Metode for å lage en bildefil
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -207,16 +221,9 @@ public class EditTeltplassActivity extends AppCompatActivity {
         return image;
     }
 
-    private void galleryAddPic() {
-        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-        File f = new File(currentPhotoPath);
-        Uri contentUri = Uri.fromFile(f);
-        mediaScanIntent.setData(contentUri);
-        this.sendBroadcast(mediaScanIntent);
-    }
-
+    //Onclick metode for lagre endringer knapp
     public void editTeltplass(View view){
-
+        //TODO : sjekk internett
         if(currentPhotoUri != null){
             uploadImage(currentPhotoUri);
         }
@@ -244,17 +251,9 @@ public class EditTeltplassActivity extends AppCompatActivity {
         intent.putExtra("Id", teltplassId);
         startActivity(intent);
 
-        /*String emptyString = new String();
-        if(!editTextEditTeltplassNavn.getText().toString().equals(emptyString) &&
-                !editTextEditTeltplassBeskrivelse.getText().toString().equals(emptyString)){
-
-
-        }
-        else{
-            Toast.makeText(this, "Du må fylle inn alle feltene", Toast.LENGTH_LONG).show();
-        }*/
     }
 
+    //Onclick metode for slett teltplass knapp
     public void slettTeltplass(View view){
 
         /*//Fjerner ikke alle steder
@@ -265,16 +264,20 @@ public class EditTeltplassActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void avbrytOpprettTeltplass(View view){
+    //Onclick metode for å avbryte redigering av teltplass
+    public void avbrytEditTeltplass(View view){
         Intent intent = new Intent(this, TeltplassActivity.class);
         intent.putExtra("Id", teltplassId);
         startActivity(intent);
     }
 
+    //https://code.tutsplus.com/tutorials/image-upload-to-firebase-in-android-application--cms-29934
+    //Metode for å laste opp bilde til database
     private void uploadImage(Uri filePath) {
 
         if(filePath != null)
         {
+            //todo : sjekk internett
             final ProgressDialog progressDialog = new ProgressDialog(this);
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
@@ -309,8 +312,9 @@ public class EditTeltplassActivity extends AppCompatActivity {
         }
     }
 
+    //Metode for å vise hente data fra databasen og vise det frem i views
     private void showData(){
-
+        //todo : sjekk internett
         mDatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot ds) {
@@ -345,8 +349,25 @@ public class EditTeltplassActivity extends AppCompatActivity {
 
             }
         });
+    }
 
+    //src:
+    //https://stackoverflow.com/questions/19050444/how-to-handle-with-no-internet-and-lost-connection-in-android
+    //Metode for å sjekke tilgang til internett
+    public boolean isConnectedToInternet(){
+        ConnectivityManager connectivity = (ConnectivityManager)getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivity != null)
+        {
+            NetworkInfo[] info = connectivity.getAllNetworkInfo();
+            if (info != null)
+                for (int i = 0; i < info.length; i++)
+                    if (info[i].getState() == NetworkInfo.State.CONNECTED)
+                    {
+                        return true;
+                    }
 
+        }
+        return false;
     }
 
 }

@@ -1,30 +1,26 @@
 /**
  * Created by Caroline on 17.11.2018.
  */
-package no.hiof.oleedvao.bardun;
+package no.hiof.oleedvao.bardun.fragment;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.nfc.Tag;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.BottomSheetBehavior;
-import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+
+import no.hiof.oleedvao.bardun.main.MainActivity;
+import no.hiof.oleedvao.bardun.teltplass.OpprettTeltplassActivity;
 
 import static no.hiof.oleedvao.bardun.R.id.bottom_sheet_registrer_tittel;
 import static no.hiof.oleedvao.bardun.R.id.btn_OpprettTeltplassActivity;

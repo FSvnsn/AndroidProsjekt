@@ -1,9 +1,8 @@
-package no.hiof.oleedvao.bardun;
+package no.hiof.oleedvao.bardun.bruker;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -38,6 +37,8 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
+
+import no.hiof.oleedvao.bardun.R;
 
 import static java.lang.Boolean.TRUE;
 

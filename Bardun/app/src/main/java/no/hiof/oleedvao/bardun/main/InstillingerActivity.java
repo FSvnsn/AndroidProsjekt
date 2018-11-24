@@ -1,4 +1,4 @@
-package no.hiof.oleedvao.bardun;
+package no.hiof.oleedvao.bardun.main;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -25,6 +24,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import no.hiof.oleedvao.bardun.R;
 
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;

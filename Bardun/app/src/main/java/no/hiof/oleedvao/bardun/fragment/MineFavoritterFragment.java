@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import no.hiof.oleedvao.bardun.R;
-import no.hiof.oleedvao.bardun.Teltplass;
+import no.hiof.oleedvao.bardun.teltplass.Teltplass;
 import no.hiof.oleedvao.bardun.adapter.RecycleViewAdapter;
 
 public class MineFavoritterFragment extends Fragment {

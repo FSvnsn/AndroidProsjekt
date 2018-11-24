@@ -1,4 +1,4 @@
-package no.hiof.oleedvao.bardun.fragment;
+package no.hiof.oleedvao.bardun.teltplass;
 
 public class Kommentar {
     private String date;

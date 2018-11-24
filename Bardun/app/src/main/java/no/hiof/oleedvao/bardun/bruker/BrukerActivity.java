@@ -1,4 +1,4 @@
-package no.hiof.oleedvao.bardun;
+package no.hiof.oleedvao.bardun.bruker;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -6,7 +6,6 @@ import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -16,8 +15,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -31,6 +28,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import no.hiof.oleedvao.bardun.R;
 import no.hiof.oleedvao.bardun.adapter.ViewPagerAdapter;
 import no.hiof.oleedvao.bardun.fragment.MineFavoritterFragment;
 import no.hiof.oleedvao.bardun.fragment.MineTeltplasserFragment;

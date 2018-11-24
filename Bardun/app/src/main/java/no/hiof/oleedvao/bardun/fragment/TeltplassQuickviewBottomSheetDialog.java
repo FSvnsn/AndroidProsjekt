@@ -1,4 +1,4 @@
-package no.hiof.oleedvao.bardun;
+package no.hiof.oleedvao.bardun.fragment;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,7 +14,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.model.LatLng;
+import no.hiof.oleedvao.bardun.teltplass.TeltplassActivity;
 
 import static no.hiof.oleedvao.bardun.R.*;
 import static no.hiof.oleedvao.bardun.R.id.*;

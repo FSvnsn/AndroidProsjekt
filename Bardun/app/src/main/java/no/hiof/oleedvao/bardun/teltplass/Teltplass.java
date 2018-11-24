@@ -1,4 +1,4 @@
-package no.hiof.oleedvao.bardun;
+package no.hiof.oleedvao.bardun.teltplass;
 
 public class Teltplass {
     private String latLng;

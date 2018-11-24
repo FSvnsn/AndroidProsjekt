@@ -1,10 +1,11 @@
-package no.hiof.oleedvao.bardun;
+package no.hiof.oleedvao.bardun.teltplass;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -27,11 +28,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -44,11 +42,17 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
+import no.hiof.oleedvao.bardun.R;
+import no.hiof.oleedvao.bardun.main.MainActivity;
+
+//https://developer.android.com/training/camera/photobasics
+
 public class OpprettTeltplassActivity extends AppCompatActivity {
+    //final variabler
     private static final int REQUEST_IMAGE_GET = 1000;
     private static final int REQUEST_TAKE_PHOTO = 2000;
-    final long ONE_MEGABYTE = 1024 * 1024;
-    private Boolean editTeltplass = false;
+    private final long ONE_MEGABYTE = 1024 * 1024;
+
 
     //Bilde-relaterte variabler
     private String currentPhotoPath;
@@ -79,6 +83,7 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //setter layout
         setContentView(R.layout.activity_opprett_teltplass);
 
         //Instantierer views
@@ -93,18 +98,25 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
         switchOpprettTeltplassFiske = findViewById(R.id.switchEditTeltplassFiske);
         buttonOpprettTeltplass = findViewById(R.id.buttonLagreTeltplassEndringer);
 
-        //Instansierer database-relaterte variabler
-        mDatabase = FirebaseDatabase.getInstance();
-        mDatabaseRef = mDatabase.getReference();
-        mStorage = FirebaseStorage.getInstance();
-        mStorageReference = mStorage.getReference();
-        mAuth = FirebaseAuth.getInstance();
-        CUser = mAuth.getCurrentUser();
-        UID = CUser.getUid();
+        if(isConnectedToInternet()){
+            //Instansierer database-relaterte variabler
+            mDatabase = FirebaseDatabase.getInstance();
+            mDatabaseRef = mDatabase.getReference();
+            mStorage = FirebaseStorage.getInstance();
+            mStorageReference = mStorage.getReference();
+            mAuth = FirebaseAuth.getInstance();
+            CUser = mAuth.getCurrentUser();
+            UID = CUser.getUid();
+        }
+        else {
+            Toast.makeText(this, "Får ikke tilgang til Internett! Sjekk tilkoblingen din.", Toast.LENGTH_LONG).show();
+        }
+
+
 
     }
 
-    //Commented due to TransactionTooLargeException
+    //Kommentert vekk på grunn av TransactionTooLargeException
     /*
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -123,7 +135,7 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
 
     //Metode for å hente bilde fra galleri
     public void getPicture(View view){
-        //creates implicit intent to get image
+        //implisitt intent for å hente bilde
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
         startActivityForResult(intent, REQUEST_IMAGE_GET);
@@ -131,7 +143,7 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
 
     //Metode for å ta bilde med kamera
     public void takePicture(View view) {
-
+        //implisitt intent for å ta bilde med kamera
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
@@ -155,36 +167,36 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
         }
     }
 
+    //metode for å behandle resultater for implisitte intents
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        //Behandling av hentet bilde fra galleri
         if(requestCode == REQUEST_IMAGE_GET && resultCode == RESULT_OK){
             try{
-                //get the image uri
                 Uri photoUri = data.getData();
                 currentPhotoUri = photoUri;
-                //get the image bitmap from the uri
                 Bitmap picture = MediaStore.Images.Media.getBitmap(getContentResolver(), photoUri);
-                //set the image view bitmap to the retrieved image bitmap
                 imageView.setImageBitmap(picture);
             } catch (IOException e){
-                Toast.makeText(this, "Couldn't get picture", Toast.LENGTH_SHORT).show();
+                Log.e("Implicit Intent", "Failed to get image: " + e.getStackTrace());
+                Toast.makeText(this, "Klarte ikke hente bilde fra galleri.", Toast.LENGTH_LONG).show();
             }
         }
+        //Behandling av bilde tatt med kamera
         else if(requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK){
             try{
-                //Retrieves file from saved photo path
                 File file = new File(currentPhotoPath);
-                //gets bitmap from file uri
                 Bitmap picture = MediaStore.Images.Media.getBitmap(getContentResolver(), Uri.fromFile(file));
-                //sets the image view bitmap to the retrieved image bitmap
                 imageView.setImageBitmap(picture);
             }catch(Exception e){
+                Log.e("Implicit Intent", "Failed to capture image: " + e.getStackTrace());
                 Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    //Metode for å lage en bildefil
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -203,6 +215,7 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
         return image;
     }
 
+    //Metode for å legge til bilde til galleri. (Ikke benyttet)
     private void galleryAddPic() {
         Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         File f = new File(currentPhotoPath);
@@ -211,96 +224,136 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
         this.sendBroadcast(mediaScanIntent);
     }
 
+    //Hvis bruker trykker på opprett teltplass knapp
+    //Metode for å opprette teltplass i databasen
     public void opprettTeltplass(View view){
 
-        String emptyString = new String();
+        String emptyString = new String(); //variabel for inputtesting
         if(!editTextOpprettTeltplassNavn.getText().toString().equals(emptyString) &&
-                !editTextOpprettTeltplassBeskrivelse.getText().toString().equals(emptyString)){
+                !editTextOpprettTeltplassBeskrivelse.getText().toString().equals(emptyString)){ //Sjekker om alle nødvendige felt er fylt ut. (Kunne vært forbedret/utvidet)
+            if(isConnectedToInternet()){
+                //laster opp bilde
+                uploadImage(currentPhotoUri);
 
-            uploadImage(currentPhotoUri);
+                //Skaffer og converter latLng
+                LatLng latLng = getIntent().getExtras().getParcelable("latLng");
+                double latitude = latLng.latitude;
+                double longitude = latLng.longitude;
+                String lat = String.valueOf(latitude);
+                String lng = String.valueOf(longitude);
+                //Konverterer LatLng til databaseId
+                String location = lat + "," + lng;
+                location = location.replace(".", "p");
+                location = location.replace(",", "k");
 
-            //Skaffer og converter latLng
-            LatLng latLng = getIntent().getExtras().getParcelable("latLng");
-            double latitude = latLng.latitude;
-            double longitude = latLng.longitude;
-            String lat = String.valueOf(latitude);
-            String lng = String.valueOf(longitude);
-            String location = lat + "," + lng;
-            location = location.replace(".", "p");
-            location = location.replace(",", "k");
+                //lager et timestamp for når teltplassen ble opprettet
+                Calendar cal = Calendar.getInstance();
+                String timeStamp = cal.getTime().toString();
 
-            Calendar cal = Calendar.getInstance();
-            String timeStamp = cal.getTime().toString();
+                //Oppretter teltplass-objekt
+                Teltplass teltplass = new Teltplass(location,
+                        editTextOpprettTeltplassNavn.getText().toString(),
+                        editTextOpprettTeltplassBeskrivelse.getText().toString(),
+                        seekBarOpprettTeltplassUnderlag.getProgress(),
+                        seekBarOpprettTeltplassUtsikt.getProgress(),
+                        seekBarOpprettTeltplassAvstand.getProgress(),
+                        switchOpprettTeltplassSkog.isChecked(),
+                        switchOpprettTeltplassFjell.isChecked(),
+                        switchOpprettTeltplassFiske.isChecked(),
+                        currentImageId,
+                        UID,
+                        timeStamp);
 
-            Teltplass teltplass = new Teltplass(location,
-                    editTextOpprettTeltplassNavn.getText().toString(),
-                    editTextOpprettTeltplassBeskrivelse.getText().toString(),
-                    seekBarOpprettTeltplassUnderlag.getProgress(),
-                    seekBarOpprettTeltplassUtsikt.getProgress(),
-                    seekBarOpprettTeltplassAvstand.getProgress(),
-                    switchOpprettTeltplassSkog.isChecked(),
-                    switchOpprettTeltplassFjell.isChecked(),
-                    switchOpprettTeltplassFiske.isChecked(),
-                    currentImageId,
-                    UID,
-                    timeStamp);
+                //Legger til teltplass i database
+                mDatabaseRef.child("teltplasser").child(teltplass.getLatLng()).setValue(teltplass);
+                mDatabaseRef.child("mineTeltplasser").child(UID).child(teltplass.getLatLng()).setValue(teltplass);
 
-            mDatabaseRef.child("teltplasser").child(teltplass.getLatLng()).setValue(teltplass);
-            mDatabaseRef.child("mineTeltplasser").child(UID).child(teltplass.getLatLng()).setValue(teltplass);
-
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
+                //Navigerer til MainActivity
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+            }
+            else {
+                Toast.makeText(this, "Får ikke tilgang til Internett! Sjekk tilkoblingen din.", Toast.LENGTH_LONG).show();
+            }
         }
         else{
             Toast.makeText(this, "Du må fylle inn alle feltene", Toast.LENGTH_LONG).show();
         }
     }
 
+    //Hvis bruker trykker på avbryt knapp
     public void avbrytOpprettTeltplass(View view){
+        //Navigerer til MainActivity
         Intent intent = new Intent(this,MainActivity.class);
         startActivity(intent);
     }
 
+    //https://code.tutsplus.com/tutorials/image-upload-to-firebase-in-android-application--cms-29934
+    //Metode for å laste opp bilde til database
     private void uploadImage(Uri filePath) {
 
         if(filePath != null)
         {
-            final ProgressDialog progressDialog = new ProgressDialog(this);
-            progressDialog.setTitle("Uploading...");
-            progressDialog.show();
+            if(isConnectedToInternet()){
+                //Progress dialog
+                final ProgressDialog progressDialog = new ProgressDialog(this);
+                progressDialog.setTitle("Laster opp...");
+                progressDialog.show();
 
-            currentImageId = UUID.randomUUID().toString();
-
-            StorageReference ref = mStorageReference.child("images/"+ currentImageId);
-
-
-            ref.putFile(filePath)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            progressDialog.dismiss();
-                            Toast.makeText(OpprettTeltplassActivity.this, "Uploaded", Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            progressDialog.dismiss();
-                            Toast.makeText(OpprettTeltplassActivity.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
-                                    .getTotalByteCount());
-                            progressDialog.setMessage("Uploaded "+(int)progress+"%");
-                        }
-                    });
+                //Oppretter en unik bildeId
+                currentImageId = UUID.randomUUID().toString();
+                //Path i Firebase Storage
+                StorageReference ref = mStorageReference.child("images/"+ currentImageId);
+                //Legger til Firebase Storage
+                ref.putFile(filePath)
+                        .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                progressDialog.dismiss();
+                                Toast.makeText(OpprettTeltplassActivity.this, "Bilde ble opplastet", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                progressDialog.dismiss();
+                                Toast.makeText(OpprettTeltplassActivity.this, "Feilet "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                                double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
+                                        .getTotalByteCount());
+                                progressDialog.setMessage("Opplastet "+(int)progress+"%");
+                            }
+                        });
+            }
+            else {
+                Toast.makeText(this, "Får ikke tilgang til Internett! Sjekk tilkoblingen din.", Toast.LENGTH_LONG).show();
+            }
 
         }
     }
 
+    //src:
+    //https://stackoverflow.com/questions/19050444/how-to-handle-with-no-internet-and-lost-connection-in-android
+    //Metode for å sjekke tilgang til internett
+    public boolean isConnectedToInternet(){
+        ConnectivityManager connectivity = (ConnectivityManager)getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivity != null)
+        {
+            NetworkInfo[] info = connectivity.getAllNetworkInfo();
+            if (info != null)
+                for (int i = 0; i < info.length; i++)
+                    if (info[i].getState() == NetworkInfo.State.CONNECTED)
+                    {
+                        return true;
+                    }
+
+        }
+        return false;
+    }
 
 
 }

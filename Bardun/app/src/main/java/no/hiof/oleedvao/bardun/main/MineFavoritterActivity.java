@@ -1,8 +1,10 @@
-package no.hiof.oleedvao.bardun;
+package no.hiof.oleedvao.bardun.main;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+
+import no.hiof.oleedvao.bardun.R;
 
 public class MineFavoritterActivity extends AppCompatActivity {
     @Override
