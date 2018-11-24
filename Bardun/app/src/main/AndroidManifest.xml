@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <uses-library android:name="org.apache.http.legacy" android:required="false"/>
-        <activity android:name=".LoginActivity">
+        <activity android:name=".main.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,24 +23,23 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyB5DM5iZnmbLQ3JsoV5-H9q-s6pECSJa3M" />
-        <activity android:name=".MainActivity" />
-        <activity android:name=".BrukerActivity" >
+        <activity android:name=".main.MainActivity" />
+        <activity android:name=".bruker.BrukerActivity" >
 
         </activity>
-        <activity android:name=".TeltplassActivity" >
+        <activity android:name=".teltplass.TeltplassActivity" >
 
         </activity>
-        <activity android:name=".RedigerBrukerActivity" />
-        <activity android:name=".RedigerTeltplassActivity" />
-        <activity android:name=".InstillingerActivity"
-            android:parentActivityName=".MainActivity"/>
-        <activity android:name=".OpprettKommentarActivity" />
-        <activity android:name=".OpprettTeltplassActivity" />
-        <activity android:name=".MineTeltplasserActivity" />
-        <activity android:name=".MineFavoritterActivity" />
-        <activity android:name=".VisBrukerActivity"
-            android:parentActivityName=".MainActivity"/>
-        <activity android:name=".EditTeltplassActivity"/>
+        <activity android:name=".bruker.RedigerBrukerActivity" />
+        <activity android:name=".main.InstillingerActivity"
+            android:parentActivityName=".main.MainActivity"/>
+        <activity android:name=".teltplass.OpprettKommentarActivity" />
+        <activity android:name=".teltplass.OpprettTeltplassActivity" />
+        <activity android:name=".main.MineTeltplasserActivity" />
+        <activity android:name=".main.MineFavoritterActivity" />
+        <activity android:name=".bruker.VisBrukerActivity"
+            android:parentActivityName=".main.MainActivity"/>
+        <activity android:name=".teltplass.EditTeltplassActivity"/>
 
         <provider
             android:name="android.support.v4.content.FileProvider"

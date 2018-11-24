@@ -11,13 +11,14 @@ import android.widget.TextView;
 import java.util.List;
 
 import no.hiof.oleedvao.bardun.R;
-import no.hiof.oleedvao.bardun.fragment.Kommentar;
+import no.hiof.oleedvao.bardun.teltplass.Kommentar;
 
 public class KommentarRecyclerViewAdapter extends RecyclerView.Adapter<KommentarRecyclerViewAdapter.MyViewHolder> {
 
-    Context mContext;
-    List<Kommentar> mData;
+    private Context mContext;
+    private List<Kommentar> mData;
 
+    //konstruktor
     public KommentarRecyclerViewAdapter(Context mContext, List<Kommentar> mData) {
         this.mContext = mContext;
         this.mData = mData;
@@ -32,6 +33,7 @@ public class KommentarRecyclerViewAdapter extends RecyclerView.Adapter<Kommentar
         return viewHolder;
     }
 
+    //binder view holder
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
@@ -40,11 +42,13 @@ public class KommentarRecyclerViewAdapter extends RecyclerView.Adapter<Kommentar
 
     }
 
+    //Metode for å få antall elementer
     @Override
     public int getItemCount() {
         return mData.size();
     }
 
+    //view holder
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
         private TextView textViewKommentarBrukernavn;

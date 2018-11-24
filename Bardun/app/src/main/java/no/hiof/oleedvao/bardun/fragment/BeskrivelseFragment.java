@@ -1,5 +1,8 @@
 package no.hiof.oleedvao.bardun.fragment;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -30,6 +33,7 @@ public class BeskrivelseFragment extends Fragment {
 
     private String teltplassId;
 
+    //database relaterte variabler
     private FirebaseDatabase mDatabase;
     private DatabaseReference mDatabaseRef;
     private FirebaseStorage mStorage;
@@ -38,6 +42,7 @@ public class BeskrivelseFragment extends Fragment {
     private FirebaseUser CUser;
     private String UID;
 
+    //konstruktor
     public BeskrivelseFragment() {
     }
 
@@ -50,8 +55,6 @@ public class BeskrivelseFragment extends Fragment {
         }
 
 
-        //Log.d("WTF",beskrivelse);
-
     }
 
     @Nullable
@@ -61,6 +64,7 @@ public class BeskrivelseFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_beskrivelse,container,false);
         textViewBeskrivelse = view.findViewById(R.id.textViewBeskrivelse);
 
+        //todo : sjekk internett
         mDatabase = FirebaseDatabase.getInstance();
         mDatabaseRef = mDatabase.getReference();
         mStorage = FirebaseStorage.getInstance();
@@ -77,8 +81,9 @@ public class BeskrivelseFragment extends Fragment {
         }
 
 
-        //Gets beskrivelse from database
+        //henter beskrivelse fra database
         mDatabaseRef.addValueEventListener(new ValueEventListener() {
+            //todo : sjekk internett
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String text = dataSnapshot.child("teltplasser").child(teltplassId).child("beskrivelse").getValue().toString();
@@ -98,13 +103,6 @@ public class BeskrivelseFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //Sets beskrivelse in the TextView
-
     }
 
-
-
-    private void getBeskrivelse(DataSnapshot ds){
-        beskrivelse = ds.child("teltplasser").child(teltplassId).child("beskrivelse").getValue().toString();
-    }
 }

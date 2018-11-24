@@ -18,17 +18,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import org.w3c.dom.Text;
-
 import java.util.List;
 
-import no.hiof.oleedvao.bardun.BrukerActivity;
-import no.hiof.oleedvao.bardun.MainActivity;
-import no.hiof.oleedvao.bardun.OpprettTeltplassActivity;
 import no.hiof.oleedvao.bardun.R;
-import no.hiof.oleedvao.bardun.Teltplass;
-import no.hiof.oleedvao.bardun.TeltplassActivity;
-import no.hiof.oleedvao.bardun.fragment.MineTeltplasserFragment;
+import no.hiof.oleedvao.bardun.teltplass.Teltplass;
+import no.hiof.oleedvao.bardun.teltplass.TeltplassActivity;
 
 public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.MyViewHolder> {
 

@@ -1,8 +1,11 @@
-package no.hiof.oleedvao.bardun;
+package no.hiof.oleedvao.bardun.teltplass;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -29,14 +32,22 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import no.hiof.oleedvao.bardun.R;
+import no.hiof.oleedvao.bardun.bruker.VisBrukerActivity;
 import no.hiof.oleedvao.bardun.adapter.ViewPagerAdapter;
 import no.hiof.oleedvao.bardun.fragment.BeskrivelseFragment;
 import no.hiof.oleedvao.bardun.fragment.KommentarerFragment;
 import no.hiof.oleedvao.bardun.fragment.NavigationDrawerFragment;
 
 public class TeltplassActivity extends AppCompatActivity {
+    //Globale variabler
+    final long ONE_MEGABYTE = 1024 * 1024;
+    private boolean favoritt = false;
 
+    //toolbar
     private android.support.v7.widget.Toolbar toolbar;
+
+    //database relaterte variabler
     private FirebaseDatabase mDatabase;
     private DatabaseReference mDatabaseRef;
     private FirebaseStorage mStorage;
@@ -47,6 +58,7 @@ public class TeltplassActivity extends AppCompatActivity {
     private String teltplassId;
     private String teltplassUID;
 
+    //Views
     private ImageView imageViewTeltplass;
     private TextView textViewTeltplassNavn;
     private ImageButton imageButtonThumbsUp;
@@ -63,21 +75,22 @@ public class TeltplassActivity extends AppCompatActivity {
     private TextView textViewTeltplassTimeStamp;
     private Button buttonEditTeltplass;
 
+    //Tab variabler
     private TabLayout tabLayoutTeltplass;
     private ViewPager viewPagerTeltplass;
     private ViewPagerAdapter adapter;
-
     private BeskrivelseFragment beskrivelseFragment;
     private KommentarerFragment kommentarerFragment;
 
-    final long ONE_MEGABYTE = 1024 * 1024;
-    private boolean favoritt = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //layout
         setContentView(R.layout.activity_teltplass);
 
+        //toolbar
         toolbar = findViewById(R.id.toolbarTeltplass);
         setUpNavigationDrawer();
 
@@ -98,55 +111,66 @@ public class TeltplassActivity extends AppCompatActivity {
         textViewTeltplassTimeStamp = findViewById(R.id.textViewTeltplassTimeStamp);
         buttonEditTeltplass = findViewById(R.id.buttonLagreTeltplassEndringer);
 
+        //Instansierer tab elementer
         tabLayoutTeltplass = findViewById(R.id.TabLayoutTeltplass);
         viewPagerTeltplass = findViewById(R.id.ViewPagerTeltplass);
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
-
         beskrivelseFragment = new BeskrivelseFragment();
         kommentarerFragment = new KommentarerFragment();
 
+        //Henter teltplassId fra forrige Activity
         teltplassId = getIntent().getExtras().getString("Id");
-        //teltplassId = "-22p288999008059143k-42p26186525076628"; //for testing
 
+        //Sender teltplass id til tab fragmenter for å sørge for at hva som vises er relevant for teltplassen
         Bundle bundle = new Bundle();
         bundle.putString("teltplassId", teltplassId);
         beskrivelseFragment.setArguments(bundle);
         kommentarerFragment.setArguments(bundle);
 
+        //Legger til fragmenter i view pager
         adapter.AddFragment(beskrivelseFragment,"Beskrivelse");
         adapter.AddFragment(kommentarerFragment,"Kommentarer");
         viewPagerTeltplass.setAdapter(adapter);
         tabLayoutTeltplass.setupWithViewPager(viewPagerTeltplass);
 
-        mDatabase = FirebaseDatabase.getInstance();
-        mDatabaseRef = mDatabase.getReference();
-        mStorage = FirebaseStorage.getInstance();
-        mStorageReference = mStorage.getReference();
-        mAuth = FirebaseAuth.getInstance();
-        CUser = mAuth.getCurrentUser();
+        if(isConnectedToInternet()){
+            //Instansierer database variabler
+            mDatabase = FirebaseDatabase.getInstance();
+            mDatabaseRef = mDatabase.getReference();
+            mStorage = FirebaseStorage.getInstance();
+            mStorageReference = mStorage.getReference();
+            mAuth = FirebaseAuth.getInstance();
+            CUser = mAuth.getCurrentUser();
 
-        try
-        {
-            UID = CUser.getUid();
-        }
-        catch(NullPointerException e){
-            e.printStackTrace();
-        }
-
-        mDatabaseRef.addValueEventListener(new ValueEventListener(){
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                teltplassUID = dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getUID();
-                showData(dataSnapshot);
+            //Henter bruker id for innloggede bruker (hvis logget inn)
+            try
+            {
+                UID = CUser.getUid();
+            }
+            catch(NullPointerException e){
+                e.printStackTrace();
             }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                System.out.println("The read failed: " + databaseError.getCode());
-            }
+            //Henter bruker id for brukeren som opprettet den relevante teltplassen
+            mDatabaseRef.addValueEventListener(new ValueEventListener(){
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    teltplassUID = dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getUID();
+                    showData(dataSnapshot);
+                }
 
-        });
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    System.out.println("The read failed: " + databaseError.getCode());
+                }
 
+            });
+        }
+        else{
+            Toast.makeText(this, "Får ikke tilgang til Internett! Sjekk tilkoblingen din.", Toast.LENGTH_LONG).show();
+        }
+
+        //On click for å trykke på favoritt knapp
         imageButtonFavoritt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -164,22 +188,25 @@ public class TeltplassActivity extends AppCompatActivity {
         });
     }
 
+    //Metode for å hente data fra database og vise det frem i views
     private void showData(DataSnapshot dataSnapshot) {
-        try{
+        if(isConnectedToInternet()){
+            //Henter primitiv data
             textViewTeltplassNavn.setText(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getNavn());
             textViewTeltplassUnderlag.setText(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getUnderlag().toString() + "/10");
             textViewTeltplassUtsikt.setText(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getUtsikt().toString() + "/10");
             textViewTeltplassAvstand.setText(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getAvstand().toString() + "/100");
-            //textViewBrukerNavn.setText(dataSnapshot.child("users").child(UID).child("name").getValue(String.class)); //Problem med forrige
             textViewBrukerNavn.setText(dataSnapshot.child("users").child(teltplassUID).child("name").getValue(String.class));
             switchTeltplassSkog.setChecked(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getSkog());
             switchTeltplassFjell.setChecked(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getFjell());
             switchTeltplassFiske.setChecked(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getFiske());
             textViewTeltplassTimeStamp.setText(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getTimeStamp());
 
+            //Henter bilde lokasjon
             String imageId = dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getImageId();
             StorageReference imageRef = mStorageReference.child("images/" + imageId);
 
+            //Koverterer bilde-bytes til bitmap som settes i image view
             imageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                 @Override
                 public void onSuccess(byte[] bytes) {
@@ -193,26 +220,27 @@ public class TeltplassActivity extends AppCompatActivity {
                 }
             });
 
+            //Hvis innloggede bruker er den samme som opprettet teltplassen; Gi bruker mulighet til å redigere
             if(teltplassUID.equals(UID)){
                 buttonEditTeltplass.setVisibility(View.VISIBLE);
                 buttonEditTeltplass.setClickable(true);
             }
-
         }
-        catch(NullPointerException e){
-            Toast.makeText(this, "Something wrong", Toast.LENGTH_LONG).show();
+        else {
+            Toast.makeText(this, "Får ikke tilgang til Internett! Sjekk tilkoblingen din.", Toast.LENGTH_LONG).show();
         }
 
 
     }
 
-    //onClick metode for å opprette kommentar
+    //onClick metode for opprette kommentar knapp
     public void navigerTilOpprettKommentar(View view){
         Intent intent = new Intent(this, OpprettKommentarActivity.class);
         intent.putExtra("teltplassId", teltplassId);
         startActivity(intent);
     }
 
+    //Metode for å sette opp Naviagion drawer
     private void setUpNavigationDrawer(){
         NavigationDrawerFragment navigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentNavDrawerTeltplass);
         DrawerLayout drawerLayout = findViewById(R.id.drawerLayoutTeltplass);
@@ -220,11 +248,12 @@ public class TeltplassActivity extends AppCompatActivity {
         navigationDrawerFragment.setUpDrawer(drawerLayout, toolbar);
     }
 
+    //Onclick metode for å legge til teltplass
     private void addToFavoritter(View view){
         mDatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                getData(dataSnapshot);
+                addFavoritt(dataSnapshot);
             }
 
             @Override
@@ -234,32 +263,59 @@ public class TeltplassActivity extends AppCompatActivity {
         });
     }
 
-    private void getData(DataSnapshot dataSnapshot) {
-        Teltplass teltplass1 = new Teltplass();
-        teltplass1.setNavn(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getNavn());
-        teltplass1.setUnderlag((dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getUnderlag()));
-        teltplass1.setUtsikt(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getUtsikt());
-        teltplass1.setAvstand(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getAvstand());
-        teltplass1.setSkog(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getSkog());
-        teltplass1.setFjell(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getFjell());
-        teltplass1.setFiske(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getFiske());
-        teltplass1.setBeskrivelse(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getBeskrivelse());
-        teltplass1.setLatLng(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getLatLng());
-        teltplass1.setImageId(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getImageId());
-        teltplass1.setUID(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getUID());
+    //Metode for å legge til favoritt i databasen
+    private void addFavoritt(DataSnapshot dataSnapshot) {
+        if(isConnectedToInternet()){
+            Teltplass teltplass1 = new Teltplass();
+            teltplass1.setNavn(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getNavn());
+            teltplass1.setUnderlag((dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getUnderlag()));
+            teltplass1.setUtsikt(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getUtsikt());
+            teltplass1.setAvstand(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getAvstand());
+            teltplass1.setSkog(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getSkog());
+            teltplass1.setFjell(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getFjell());
+            teltplass1.setFiske(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getFiske());
+            teltplass1.setBeskrivelse(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getBeskrivelse());
+            teltplass1.setLatLng(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getLatLng());
+            teltplass1.setImageId(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getImageId());
+            teltplass1.setUID(dataSnapshot.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getUID());
 
-        mDatabaseRef.child("mineFavoritter").child(UID).child(teltplassId).setValue(teltplass1);
+            mDatabaseRef.child("mineFavoritter").child(UID).child(teltplassId).setValue(teltplass1);
+        }
+        else {
+            Toast.makeText(this, "Får ikke tilgang til Internett! Sjekk tilkoblingen din.", Toast.LENGTH_LONG).show();
+        }
     }
 
+    //Onclick for å trykke på bruker navn
     public void brukerClicked(View view) {
         Intent intent = new Intent(TeltplassActivity.this, VisBrukerActivity.class);
         intent.putExtra("UID", teltplassUID);
         startActivity(intent);
     }
 
+    //Onclick for å trykke på rediger teltplass knapp
     public void naviateEditTeltplassActivity(View view){
         Intent intent = new Intent(TeltplassActivity.this, EditTeltplassActivity.class);
         intent.putExtra("Id", teltplassId);
         startActivity(intent);
+    }
+
+    //src:
+    //https://stackoverflow.com/questions/19050444/how-to-handle-with-no-internet-and-lost-connection-in-android
+    //Metode for å sjekke tilgang til internett
+    public boolean isConnectedToInternet(){
+        ConnectivityManager connectivity = (ConnectivityManager)getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivity != null)
+        {
+            NetworkInfo[] info = connectivity.getAllNetworkInfo();
+            if (info != null)
+                for (int i = 0; i < info.length; i++)
+                    if (info[i].getState() == NetworkInfo.State.CONNECTED)
+                    {
+                        return true;
+                    }
+
+        }
+        return false;
     }
 }

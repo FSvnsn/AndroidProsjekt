@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".OpprettTeltplassActivity">
+    tools:context=".teltplass.OpprettTeltplassActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -304,7 +304,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:onClick="avbrytOpprettTeltplass"
+                android:onClick="avbrytEditTeltplass"
                 android:text="@string/button_avbryt"
                 app:layout_constraintEnd_toStartOf="@+id/buttonSlettTeltplass"
                 app:layout_constraintHorizontal_bias="0.5"

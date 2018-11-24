@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".OpprettKommentarActivity">
+    tools:context=".teltplass.OpprettKommentarActivity">
 
 
     <ScrollView
@@ -16,7 +16,7 @@
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".OpprettKommentarActivity">
+            tools:context=".teltplass.OpprettKommentarActivity">
 
             <EditText
                 android:id="@+id/editTextKommentar"

@@ -6,11 +6,9 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -25,12 +23,13 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 import java.util.List;
 
+import no.hiof.oleedvao.bardun.teltplass.Kommentar;
 import no.hiof.oleedvao.bardun.R;
 import no.hiof.oleedvao.bardun.adapter.KommentarRecyclerViewAdapter;
 
 public class KommentarerFragment extends Fragment {
 
-    View view;
+    private View view;
     private RecyclerView recyclerView;
     private List<Kommentar> lstKommentarer;
     private KommentarRecyclerViewAdapter recyclerViewAdapter;
@@ -45,13 +44,17 @@ public class KommentarerFragment extends Fragment {
     private FirebaseUser CUser;
     private String UID;
 
+    //konstruktor
     public KommentarerFragment() {
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        //layout
         view = inflater.inflate(R.layout.fragment_kommentarer,container,false);
+
+        //setter opp recycler view
         recyclerView = view.findViewById(R.id.RecyclerViewKommentarer);
         recyclerViewAdapter = new KommentarRecyclerViewAdapter(getContext(), lstKommentarer);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -63,6 +66,8 @@ public class KommentarerFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //todo : sjekk internett
+        //instansierer database variabler
         mDatabase = FirebaseDatabase.getInstance();
         mDatabaseRef = mDatabase.getReference();
         mStorage = FirebaseStorage.getInstance();
@@ -82,8 +87,6 @@ public class KommentarerFragment extends Fragment {
         }
 
         lstKommentarer = new ArrayList<>();
-        //lstKommentarer.add(new Kommentar("date","Knerten", "NANI!!!"));
-        //lstKommentarer.add(new Kommentar("date","Putin","Blyat..."));
 
         mDatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -101,6 +104,8 @@ public class KommentarerFragment extends Fragment {
     }
 
     private void getKommentarer(DataSnapshot dataSnapshot){
+        //todo : sjekk internett
+        //henter kommentarer fra databasen og legger dem til i recycler view
         for(DataSnapshot ds : dataSnapshot.child("teltplassKommentarer").child(teltplassId).getChildren()){
 
             Kommentar kommentar = new Kommentar();
