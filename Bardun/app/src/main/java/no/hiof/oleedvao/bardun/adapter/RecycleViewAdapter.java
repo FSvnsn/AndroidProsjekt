@@ -46,6 +46,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
         v = LayoutInflater.from(mContext).inflate(R.layout.item_teltplass, viewGroup,false);
         final MyViewHolder vHolder = new MyViewHolder(v);
 
+        //https://www.youtube.com/watch?v=Zd0TUuoPP-s&t=833s
         vHolder.linearLayoutItemTeltplass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
