@@ -186,7 +186,7 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
                 Toast.makeText(this, "Klarte ikke hente bilde fra galleri.", Toast.LENGTH_LONG).show();
             }
         }
-        //(Google Developers, 2018)
+        //(Android Developers, 2018)
         //Behandling av bilde tatt med kamera
         else if(requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK){
             try{
@@ -200,7 +200,7 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    //(Google Developers, 2018)
+    //(Android Developers, 2018)
     //Metode for å lage en bildefil
     private File createImageFile() throws IOException {
         // Create an image file name
@@ -220,7 +220,7 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
         return image;
     }
 
-    //(Google Developers, 2018)
+    //(Android Developers, 2018)
     //Metode for å legge til bilde til galleri. (Ikke benyttet)
     private void galleryAddPic() {
         Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
