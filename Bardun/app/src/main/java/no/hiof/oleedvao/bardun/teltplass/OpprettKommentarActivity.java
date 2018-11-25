@@ -82,7 +82,7 @@ public class OpprettKommentarActivity extends AppCompatActivity {
         cal =Calendar.getInstance();
     }
 
-    //Onclick metdoe for opprett kommentar
+    //Onclick metdode for opprett kommentar
     public void opprettKommentar(View view){
         if(isConnectedToInternet()){
             Date date = cal.getTime();
@@ -108,8 +108,7 @@ public class OpprettKommentarActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    //src:
-    //https://stackoverflow.com/questions/19050444/how-to-handle-with-no-internet-and-lost-connection-in-android
+    //(Patel, 2013)
     //Metode for å sjekke tilgang til internett
     public boolean isConnectedToInternet(){
         ConnectivityManager connectivity = (ConnectivityManager)getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);

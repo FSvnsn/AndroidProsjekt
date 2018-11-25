@@ -13,7 +13,7 @@ import java.util.List;
 import no.hiof.oleedvao.bardun.R;
 import no.hiof.oleedvao.bardun.teltplass.Kommentar;
 
-//Source: https://www.youtube.com/watch?v=T_QfRU-A3s4
+//(Aws Rh, 2018)
 public class KommentarRecyclerViewAdapter extends RecyclerView.Adapter<KommentarRecyclerViewAdapter.MyViewHolder> {
 
     private Context mContext;

@@ -45,8 +45,6 @@ import java.util.UUID;
 import no.hiof.oleedvao.bardun.R;
 import no.hiof.oleedvao.bardun.main.MainActivity;
 
-//https://developer.android.com/training/camera/photobasics
-
 public class OpprettTeltplassActivity extends AppCompatActivity {
     //final variabler
     private static final int REQUEST_IMAGE_GET = 1000;
@@ -133,6 +131,7 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
         super.onRestoreInstanceState(savedInstanceState);
     }*/
 
+    //(Knudsen, n.d)
     //Metode for å hente bilde fra galleri
     public void getPicture(View view){
         //implisitt intent for å hente bilde
@@ -141,6 +140,9 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
         startActivityForResult(intent, REQUEST_IMAGE_GET);
     }
 
+
+
+    //(Mantech, 2015)
     //Metode for å ta bilde med kamera
     public void takePicture(View view) {
         //implisitt intent for å ta bilde med kamera
@@ -167,9 +169,11 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
         }
     }
 
+
     //metode for å behandle resultater for implisitte intents
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        //(Knudsen, n.d)
         //Behandling av hentet bilde fra galleri
         if(requestCode == REQUEST_IMAGE_GET && resultCode == RESULT_OK){
             try{
@@ -182,6 +186,7 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
                 Toast.makeText(this, "Klarte ikke hente bilde fra galleri.", Toast.LENGTH_LONG).show();
             }
         }
+        //(Google Developers, 2018)
         //Behandling av bilde tatt med kamera
         else if(requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK){
             try{
@@ -190,12 +195,12 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
                 imageView.setImageBitmap(picture);
             }catch(Exception e){
                 Log.e("Implicit Intent", "Failed to capture image: " + e.getStackTrace());
-                Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    //(Google Developers, 2018)
     //Metode for å lage en bildefil
     private File createImageFile() throws IOException {
         // Create an image file name
@@ -215,6 +220,7 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
         return image;
     }
 
+    //(Google Developers, 2018)
     //Metode for å legge til bilde til galleri. (Ikke benyttet)
     private void galleryAddPic() {
         Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
@@ -288,7 +294,7 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    //https://code.tutsplus.com/tutorials/image-upload-to-firebase-in-android-application--cms-29934
+    //(Izuchukwu, 2017)
     //Metode for å laste opp bilde til database
     private void uploadImage(Uri filePath) {
 
@@ -336,8 +342,7 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
         }
     }
 
-    //src:
-    //https://stackoverflow.com/questions/19050444/how-to-handle-with-no-internet-and-lost-connection-in-android
+    //(Patel, 2013)
     //Metode for å sjekke tilgang til internett
     public boolean isConnectedToInternet(){
         ConnectivityManager connectivity = (ConnectivityManager)getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);

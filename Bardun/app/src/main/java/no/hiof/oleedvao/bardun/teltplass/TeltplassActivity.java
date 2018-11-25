@@ -240,6 +240,8 @@ public class TeltplassActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+
+    //(Knudsen, n.d)
     //Metode for å sette opp Naviagion drawer
     private void setUpNavigationDrawer(){
         NavigationDrawerFragment navigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentNavDrawerTeltplass);
@@ -300,8 +302,7 @@ public class TeltplassActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    //src:
-    //https://stackoverflow.com/questions/19050444/how-to-handle-with-no-internet-and-lost-connection-in-android
+    //(Patel, 2013)
     //Metode for å sjekke tilgang til internett
     public boolean isConnectedToInternet(){
         ConnectivityManager connectivity = (ConnectivityManager)getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);

@@ -97,15 +97,19 @@ public class EditTeltplassActivity extends AppCompatActivity {
         switchEditTeltplassFiske = findViewById(R.id.switchEditTeltplassFiske);
         buttonLagreTeltplassEndringer = findViewById(R.id.buttonLagreTeltplassEndringer);
 
-        //TODO : sjekk internett
-        //Instansierer database-relaterte variabler
-        mDatabase = FirebaseDatabase.getInstance();
-        mDatabaseRef = mDatabase.getReference();
-        mStorage = FirebaseStorage.getInstance();
-        mStorageReference = mStorage.getReference();
-        mAuth = FirebaseAuth.getInstance();
-        CUser = mAuth.getCurrentUser();
-        UID = CUser.getUid();
+        if(isConnectedToInternet()){
+            //Instansierer database-relaterte variabler
+            mDatabase = FirebaseDatabase.getInstance();
+            mDatabaseRef = mDatabase.getReference();
+            mStorage = FirebaseStorage.getInstance();
+            mStorageReference = mStorage.getReference();
+            mAuth = FirebaseAuth.getInstance();
+            CUser = mAuth.getCurrentUser();
+            UID = CUser.getUid();
+        }
+        else {
+            Toast.makeText(this, "Får ikke tilgang til Internett! Sjekk tilkoblingen din.", Toast.LENGTH_LONG).show();
+        }
 
         //henter teltplassId fra forrige Activity
         teltplassId = getIntent().getStringExtra("Id");
@@ -133,6 +137,7 @@ public class EditTeltplassActivity extends AppCompatActivity {
         super.onRestoreInstanceState(savedInstanceState);
     }*/
 
+    //(Knudsen, n.d)
     //Metode for å hente bilde fra galleri
     public void getPicture(View view){
         //creates implicit intent to get image
@@ -142,7 +147,7 @@ public class EditTeltplassActivity extends AppCompatActivity {
     }
 
 
-    //https://stackoverflow.com/questions/28156228/taking-photo-android
+    //(Mantech, 2015)
     //Metode for å ta bilde med kamera
     public void takePicture(View view) {
 
@@ -169,10 +174,10 @@ public class EditTeltplassActivity extends AppCompatActivity {
         }
     }
 
-    //https://developer.android.com/training/camera/photobasics
     //metode for å behandle resultater for implisitte intents
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        //(Knudsen, n.d)
         //Behandling av hentet bilde fra galleri
         if(requestCode == REQUEST_IMAGE_GET && resultCode == RESULT_OK){
             try{
@@ -188,6 +193,7 @@ public class EditTeltplassActivity extends AppCompatActivity {
                 Toast.makeText(this, "Couldn't get picture", Toast.LENGTH_SHORT).show();
             }
         }
+        //(Google Developers, 2018)
         //Behandling av bilde tatt med kamera
         else if(requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK){
             try{
@@ -205,6 +211,7 @@ public class EditTeltplassActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    //(Google Developers, 2018)
     //Metode for å lage en bildefil
     private File createImageFile() throws IOException {
         // Create an image file name
@@ -226,33 +233,37 @@ public class EditTeltplassActivity extends AppCompatActivity {
 
     //Onclick metode for lagre endringer knapp
     public void editTeltplass(View view){
-        //TODO : sjekk internett
-        if(currentPhotoUri != null){
-            uploadImage(currentPhotoUri);
+        if(isConnectedToInternet()){
+            if(currentPhotoUri != null){
+                uploadImage(currentPhotoUri);
+            }
+
+            Calendar cal = Calendar.getInstance();
+            String timeStamp = cal.getTime().toString();
+
+            Teltplass teltplass = new Teltplass(teltplassId,
+                    editTextEditTeltplassNavn.getText().toString(),
+                    editTextEditTeltplassBeskrivelse.getText().toString(),
+                    seekBarEditTeltplassUnderlag.getProgress(),
+                    seekBarEditTeltplassUtsikt.getProgress(),
+                    seekBarEditTeltplassAvstand.getProgress(),
+                    switchEditTeltplassSkog.isChecked(),
+                    switchEditTeltplassFjell.isChecked(),
+                    switchEditTeltplassFiske.isChecked(),
+                    currentImageId,
+                    UID,
+                    timeStamp);
+
+            mDatabaseRef.child("teltplasser").child(teltplass.getLatLng()).setValue(teltplass);
+            mDatabaseRef.child("mineTeltplasser").child(UID).child(teltplass.getLatLng()).setValue(teltplass);
+
+            Intent intent = new Intent(EditTeltplassActivity.this, TeltplassActivity.class);
+            intent.putExtra("Id", teltplassId);
+            startActivity(intent);
         }
-
-        Calendar cal = Calendar.getInstance();
-        String timeStamp = cal.getTime().toString();
-
-        Teltplass teltplass = new Teltplass(teltplassId,
-                editTextEditTeltplassNavn.getText().toString(),
-                editTextEditTeltplassBeskrivelse.getText().toString(),
-                seekBarEditTeltplassUnderlag.getProgress(),
-                seekBarEditTeltplassUtsikt.getProgress(),
-                seekBarEditTeltplassAvstand.getProgress(),
-                switchEditTeltplassSkog.isChecked(),
-                switchEditTeltplassFjell.isChecked(),
-                switchEditTeltplassFiske.isChecked(),
-                currentImageId,
-                UID,
-                timeStamp);
-
-        mDatabaseRef.child("teltplasser").child(teltplass.getLatLng()).setValue(teltplass);
-        mDatabaseRef.child("mineTeltplasser").child(UID).child(teltplass.getLatLng()).setValue(teltplass);
-
-        Intent intent = new Intent(EditTeltplassActivity.this, TeltplassActivity.class);
-        intent.putExtra("Id", teltplassId);
-        startActivity(intent);
+        else {
+            Toast.makeText(this, "Får ikke tilgang til Internett! Sjekk tilkoblingen din.", Toast.LENGTH_LONG).show();
+        }
 
     }
 
@@ -274,43 +285,46 @@ public class EditTeltplassActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    //https://code.tutsplus.com/tutorials/image-upload-to-firebase-in-android-application--cms-29934
+    //(Izuchukwu, 2017)
     //Metode for å laste opp bilde til database
     private void uploadImage(Uri filePath) {
 
         if(filePath != null)
         {
-            //todo : sjekk internett
-            final ProgressDialog progressDialog = new ProgressDialog(this);
-            progressDialog.setTitle("Uploading...");
-            progressDialog.show();
+            if(isConnectedToInternet()){
+                final ProgressDialog progressDialog = new ProgressDialog(this);
+                progressDialog.setTitle("Uploading...");
+                progressDialog.show();
 
-            StorageReference ref = mStorageReference.child("images/"+ imageId);
+                StorageReference ref = mStorageReference.child("images/"+ imageId);
 
-
-            ref.putFile(filePath)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            progressDialog.dismiss();
-                            Toast.makeText(EditTeltplassActivity.this, "Uploaded", Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            progressDialog.dismiss();
-                            Toast.makeText(EditTeltplassActivity.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
-                                    .getTotalByteCount());
-                            progressDialog.setMessage("Uploaded "+(int)progress+"%");
-                        }
-                    });
+                ref.putFile(filePath)
+                        .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                progressDialog.dismiss();
+                                Toast.makeText(EditTeltplassActivity.this, "Uploaded", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                progressDialog.dismiss();
+                                Toast.makeText(EditTeltplassActivity.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                                double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
+                                        .getTotalByteCount());
+                                progressDialog.setMessage("Uploaded "+(int)progress+"%");
+                            }
+                        });
+            }
+            else {
+                Toast.makeText(this, "Får ikke tilgang til Internett! Sjekk tilkoblingen din.", Toast.LENGTH_LONG).show();
+            }
 
         }
     }
@@ -318,44 +332,49 @@ public class EditTeltplassActivity extends AppCompatActivity {
     //Metode for å vise hente data fra databasen og vise det frem i views
     private void showData(){
         //todo : sjekk internett
-        mDatabaseRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot ds) {
-                editTextEditTeltplassNavn.setText(ds.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getNavn());
-                editTextEditTeltplassBeskrivelse.setText(ds.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getBeskrivelse());
-                seekBarEditTeltplassUnderlag.setProgress(ds.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getUnderlag());
-                seekBarEditTeltplassUtsikt.setProgress(ds.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getUtsikt());
-                seekBarEditTeltplassAvstand.setProgress(ds.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getAvstand());
-                switchEditTeltplassSkog.setChecked(ds.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getSkog());
-                switchEditTeltplassFjell.setChecked(ds.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getFjell());
-                switchEditTeltplassFiske.setChecked(ds.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getFiske());
+        if(isConnectedToInternet()){
+            mDatabaseRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot ds) {
+                    editTextEditTeltplassNavn.setText(ds.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getNavn());
+                    editTextEditTeltplassBeskrivelse.setText(ds.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getBeskrivelse());
+                    seekBarEditTeltplassUnderlag.setProgress(ds.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getUnderlag());
+                    seekBarEditTeltplassUtsikt.setProgress(ds.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getUtsikt());
+                    seekBarEditTeltplassAvstand.setProgress(ds.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getAvstand());
+                    switchEditTeltplassSkog.setChecked(ds.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getSkog());
+                    switchEditTeltplassFjell.setChecked(ds.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getFjell());
+                    switchEditTeltplassFiske.setChecked(ds.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getFiske());
 
-                imageId = ds.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getImageId();
-                StorageReference imageRef = mStorageReference.child("images/" + imageId);
+                    imageId = ds.child("teltplasser").child(teltplassId).getValue(Teltplass.class).getImageId();
+                    StorageReference imageRef = mStorageReference.child("images/" + imageId);
 
-                imageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                    @Override
-                    public void onSuccess(byte[] bytes) {
-                        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                        imageView.setImageBitmap(bitmap);
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
+                    imageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                        @Override
+                        public void onSuccess(byte[] bytes) {
+                            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                            imageView.setImageBitmap(bitmap);
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
 
-                    }
-                });
-            }
+                        }
+                    });
+                }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+        }
+        else {
+            Toast.makeText(this, "Får ikke tilgang til Internett! Sjekk tilkoblingen din.", Toast.LENGTH_LONG).show();
+        }
+
     }
 
-    //src:
-    //https://stackoverflow.com/questions/19050444/how-to-handle-with-no-internet-and-lost-connection-in-android
+    //(Patel, 2013)
     //Metode for å sjekke tilgang til internett
     public boolean isConnectedToInternet(){
         ConnectivityManager connectivity = (ConnectivityManager)getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
