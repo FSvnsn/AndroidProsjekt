@@ -27,6 +27,9 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 import no.hiof.oleedvao.bardun.R;
 
+//Src:
+//https://www.youtube.com/watch?v=Duz_0XkWP2I
+// (Hitesh Choudhary, 2017)
 public class LoginActivity extends AppCompatActivity {
 
     Button btnSkip;

@@ -8,6 +8,9 @@ import android.support.v4.app.FragmentPagerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+//Src:
+//https://www.youtube.com/watch?v=7zaKUc2zfpI
+//(Aws Rh, 2018)
 public class ViewPagerAdapter extends FragmentPagerAdapter {
 
     private final List<Fragment> fragmentList = new ArrayList<>();

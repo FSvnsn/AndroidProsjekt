@@ -433,6 +433,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         String textTitle = "Klar for en ny telttur?";
         String textContent = "Du har ikke lagd en ny teltplass siden " + lastDate + ". Kanskje på tide å lage en ny?";
 
+        //src:
+        //https://developer.android.com/training/notify-user/build-notification
+        //(Android Developers, n.d)
         //Setter opp notification innhold og layout
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_minefavoritter)
