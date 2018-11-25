@@ -59,8 +59,10 @@ public class VisBrukerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vis_bruker);
 
+        //Henter UID'en fra extraen
         intent = getIntent();
         UID = intent.getExtras().getString("UID");
+
         listTeltplass = new ArrayList<Teltplass>();
 
         mDatabase = FirebaseDatabase.getInstance();
@@ -98,6 +100,7 @@ public class VisBrukerActivity extends AppCompatActivity {
         });
     }
 
+    //Henter brukerens teltplasser og legger de til i RecyclerView
     private void getAlleTeltplasser(DataSnapshot dataSnapshot) {
         for (DataSnapshot ds : dataSnapshot.child("mineTeltplasser").child(UID).getChildren()){
             String latLng = ds.child("latLng").getValue(String.class);
@@ -110,6 +113,7 @@ public class VisBrukerActivity extends AppCompatActivity {
         }
     }
 
+    //Viser riktig brukerdata
     private void getData(DataSnapshot dataSnapshot) {
         User test1 = new User();
 

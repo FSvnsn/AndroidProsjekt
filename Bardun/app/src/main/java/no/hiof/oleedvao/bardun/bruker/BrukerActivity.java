@@ -46,7 +46,6 @@ public class BrukerActivity extends AppCompatActivity {
     private String UID;
 
     private TabLayout tablayout;
-    private AppBarLayout appBarLayout;
     private ViewPager viewPager;
 
     private TextView txtName;
@@ -66,7 +65,6 @@ public class BrukerActivity extends AppCompatActivity {
         setUpNavigationDrawer();
 
         tablayout = findViewById(R.id.tab_layout_id);
-        appBarLayout = findViewById(R.id.app_bar_layout_id);
         viewPager = findViewById(R.id.view_pager_id);
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.AddFragment(new MineTeltplasserFragment(), "Mine Teltplasser");
@@ -89,6 +87,8 @@ public class BrukerActivity extends AppCompatActivity {
         CUser = mAuth.getCurrentUser();
         UID = CUser.getUid();
 
+
+        //Rediger bruker onClick
         btnBrukerRediger.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,6 +96,7 @@ public class BrukerActivity extends AppCompatActivity {
             }
         });
 
+        //Opretter snapshot av Firebase
         mDatabaseRef.addValueEventListener(new ValueEventListener(){
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -110,6 +111,7 @@ public class BrukerActivity extends AppCompatActivity {
         });
     }
 
+    //Viser riktig brukerdata
     private void showData(DataSnapshot dataSnapshot) {
             User test1 = new User();
 
@@ -153,10 +155,12 @@ public class BrukerActivity extends AppCompatActivity {
             txtDescription.setText(test1.getDescription());
     }
 
+    //Redirigerer bruker til RedigerBrukerActivity
     private void createUser() {
         startActivity(new Intent(this, RedigerBrukerActivity.class));
     }
 
+    //Setter opp Navigation Drawer
     private void setUpNavigationDrawer(){
         NavigationDrawerFragment navigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentNavDrawerBruker);
         DrawerLayout drawerLayout = findViewById(R.id.drawerLayoutBruker);

@@ -56,7 +56,7 @@ public class InstillingerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_instillinger);
 
-        btnLogOut = (Button) findViewById(R.id.btnLogOut);
+        btnLogOut = findViewById(R.id.btnLogOut);
         toolbarInstillinger = findViewById(R.id.toolbar_instillinger);
         setSupportActionBar(toolbarInstillinger);
         getSupportActionBar().setTitle("Instillinger");
@@ -92,6 +92,8 @@ public class InstillingerActivity extends AppCompatActivity {
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
+
+        //Sjekker om bruker er logget inn eller ikke og oppdaterer knapp tekst og funksjon
         if (CUser != null){
             btnLogOut.setText("Logg Ut");
             btnLogOut.setOnClickListener(new View.OnClickListener() {
@@ -128,6 +130,7 @@ public class InstillingerActivity extends AppCompatActivity {
         }
     }
 
+    //Setter switchen til å være av eller på ut ifra brukerens sendNotification attribut.
     private void getUserSettings() {
         mDatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -143,7 +146,6 @@ public class InstillingerActivity extends AppCompatActivity {
                 }
 
                 switchReady = TRUE;
-
             }
 
             @Override
@@ -153,10 +155,12 @@ public class InstillingerActivity extends AppCompatActivity {
         });
     }
 
+    //Sender ikke logget inn bruker til login siden
     private void signIn() {
         startActivity(new Intent(InstillingerActivity.this, LoginActivity.class));
     }
 
+    //Logger bruker ut og navigerer tilbake til login skjerm
     private void signOut() {
         // Firebase sign out
         mAuth.signOut();
@@ -166,7 +170,6 @@ public class InstillingerActivity extends AppCompatActivity {
                 new ResultCallback<Status>() {
                     @Override
                     public void onResult(@NonNull Status status) {
-                        //put something you want to happen here eg.
                         startActivity(new Intent(InstillingerActivity.this, LoginActivity.class));
                     }
                 });

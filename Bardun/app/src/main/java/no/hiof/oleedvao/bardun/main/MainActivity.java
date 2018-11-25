@@ -405,16 +405,15 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
+    //Viser notifikasjon
     private void showNotification(DataSnapshot dataSnapshot) {
-        Teltplass sisteTeltplass = new Teltplass();
 
+        //Instansierer variabel for sist registrerte teltplass
         Calendar calendar1 = Calendar.getInstance();
-        String currentDate = calendar1.getTime().toString();
         String lastDate = "Fri Nov 16 13:41:24 GMT+01:00 2017";
 
-        //Toast.makeText(this, currentDate, Toast.LENGTH_LONG).show();
-
-
+        //Sjekker for hver teltplass for bruker om den er registrert etter lastDate
+        //Resultatet vil være at lastDate er datoen til siste registrerte teltplass
         for (DataSnapshot ds : dataSnapshot.child("mineTeltplasser").child(UID).getChildren()){
             String tempDate = (ds.child("timeStamp").getValue(String.class));
             if(tempDate != null){
@@ -424,9 +423,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         }
 
+        //Lager notification content
         String textTitle = "Klar for en ny telttur?";
         String textContent = "Du har ikke lagd en ny teltplass siden " + lastDate + ". Kanskje på tide å lage en ny?";
 
+        //Setter opp notification innhold og layout
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_minefavoritter)
                 .setContentTitle(textTitle)
@@ -434,8 +435,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(textContent));
 
+        //Opretter NotificationManager objekt
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
 
+        //Viser notifikasjonen
         notificationManager.notify(1, mBuilder.build());
     }
 
