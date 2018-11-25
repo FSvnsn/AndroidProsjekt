@@ -160,6 +160,7 @@ public class BrukerActivity extends AppCompatActivity {
         startActivity(new Intent(this, RedigerBrukerActivity.class));
     }
 
+    //(Knudsen, n.d)
     //Setter opp Navigation Drawer
     private void setUpNavigationDrawer(){
         NavigationDrawerFragment navigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentNavDrawerBruker);
