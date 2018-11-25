@@ -140,10 +140,8 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
         startActivityForResult(intent, REQUEST_IMAGE_GET);
     }
 
-
-
-    //(Mantech, 2015)
-    //Metode for å ta bilde med kamera
+    //(Knudsen, n.d)
+    //Metode for å hente bilde fra galleri
     public void takePicture(View view) {
         //implisitt intent for å ta bilde med kamera
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);

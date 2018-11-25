@@ -158,6 +158,8 @@ public class RedigerBrukerActivity extends AppCompatActivity {
         });
     }
 
+    //(Knudsen, n.d)
+    //Metode for å hente bilde fra galleri
     public void getPicture(View view){
         //creates implicit intent to get image
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -165,7 +167,8 @@ public class RedigerBrukerActivity extends AppCompatActivity {
         startActivityForResult(intent, REQUEST_IMAGE_GET);
     }
 
-    //Metode for å ta bilde med kamera
+    //(Knudsen, n.d)
+    //Metode for å hente bilde fra galleri
     public void takePicture(View view) {
 
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -192,6 +195,7 @@ public class RedigerBrukerActivity extends AppCompatActivity {
         }
     }
 
+    //metode for å behandle resultater for implisitte intents
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(requestCode == REQUEST_IMAGE_GET && resultCode == RESULT_OK){
@@ -208,6 +212,8 @@ public class RedigerBrukerActivity extends AppCompatActivity {
                 Toast.makeText(this, "Couldn't get picture", Toast.LENGTH_SHORT).show();
             }
         }
+        //(Android Developers, 2018)
+        //Behandling av bilde tatt med kamera
         else if(requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK){
             try{
                 //Retrieves file from saved photo path
@@ -223,6 +229,8 @@ public class RedigerBrukerActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    //(Android Developers, 2018)
+    //Metode for å lage en bildefil
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -241,6 +249,8 @@ public class RedigerBrukerActivity extends AppCompatActivity {
         return image;
     }
 
+    //(Izuchukwu, 2017)
+    //Metode for å laste opp bilde til database
     private void uploadImage(Uri filePath) {
 
         if(filePath != null)
