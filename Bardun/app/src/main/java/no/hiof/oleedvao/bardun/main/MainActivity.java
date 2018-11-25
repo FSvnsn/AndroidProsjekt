@@ -81,9 +81,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private static final String TAG2 = "Svendsen";
     private GoogleMap mMap;
     private android.support.v7.widget.Toolbar toolbar;
-    private TextView mTextView;
     private ConstraintLayout nyTeltplassHer;
 
+    // Places search
     private AutoCompleteTextView mSearchInput;
     private PlaceAutoCompleteAdapter mplaceAutoCompleteAdapter;
     private GoogleApiClient mGoogleApiClient;
@@ -230,7 +230,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     try {
                         List<Address> list = geocoder.getFromLocation(latitude, longitude, 1);
                         String geoStedsnavn = list.get(0).getLocality();
-                        Log.d(TAG, "GPS provider before 1.geomarker = " + geomarker);
                         if (geomarker != null) {
                             geomarker.remove();
                         }
@@ -239,7 +238,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                                         .title(geoStedsnavn)
                                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_geo_location))
                         );
-                        Log.d(TAG, "GPS provider after 1.geomarker = " + geomarker);
                         imageBtnMyLoc.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -278,12 +276,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Permission has been granted.
                 Log.d(TAG, "Permission for location granted");
-                //Start locating
             } else {
                 // Permission request was denied.
                 Log.d(TAG, "Permission for location NOT granted");
 
-                //
             }
         }
     }
@@ -291,7 +287,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private void initSearch() {
 
-        // region mapSetup
         mGoogleApiClient = new GoogleApiClient
                 .Builder(this)
                 .addApi(Places.GEO_DATA_API)
@@ -321,7 +316,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void getSearchResults() {
-        //Hent geolovcation for results
+        //Hent geolocation for results
         String mSearchString = mSearchInput.getText().toString();
         Toast.makeText(this, "Du søkte: " + mSearchString.toString(), Toast.LENGTH_SHORT).show();
 
@@ -348,7 +343,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
-    // region mapSetup og henting fra database
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
@@ -450,10 +444,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             String name = ds.child("navn").getValue(String.class);
             String location = ds.child("latLng").getValue(String.class);
 
-            // Testing fra gruppemøte med Remi og Marius :))
-            // Legg i ArrayList
-            String test = ds.getKey();
-            // Teltplass test1 = ds.getValue(Teltplass.class);
+            String teltplassid = ds.getKey();
+            // Kunne vært løst ved å hente hele objektet og lagt i en ArrayList
+            // Teltplass teltplass = ds.getValue(Teltplass.class);
 
 
             location = location.replace("p", ".");
@@ -472,12 +465,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                             .title(name)
                             .icon(BitmapDescriptorFactory.fromResource(R.drawable.teltikon_green_filles))
             );
-            m.setTag(test);
-            //Log.d(TAG, " key: " + m.getTag());
-
+            m.setTag(teltplassid);
         }
     }
-
+    // Setter opp filterdialog med flervalg i sjekkbokser for å sortere teltplasser
     private void filterDialog() {
         filterItems = getResources().getStringArray(R.array.filter_items);
         checkedItems = new boolean[filterItems.length];
@@ -508,15 +499,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 for (int i = 0; i < mSelectedItems.size(); i++) {
                     item = filterItems[(int) mSelectedItems.get(i)];
                     if(item.equals("Skog")) {
-                        Log.d(TAG,"Skog: " + item.toString());
                         skog = true;
                     }
                     else if(item.equals("Fjell")) {
-                        Log.d(TAG,"Fjell: " + item.toString());
                         fjell = true;
                     }
                     else if(item.equals("Fiske")) {
-                        Log.d(TAG,"Fiske: " + item.toString());
                         fiske = true;
                     }
                 }
@@ -617,7 +605,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onMapLongClick(final LatLng latLng) {
 
-        // TODO: Bytt registrer-teltplass-ikon
         mAuth = FirebaseAuth.getInstance();
         CUser = mAuth.getCurrentUser();
 
@@ -639,13 +626,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             String latString = String.valueOf(lat);
             String lngString = String.valueOf(lng);
             String latlngString = latString + "," + lngString;
-            Log.d(TAG, "latlng: " + latlngString);
 
 
             Bundle bundleRegistrer = new Bundle();
             bundleRegistrer.putString("latlong", latlngString);
             bundleRegistrer.putString("tittel", "Ny teltplass her?");
 
+            // Sender bundle med data til Bottom sheet fragment og åpner dette
             OpprettTeltplassBottomSheetDialog bottomSheetRegistrer = new OpprettTeltplassBottomSheetDialog();
             bottomSheetRegistrer.show(getSupportFragmentManager(), "teltplassBottomSheetRegistrer");
 
@@ -654,7 +641,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
-    // endregion
 
     // region markerEvents
     @Override
@@ -684,13 +670,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             String latString = String.valueOf(lat);
             String lngString = String.valueOf(lng);
             String latlngString = latString + "," + lngString;
-            Log.d(TAG, "latlng: " + latlngString);
 
 
             Bundle bundleRegistrer = new Bundle();
             bundleRegistrer.putString("latlong", latlngString);
             bundleRegistrer.putString("tittel", "Ny teltplass her?");
 
+            // Sender bundle med data til Bottom sheet fragment og åpner dette
             OpprettTeltplassBottomSheetDialog bottomSheetRegistrer = new OpprettTeltplassBottomSheetDialog();
             bottomSheetRegistrer.show(getSupportFragmentManager(), "teltplassBottomSheetRegistrer");
 
