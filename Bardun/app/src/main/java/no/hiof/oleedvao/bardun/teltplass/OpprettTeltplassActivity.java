@@ -140,7 +140,7 @@ public class OpprettTeltplassActivity extends AppCompatActivity {
         startActivityForResult(intent, REQUEST_IMAGE_GET);
     }
 
-    //(Knudsen, n.d)
+    //(Android Developers, 2018)
     //Metode for å hente bilde fra galleri
     public void takePicture(View view) {
         //implisitt intent for å ta bilde med kamera
