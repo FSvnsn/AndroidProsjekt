@@ -92,10 +92,10 @@ public class RedigerBrukerActivity extends AppCompatActivity {
         CUser = mAuth.getCurrentUser();
         UID = CUser.getUid();
 
+        //Oppdaterer bruker i Firebase med den informasjonen som er gitt
         btnBrukerLagre.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
 
                 String navn = inputNavn.getText().toString();
                 String alder = inputAlder.getText().toString();
@@ -157,22 +157,6 @@ public class RedigerBrukerActivity extends AppCompatActivity {
             }
         });
     }
-
-    /*
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        Bitmap bm =((BitmapDrawable)imgRedigerBruker.getDrawable()).getBitmap();
-        outState.putParcelable("bitmap",bm);
-
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        imgRedigerBruker.setImageBitmap((Bitmap) savedInstanceState.getParcelable("bitmap"));
-
-        super.onRestoreInstanceState(savedInstanceState);
-    }*/
 
     public void getPicture(View view){
         //creates implicit intent to get image
