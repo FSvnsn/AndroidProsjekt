@@ -27,7 +27,7 @@ import no.hiof.oleedvao.bardun.main.MineFavoritterActivity;
 import no.hiof.oleedvao.bardun.main.MineTeltplasserActivity;
 import no.hiof.oleedvao.bardun.R;
 
-
+//Kilde: Hentet fra Forelesning 9.
 public class NavigationDrawerFragment extends Fragment implements NavigationView.OnNavigationItemSelectedListener{
 
     private DrawerLayout drawerLayout;

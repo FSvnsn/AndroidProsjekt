@@ -141,6 +141,8 @@ public class EditTeltplassActivity extends AppCompatActivity {
         startActivityForResult(intent, REQUEST_IMAGE_GET);
     }
 
+
+    //https://stackoverflow.com/questions/28156228/taking-photo-android
     //Metode for å ta bilde med kamera
     public void takePicture(View view) {
 
@@ -167,6 +169,7 @@ public class EditTeltplassActivity extends AppCompatActivity {
         }
     }
 
+    //https://developer.android.com/training/camera/photobasics
     //metode for å behandle resultater for implisitte intents
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
