@@ -193,7 +193,7 @@ public class EditTeltplassActivity extends AppCompatActivity {
                 Toast.makeText(this, "Couldn't get picture", Toast.LENGTH_SHORT).show();
             }
         }
-        //(Google Developers, 2018)
+        //(Android Developers, 2018)
         //Behandling av bilde tatt med kamera
         else if(requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK){
             try{
@@ -211,7 +211,7 @@ public class EditTeltplassActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    //(Google Developers, 2018)
+    //(Android Developers, 2018)
     //Metode for å lage en bildefil
     private File createImageFile() throws IOException {
         // Create an image file name
