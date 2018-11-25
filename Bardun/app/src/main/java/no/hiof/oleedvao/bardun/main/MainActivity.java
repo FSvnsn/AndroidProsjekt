@@ -767,8 +767,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         return mNyTeltplass;
     }
 
-    //src:
-    //https://stackoverflow.com/questions/19050444/how-to-handle-with-no-internet-and-lost-connection-in-android
+    //(Patel, 2013)
     public boolean isConnectedToInternet(){
         ConnectivityManager connectivity = (ConnectivityManager)getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connectivity != null)
