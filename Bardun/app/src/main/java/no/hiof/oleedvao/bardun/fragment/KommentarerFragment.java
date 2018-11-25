@@ -27,6 +27,7 @@ import no.hiof.oleedvao.bardun.teltplass.Kommentar;
 import no.hiof.oleedvao.bardun.R;
 import no.hiof.oleedvao.bardun.adapter.KommentarRecyclerViewAdapter;
 
+//(Aws Rh, 2018)
 public class KommentarerFragment extends Fragment {
 
     private View view;
