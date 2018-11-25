@@ -57,10 +57,15 @@ public class InstillingerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_instillinger);
 
         btnLogOut = findViewById(R.id.btnLogOut);
+
+        //src:
+        //https://www.youtube.com/watch?v=DMkzIOLppf4
+        //(Coding in Flow, 2017)
         toolbarInstillinger = findViewById(R.id.toolbar_instillinger);
         setSupportActionBar(toolbarInstillinger);
         getSupportActionBar().setTitle("Instillinger");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         switchNotifications = findViewById(R.id.switchNotifications);
         switchReady = FALSE;
 
@@ -77,6 +82,9 @@ public class InstillingerActivity extends AppCompatActivity {
             Log.d(TAG, "Ingen bruker logget inn");
         }
 
+        //Src:
+        //https://www.youtube.com/watch?v=Duz_0XkWP2I
+        //(Hitesh Choudhary, 2017)
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()

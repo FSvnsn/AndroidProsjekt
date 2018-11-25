@@ -64,6 +64,10 @@ public class BrukerActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbarBruker);
         setUpNavigationDrawer();
 
+
+        //Src:
+        //https://www.youtube.com/watch?v=7zaKUc2zfpI
+        //(Aws Rh, 2018)
         tablayout = findViewById(R.id.tab_layout_id);
         viewPager = findViewById(R.id.view_pager_id);
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());

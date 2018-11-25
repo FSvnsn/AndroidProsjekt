@@ -76,6 +76,9 @@ public class VisBrukerActivity extends AppCompatActivity {
         txtVisBrukerBeskrivelse = findViewById(R.id.txtVisBrukerBeskrivelse);
         imgVisBrukerBilde = findViewById(R.id.imgVisBrukerBilde);
 
+        //src:
+        //https://www.youtube.com/watch?v=DMkzIOLppf4
+        //(Coding in Flow, 2017)
         toolbar = findViewById(R.id.toolbar_instillinger);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Bardun");
