@@ -4,10 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".InstillingerActivity">
+    tools:context=".main.InstillingerActivity">
+
+    <include
+        android:id="@+id/toolbar_instillinger"
+        layout="@layout/toolbar_instillinger"/>
 
     <Button
         android:id="@+id/btnLogOut"
+        style="@style/Widget.MaterialComponents.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -15,8 +20,22 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="@string/log_out"
+        android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Switch
+        android:id="@+id/switchNotifications"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/varslinger"
+        android:thumbTint="@color/colorAccent"
+        android:trackTint="@color/colorAccent"
+        app:layout_constraintEnd_toEndOf="@+id/btnLogOut"
+        app:layout_constraintStart_toStartOf="@+id/btnLogOut"
+        app:layout_constraintTop_toBottomOf="@+id/btnLogOut" />
 </android.support.constraint.ConstraintLayout>

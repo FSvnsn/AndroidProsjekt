@@ -5,7 +5,7 @@
     android:id="@+id/drawerLayoutMain"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".main.MainActivity">
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
@@ -25,7 +25,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="@string/toolbar_title_main" />
+                    android:text="@string/toolbar_title_main"
+                    android:textSize="18sp" />
             </android.support.v7.widget.Toolbar>
 
         </android.support.design.widget.AppBarLayout>
@@ -45,53 +46,17 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="1.0"
-                tools:context=".MainActivity" />
-
-            <TextView
-                android:id="@+id/visTeltplassKlikk"
-                android:layout_width="329dp"
-                android:layout_height="93dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:text="Vis teltplass"
-                android:textAlignment="center"
-                android:textColor="@color/colorAccent"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.512"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.131" />
+                app:layout_constraintVertical_bias="0.0"
+                tools:context=".main.MainActivity"
+                tools:layout="@layout/google_maps_fragment" />
 
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/nyTeltplassHer"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:id="@+id/registrerTeltplassHerSPM"
-                    android:layout_width="385dp"
-                    android:layout_height="78dp"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@android:color/holo_orange_dark"
-                    android:text="Registrer teltplass her?"
-                    android:textAlignment="center"
-                    android:textColor="@color/common_google_signin_btn_text_dark_focused"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/visTeltplassKlikk"
-                    app:layout_constraintVertical_bias="0.971" />
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                tools:layout_editor_absoluteX="0dp"
+                tools:layout_editor_absoluteY="0dp">
 
                 <TextView
                     android:id="@+id/latlongTextview"
@@ -127,7 +92,102 @@
                     app:layout_constraintTop_toTopOf="@+id/registrerTeltplassHerSPM"
                     app:layout_constraintVertical_bias="1.0" />
 
+                <TextView
+                    android:id="@+id/registrerTeltplassHerSPM"
+                    android:layout_width="385dp"
+                    android:layout_height="78dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="429dp"
+                    android:background="@android:color/holo_orange_dark"
+                    android:text="Registrer teltplass her?"
+                    android:textAlignment="center"
+                    android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintVertical_bias="0.971" />
+
             </android.support.constraint.ConstraintLayout>
+
+            <RelativeLayout
+                android:id="@+id/searchMapRelativeLayout"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="52dp"
+                android:background="#fff"
+                android:elevation="10dp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="@+id/map"
+                app:layout_constraintStart_toStartOf="@+id/map"
+                app:layout_constraintTop_toTopOf="@+id/map"
+                app:layout_constraintVertical_bias="0.0">
+
+
+                <ImageView
+                    android:id="@+id/searchIcon"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/ic_search_icon" />
+
+                <AutoCompleteTextView
+                    android:id="@+id/searchInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_marginBottom="0dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_toRightOf="@+id/searchIcon"
+                    android:background="@null"
+                    android:hint="Skriv inn stedsnavn..."
+                    android:imeOptions="actionDone"
+                    android:singleLine="true"
+                    android:textColor="@color/primaryTextColor"
+                    android:textSize="15sp"
+                    tools:layout_editor_absoluteX="17dp"
+                    tools:layout_editor_absoluteY="58dp" />
+
+            </RelativeLayout>
+
+            <ImageButton
+                android:id="@+id/imageBtnFilter"
+                style="@style/Widget.AppCompat.ImageButton"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@color/colorPrimaryDark"
+                android:tint="@android:color/white"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.975"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/searchMapRelativeLayout"
+                app:srcCompat="@drawable/ic_filter" />
+
+            <ImageButton
+                android:id="@+id/imageBtnMyLoc"
+                android:layout_width="39dp"
+                android:layout_height="34dp"
+                android:layout_marginTop="8dp"
+                android:backgroundTint="@android:color/transparent"
+                android:padding="0dp"
+                android:tint="@color/colorPrimaryDark"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/imageBtnFilter"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/imageBtnFilter"
+                app:layout_constraintTop_toBottomOf="@+id/imageBtnFilter"
+                app:layout_constraintVertical_bias="0.007"
+                app:srcCompat="@drawable/ic_geo_location" />
 
 
         </android.support.constraint.ConstraintLayout>

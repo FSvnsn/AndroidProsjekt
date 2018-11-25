@@ -14,7 +14,7 @@
     <string name="toolbar_title_main">Bardun</string>
     <string name="toolbar_title_teltplass">Teltplass</string>
     <string name="toolbar_title_bruker">Bruker</string>
-    <string name="log_out">Log Out</string>
+    <string name="log_out">Logg Ut</string>
     <string name="name_placeholder">Navn</string>
     <string name="email_placeholder">Email@domain.com</string>
     <string name="rediger_bruker">Rediger Bruker:</string>
@@ -24,4 +24,31 @@
     <string name="age_placeholder">Alder</string>
     <string name="rediger_profil">Rediger Profil</string>
     <string name="skip">Skip</string>
+    <string name="button_opprett_teltplass">Opprett Teltplass</string>
+    <string name="textview_underlag">Kupert underlag:</string>
+    <string name="textview_utsikt" >Grad av utsikt:</string>
+    <string name="textview_avstand">Avstand fra turstart:</string>
+    <string name="switch_skog">Skog</string>
+    <string name="switch_fjell">Fjell</string>
+    <string name="switch_fiske">Fiske</string>
+    <string name="mine_teltplasser_title">Mine Teltplasser</string>
+    <string name="mine_favoritter_title">Mine Favoritter</string>
+    <string name="button_opprett_kommentar">Opprett Kommentar</string>
+    <string name="button_avbryt_kommentar">Avbryt</string>
+    <string name="edittext_kommentar_hint">Skriv kommentar her...</string>
+    <string name="registrert_av">Registrert av:</string>
+    <string name="beskrivelse">Beskrivelse</string>
+    <string name="button_avbryt">Avbryt</string>
+    <string name="channel_name">default</string>
+    <string name="channel_description">default notification channel</string>
+    <string name="varslinger">Varslinger</string>
+    <string name="button_edit_teltplass">Rediger</string>
+    <string name="button_lagre_teltplass_endringer">Lagre endringer</string>
+    <string name="button_slett_teltplass">Slett</string>
+
+    <string-array name="filter_items">
+        <item>Skog</item>
+        <item>Fjell</item>
+        <item>Fiske</item>
+    </string-array>
 </resources>

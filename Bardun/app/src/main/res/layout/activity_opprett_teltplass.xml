@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".OpprettTeltplassActivity">
+    tools:context=".teltplass.OpprettTeltplassActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -22,7 +22,7 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:id="@+id/imageViewOpprettTeltplass"
+                android:id="@+id/imageViewEditTeltplass"
                 android:layout_width="161dp"
                 android:layout_height="151dp"
                 android:layout_marginBottom="8dp"
@@ -36,16 +36,16 @@
                 app:srcCompat="@android:drawable/ic_menu_gallery" />
 
             <EditText
-                android:id="@+id/editTextOpprettTeltplassNavn"
+                android:id="@+id/editTextEditTeltplassNavn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginTop="8dp"
                 android:ems="10"
+                android:hint="Navn"
                 android:inputType="text"
                 android:singleLine="true"
-                android:text="Name"
                 app:layout_constraintBottom_toTopOf="@+id/guideline"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -63,7 +63,7 @@
                 android:text="Teltplass Navn:"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toTopOf="@+id/guideline"
-                app:layout_constraintEnd_toStartOf="@+id/editTextOpprettTeltplassNavn"
+                app:layout_constraintEnd_toStartOf="@+id/editTextEditTeltplassNavn"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -95,7 +95,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/guideline2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/imageViewOpprettTeltplass"
+                app:layout_constraintStart_toEndOf="@+id/imageViewEditTeltplass"
                 app:layout_constraintTop_toBottomOf="@+id/button" />
 
             <Button
@@ -110,7 +110,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/button2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/imageViewOpprettTeltplass"
+                app:layout_constraintStart_toEndOf="@+id/imageViewEditTeltplass"
                 app:layout_constraintTop_toBottomOf="@+id/guideline"
                 app:layout_constraintVertical_chainStyle="packed" />
 
@@ -125,13 +125,13 @@
                 android:text="Beskrivelse:"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toTopOf="@+id/guideline3"
-                app:layout_constraintEnd_toStartOf="@+id/editTextOpprettTeltplassBeskrivelse"
+                app:layout_constraintEnd_toStartOf="@+id/editTextEditTeltplassBeskrivelse"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/guideline2" />
 
             <EditText
-                android:id="@+id/editTextOpprettTeltplassBeskrivelse"
+                android:id="@+id/editTextEditTeltplassBeskrivelse"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
@@ -139,8 +139,9 @@
                 android:layout_marginTop="8dp"
                 android:layout_weight="1"
                 android:ems="10"
+                android:hint="Beskrivelse"
                 android:inputType="text|textMultiLine"
-                android:text="Name"
+                android:maxHeight="103dp"
                 app:layout_constraintBottom_toTopOf="@+id/guideline3"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -148,25 +149,26 @@
                 app:layout_constraintTop_toTopOf="@+id/guideline2" />
 
             <SeekBar
-                android:id="@+id/seekBar"
+                android:id="@+id/seekBarEditTeltplassUnderlag"
                 android:layout_width="233dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:max="10"
-                app:layout_constraintBottom_toTopOf="@+id/seekBar2"
+                app:layout_constraintBottom_toTopOf="@+id/seekBarEditTeltplassUtsikt"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/textView5"
-                app:layout_constraintTop_toBottomOf="@+id/guideline3" />
+                app:layout_constraintTop_toBottomOf="@+id/guideline3"
+                app:layout_constraintVertical_chainStyle="spread" />
 
             <android.support.constraint.Guideline
                 android:id="@+id/guideline3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_begin="298dp" />
+                app:layout_constraintGuide_begin="358dp" />
 
             <TextView
                 android:id="@+id/textView5"
@@ -174,9 +176,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:text="TextView"
+                android:text="@string/textview_underlag"
+                android:textSize="14sp"
                 app:layout_constraintBottom_toTopOf="@+id/textView7"
-                app:layout_constraintEnd_toStartOf="@+id/seekBar"
+                app:layout_constraintEnd_toStartOf="@+id/seekBarEditTeltplassUnderlag"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/guideline3" />
@@ -185,9 +188,11 @@
                 android:id="@+id/textView7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
                 android:layout_marginTop="8dp"
-                android:text="TextView"
+                android:text="@string/textview_utsikt"
                 app:layout_constraintBottom_toTopOf="@+id/textView8"
+                app:layout_constraintEnd_toEndOf="@+id/textView5"
                 app:layout_constraintStart_toStartOf="@+id/textView5"
                 app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
@@ -196,81 +201,121 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
                 android:layout_marginTop="8dp"
-                android:text="TextView"
+                android:text="@string/textview_avstand"
+                android:textSize="12sp"
                 app:layout_constraintBottom_toTopOf="@+id/guideline4"
+                app:layout_constraintEnd_toEndOf="@+id/textView5"
                 app:layout_constraintStart_toStartOf="@+id/textView5"
                 app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
             <SeekBar
-                android:id="@+id/seekBar2"
+                android:id="@+id/seekBarEditTeltplassUtsikt"
                 android:layout_width="234dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:max="10"
-                app:layout_constraintBottom_toTopOf="@+id/seekBar3"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.511"
-                app:layout_constraintStart_toEndOf="@+id/textView7"
-                app:layout_constraintTop_toBottomOf="@+id/seekBar" />
+                app:layout_constraintBottom_toTopOf="@+id/seekBarEditTeltplassAvstand"
+                app:layout_constraintEnd_toEndOf="@+id/seekBarEditTeltplassUnderlag"
+                app:layout_constraintStart_toStartOf="@+id/seekBarEditTeltplassUnderlag"
+                app:layout_constraintTop_toBottomOf="@+id/seekBarEditTeltplassUnderlag" />
 
             <SeekBar
-                android:id="@+id/seekBar3"
+                android:id="@+id/seekBarEditTeltplassAvstand"
                 android:layout_width="234dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 app:layout_constraintBottom_toTopOf="@+id/guideline4"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/textView8"
-                app:layout_constraintTop_toBottomOf="@+id/seekBar2" />
+                app:layout_constraintEnd_toEndOf="@+id/seekBarEditTeltplassUtsikt"
+                app:layout_constraintStart_toStartOf="@+id/seekBarEditTeltplassUtsikt"
+                app:layout_constraintTop_toBottomOf="@+id/seekBarEditTeltplassUtsikt" />
 
             <android.support.constraint.Guideline
                 android:id="@+id/guideline4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_begin="413dp" />
+                app:layout_constraintGuide_begin="467dp" />
 
             <Switch
-                android:id="@+id/switch1"
+                android:id="@+id/switchEditTeltplassSkog"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:text="Skog"
-                app:layout_constraintEnd_toStartOf="@+id/switch2"
+                android:text="@string/switch_skog"
+                app:layout_constraintBottom_toTopOf="@+id/guideline5"
+                app:layout_constraintEnd_toStartOf="@+id/switchEditTeltplassFjell"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/guideline4" />
 
             <Switch
-                android:id="@+id/switch2"
+                android:id="@+id/switchEditTeltplassFjell"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Fjell"
-                app:layout_constraintEnd_toStartOf="@+id/switch3"
+                android:text="@string/switch_fjell"
+                app:layout_constraintEnd_toStartOf="@+id/switchEditTeltplassFiske"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/switch1"
-                app:layout_constraintTop_toTopOf="@+id/switch1" />
+                app:layout_constraintStart_toEndOf="@+id/switchEditTeltplassSkog"
+                app:layout_constraintTop_toTopOf="@+id/switchEditTeltplassSkog" />
 
             <Switch
-                android:id="@+id/switch3"
+                android:id="@+id/switchEditTeltplassFiske"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                android:text="Fiske"
+                android:text="@string/switch_fiske"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/switch2"
-                app:layout_constraintTop_toTopOf="@+id/switch1" />
+                app:layout_constraintStart_toEndOf="@+id/switchEditTeltplassFjell"
+                app:layout_constraintTop_toTopOf="@+id/switchEditTeltplassSkog" />
+
+            <Button
+                android:id="@+id/buttonLagreTeltplassEndringer"
+                android:layout_width="wrap_content"
+                android:layout_height="49dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:onClick="opprettTeltplass"
+                android:text="@string/button_opprett_teltplass"
+                app:layout_constraintEnd_toStartOf="@+id/buttonAvbrytOpprettTeltplass"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/guideline5" />
+
+            <android.support.constraint.Guideline
+                android:id="@+id/guideline5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="507dp" />
+
+            <Button
+                android:id="@+id/buttonAvbrytOpprettTeltplass"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="8dp"
+                android:onClick="avbrytOpprettTeltplass"
+                android:text="@string/button_avbryt"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/buttonLagreTeltplassEndringer"
+                app:layout_constraintTop_toTopOf="@+id/guideline5" />
+
+            <android.support.constraint.Guideline
+                android:id="@+id/guideline16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="600dp" />
 
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
