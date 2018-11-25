@@ -28,7 +28,6 @@ public class TeltplassQuickviewBottomSheetDialog extends BottomSheetDialogFragme
     private BottomSheetListener mListener;
     private static final String TAG = "Superman";
     private View v;
-    private String bottomsheetTag;
 
 
     @Nullable

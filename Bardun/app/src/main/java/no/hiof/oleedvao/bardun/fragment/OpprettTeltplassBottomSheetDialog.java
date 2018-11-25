@@ -32,7 +32,6 @@ public class OpprettTeltplassBottomSheetDialog extends BottomSheetDialogFragment
     private TeltplassQuickviewBottomSheetDialog.BottomSheetListener mListener;
     private static final String TAG = "Iron Man";
     private View v;
-    private String bottomsheetTag;
 
 
     @Nullable
@@ -66,8 +65,6 @@ public class OpprettTeltplassBottomSheetDialog extends BottomSheetDialogFragment
                     Intent intent = new Intent(getActivity(), OpprettTeltplassActivity.class);
                     intent.putExtra("latLng", location);
                     startActivity(intent);
-                    Log.d(TAG, "LatLng "+ location);
-
                     dismiss();
                 }
             });
@@ -80,7 +77,7 @@ public class OpprettTeltplassBottomSheetDialog extends BottomSheetDialogFragment
     public void onCancel(DialogInterface dialog)
     {
         super.onCancel(dialog);
-        Log.d(TAG,"cancel");
+        Log.d(TAG,"Cancel");
         Marker cancelOpprettTeltplass = MainActivity.getmNyTeltplass();
         cancelOpprettTeltplass.remove();
 
